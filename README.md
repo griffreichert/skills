@@ -1,4 +1,4 @@
-# g-skills
+# skills
 
 Personal agent skills library. Works across Claude Code, Codex, and other
 coding agents via [vercel-labs/skills](https://github.com/vercel-labs/skills),
@@ -7,7 +7,7 @@ and can be uploaded directly as a Skill in claude.ai (zip the skill folder).
 ## Install
 
 ```bash
-npx skills add git@github.com:griffreichert/g-skills.git -g -a claude-code -a codex
+npx skills add git@github.com:griffreichert/skills.git -g -a claude-code -a codex
 ```
 
 (`-g` installs globally, available in every project/session; drop it to scope
@@ -16,7 +16,7 @@ to one repo.)
 No CLI? Clone and symlink instead:
 
 ```bash
-git clone git@github.com:griffreichert/g-skills.git && ./g-skills/install.sh
+git clone git@github.com:griffreichert/skills.git && ./skills/install.sh
 ```
 
 ## Update
