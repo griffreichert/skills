@@ -12,6 +12,8 @@ Slop is code that adds no value: it survives deletion with nothing lost. Optimiz
 - **No defensive type-checking.** `isinstance`/`hasattr` are almost never needed. Assume the types you expect and let it error when they're wrong. A wrong-attribute crash is better than a silent check that hides the bug.
 - **A test must be able to fail.** Test real behaviour and edge cases, not mocked fakes. A test that passes no matter what the code does is slop — the check: does it fail if the behaviour breaks? No, delete it. Not everything needs a test. Use pytest fixtures; test distinct things.
 - **Don't over-privatize.** Private methods only inside a class, for genuine internals. Standalone module functions don't need a `_` prefix — default to importable.
+- **No comments that restate the code.** Comment the *why*, never the *what* the line already says. Docstrings earn their place on complex logic, edge cases, or non-obvious decisions; every function still gets a one-line docstring for ruff format.
+- **No `from __future__ import annotations`.**
 
 For over-engineering, speculative abstraction, reinvented stdlib, or trivial single-use helpers, defer to the **ponytail** skill — that's its job, not this one.
 
@@ -27,4 +29,4 @@ Removing a check on purpose is fine when the assumption is safe. If it isn't obv
 
 ## Done when
 
-Every file you touched is free of the three slop patterns above, or each deliberate exception is a justified carve-out.
+Every file you touched is free of the slop patterns above, or each deliberate exception is a justified carve-out.
