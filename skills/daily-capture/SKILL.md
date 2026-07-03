@@ -12,13 +12,15 @@ End-of-session snapshot of what happened. This skill owns the *capture*; where i
 
 ### 1. Gather from this session
 
-Pull three things from the conversation. Signal only, not a task log.
+Pull three things from the conversation, filtered by the **altitude test**: log only what still matters in a month — scope boundaries, architecture choices, hard constraints, direction changes, and *why*. Skip task-level mechanics (parameter values, per-field rules, routine edits, each thing the user asked for). Unsure it survives a month? Leave it out.
 
-- **Done** — the high-level work that landed, a few bullets. Not every edit.
+- **Done** — the high-level work that landed.
 - **Decisions** — decisions, pivots, realisations, each with its *why*.
 - **Open questions** — anything unresolved or deferred for next session.
 
-Omit a section that's genuinely empty. Don't pad.
+Cap ~3-5 bullets per section. Hitting the cap means consolidate, not expand. Omit a section that's genuinely empty; don't pad.
+
+Phrase every bullet by the **write-clearly** skill's guidelines if it's available: front-loaded, one idea each, cut to the bone. If it isn't, still keep bullets terse.
 
 ### 2. Find the destination
 
