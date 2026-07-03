@@ -31,6 +31,10 @@ npx skills update
 
 - [`write-clearly`](skills/write-clearly/SKILL.md) — cut writing to the bone.
   Clear, human, no AI slop.
+- [`purge-slop`](skills/purge-slop/SKILL.md) — write Python without slop:
+  no defensive checks, no fake tests, no needless private helpers.
+- [`review-slop`](skills/review-slop/SKILL.md) — flag the same slop in a diff
+  or PR as review comments, no edits.
 
 ## Adding a new skill
 

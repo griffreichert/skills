@@ -1,6 +1,8 @@
 {
   "name": "g-skills",
   "skills": [
-    "./skills/write-clearly"
+    "./skills/write-clearly",
+    "./skills/purge-slop",
+    "./skills/review-slop"
   ]
 }
