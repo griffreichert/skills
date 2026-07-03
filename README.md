@@ -7,7 +7,7 @@ and can be uploaded directly as a Skill in claude.ai (zip the skill folder).
 ## Install
 
 ```bash
-npx skills add griffinreichert/g-skills -g -a claude-code -a codex
+npx skills add git@github.com:griffreichert/g-skills.git -g -a claude-code -a codex
 ```
 
 (`-g` installs globally, available in every project/session; drop it to scope
@@ -16,7 +16,7 @@ to one repo.)
 No CLI? Clone and symlink instead:
 
 ```bash
-git clone https://github.com/griffinreichert/g-skills && ./g-skills/install.sh
+git clone git@github.com:griffreichert/g-skills.git && ./g-skills/install.sh
 ```
 
 ## Update
@@ -35,6 +35,9 @@ npx skills update
   no defensive checks, no fake tests, no needless private helpers.
 - [`review-slop`](skills/review-slop/SKILL.md) — flag the same slop in a diff
   or PR as review comments, no edits.
+- [`daily-capture`](skills/daily-capture/SKILL.md) — manually snapshot a
+  session (done, decisions, open questions) into the project's session note,
+  or back to chat if none is configured.
 
 ## Adding a new skill
 

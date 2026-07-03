@@ -3,6 +3,7 @@
   "skills": [
     "./skills/write-clearly",
     "./skills/purge-slop",
-    "./skills/review-slop"
+    "./skills/review-slop",
+    "./skills/daily-capture"
   ]
 }
