@@ -48,8 +48,10 @@ Edit the note file directly with your file-editing tools. Never write a script
 - Append the snapshot to the dated note, under the configured headings, in the
   house style. Create the file if missing.
 - If you created the note (or a new plan), **refresh `_index.md`** at the notes
-  folder root — add the new file's `[[wikilink]]`, seeding `_index.md` if it
-  doesn't exist. See the reference for the `_index` convention.
+  folder root — add the new file's `[[wikilink]]` (path-qualified if the basename
+  isn't unique vault-wide), seeding `_index.md` if it doesn't exist. If the index
+  shows a recent-daily-notes list, trim it to the newest few. See the reference
+  for the `_index` convention (shape, disambiguation, seed skeleton).
 
 ## Done when
 

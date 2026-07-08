@@ -41,13 +41,50 @@ it out.
 ## The _index map
 
 Each notes folder has an `_index.md` at its **root** (the symlink target in the
-vault) — a flat list of `[[wikilinks]]` to the live plans, issues, and dated
-notes in that folder. It is a table of contents, not a state dump: the dated
-notes remain the source of truth.
+vault) — a navigation map of `[[wikilinks]]` to the live plans, issues, and
+dated notes in that folder. It is a table of contents, not a state dump: the
+dated notes remain the source of truth, so point at them, never copy their
+state into the index.
+
+**Shape.** Group links by purpose under `##` headings — e.g. *Start here*
+(the plan/tracker orient reads first), *Live threads*, *Daily notes*,
+*Reference* — and give each link a one-line "what it is" so an agent (or
+orient) can jump straight to the right file without opening every note. Detailed
+and navigable, but bloat-free: one line per note, no state duplicated from the
+source. A Claude-authored `_index.md` carries the usual `author: claude` +
+`date:` frontmatter.
+
+**Disambiguate links.** In a nested vault the same basename recurs across
+folders (`[[2026-07-08]]` lives in several projects' `daily/`). A bare wikilink
+is ambiguous and orient may follow it to the wrong file. Path-qualify any link
+whose basename isn't unique vault-wide, with a short label:
+`[[g/projects/g-nfl/daily/2026-07-08|2026-07-08]]`. Bare links are fine only for
+uniquely-named notes.
 
 - `daily-capture` **maintains** it — when it creates a new note or plan, it adds
   or refreshes that file's `[[wikilink]]` in `_index.md`, seeding the file if
-  absent.
+  absent. When it adds today's daily link and the index shows a *recent daily
+  notes* list, trim that list to the newest few so it doesn't rot — the full
+  history stays in the `daily/` folder, not the index.
 - `orient` **reads** it as a cheap entry point, then follows the links. `orient`
   never writes or heals `_index.md`; a missing one just means it falls back to
   scanning the folder and asking the user to steer.
+
+Seed an absent `_index.md` with this shape:
+
+```markdown
+---
+author: claude
+date: <YYYY-MM-DD>
+---
+
+# <folder> — index
+
+One-line what-this-is. The map; dated notes stay the source of truth.
+
+## Start here
+- [[plan-or-tracker]] — what it is.
+
+## Daily notes → `daily/`
+- [[<newest>]] · [[<next>]] — session logs.
+```
