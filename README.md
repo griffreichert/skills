@@ -1,53 +1,49 @@
 # skills
 
-Personal agent skills library. Works across Claude Code, Codex, and other
-coding agents via [vercel-labs/skills](https://github.com/vercel-labs/skills),
-and can be uploaded directly as a Skill in claude.ai (zip the skill folder).
+*Author: Griffin Reichert*
+
+The skills I actually use, in one repo. Small instruction modules that teach
+Claude Code and Codex my habits: write tighter, cut the Python slop, hand off
+cleanly between sessions so tomorrow's agent isn't starting from scratch.
+Install once, they follow you into every project. Steal the ones you like.
 
 ## Install
 
-```bash
-npx skills add git@github.com:griffreichert/skills.git -g -a claude-code -a codex
-```
-
-(`-g` installs globally, available in every project/session; drop it to scope
-to one repo.)
-
-No CLI? Clone and symlink instead:
+Basic install using [vercel-labs/skills](https://github.com/vercel-labs/skills).
 
 ```bash
-git clone git@github.com:griffreichert/skills.git && ./skills/install.sh
+npx skills add griffreichert/skills
 ```
-
-## Update
-
-Edit a `SKILL.md`, commit, push, then wherever it's installed:
+One line, both agents, everywhere:
 
 ```bash
-npx skills update
+npx skills add griffreichert/skills -g -a claude-code -a codex
 ```
+
+`-g` makes them global. Drop it to scope to the current repo. `-a` picks the
+agent. Repeat it, or drop it to install for whatever agents you have.
+
+No `npx`? `git clone` it and run `./skills/install.sh`.
 
 ## Skills
 
-- [`write-clearly`](skills/write-clearly/SKILL.md) — cut writing to the bone.
+**Writing**
+
+- [`write-clearly`](skills/write-clearly/SKILL.md) — cut prose to the bone.
   Clear, human, no AI slop.
-- [`purge-slop`](skills/purge-slop/SKILL.md) — write Python without slop:
-  no defensive checks, no fake tests, no needless private helpers.
-- [`review-slop`](skills/review-slop/SKILL.md) — flag the same slop in a diff
+
+**Python hygiene**
+
+- [`purge-slop`](skills/purge-slop/SKILL.md) — write Python without slop: no
+  defensive checks, no fake tests, no needless private helpers.
+- [`review-slop`](skills/review-slop/SKILL.md) — flag that same slop in a diff
   or PR as review comments, no edits.
-- [`daily-capture`](skills/daily-capture/SKILL.md) — manually snapshot a
-  session (done, decisions, open questions) into the project's session note,
-  or back to chat if none is configured.
 
-## Adding a new skill
+**Session handover** — *yesterday's agent leaving tomorrow's a note.*
 
-```bash
-mkdir -p skills/<name> && npx skills init <name>
-```
-
-Or copy the structure of an existing skill folder. Each skill is a folder
-under `skills/` with a `SKILL.md` (frontmatter: `name`, `description`) plus
-any disclosed reference files it needs.
-
-Then add its path to `.claude-plugin/plugin.json`. That file is the promotion
-list — the CLI only installs skills listed there.
+- [`log-decisions`](skills/log-decisions/SKILL.md) — model invokable background skill to
+  capture a decision or pivot the moment it lands, with its why.
+- [`daily-capture`](skills/daily-capture/SKILL.md) — snapshot the session (done,
+  decisions, open questions, working tree) into the day's note.
+- [`orient`](skills/orient/SKILL.md) — start cold? Read the notes, open issues,
+  and working tree, then propose where to begin.
