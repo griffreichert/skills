@@ -30,6 +30,8 @@ If the config is present, that's your destination. If it's absent or ambiguous, 
 
 ### 3. Write it
 
+Edit the note file directly with your file-editing tools. Never write a script (Python, shell, sed, etc.) to do the edit — this is a plain text edit, not a programming task.
+
 - **Destination found** — append the snapshot to that file, under the configured heading, in the style it specifies. Create the file if missing.
 - **No destination / unsure** — do not guess a path. Print the snapshot as a fenced markdown block in chat for the user to paste, and say you couldn't find a configured destination.
 
