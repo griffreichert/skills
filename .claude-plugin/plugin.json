@@ -6,6 +6,8 @@
     "./skills/review-slop",
     "./skills/daily-capture",
     "./skills/log-decisions",
-    "./skills/orient"
+    "./skills/orient",
+    "./skills/draft-mr-description",
+    "./skills/draft-git-commit"
   ]
 }
