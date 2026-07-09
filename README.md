@@ -31,6 +31,10 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
 
 - [`write-clearly`](skills/write-clearly/SKILL.md) — cut prose to the bone.
   Clear, human, no AI slop.
+- [`draft-mr-description`](skills/draft-mr-description/SKILL.md) — turn a finished
+  branch into a reviewer-ready MR description: old shape, new shape, why.
+- [`draft-git-commit`](skills/draft-git-commit/SKILL.md) — draft a commit title
+  and body matching the repo's convention. Drafts only, does not commit.
 
 **Python hygiene**
 
