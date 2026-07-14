@@ -4,6 +4,7 @@
     "./skills/write-clearly",
     "./skills/purge-slop",
     "./skills/review-slop",
+    "./skills/test-stickler",
     "./skills/daily-capture",
     "./skills/log-decisions",
     "./skills/orient",
