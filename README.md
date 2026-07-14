@@ -42,9 +42,9 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
   defensive checks, no fake tests, no needless private helpers.
 - [`review-slop`](skills/review-slop/SKILL.md) — flag that same slop in a diff
   or PR as review comments, no edits.
-- [`test-stickler`](skills/test-stickler/SKILL.md) — mutate the source. The test
-  goes red, or it tests nothing. Catches mock theatre, names the missing edge
-  cases, keeps the suite to one command to run.
+- [`test-stickler`](skills/test-stickler/SKILL.md) — audit pytest tests for the
+  ones that cannot go red. Flags the smell by name, suggests the fix, names the
+  missing edge cases.
 
 **Session handover** — *yesterday's agent leaving tomorrow's a note.*
 
