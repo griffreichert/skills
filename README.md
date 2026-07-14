@@ -54,3 +54,10 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
   decisions, open questions, working tree) into the day's note.
 - [`orient`](skills/orient/SKILL.md) — start cold? Read the notes, open issues,
   and working tree, then propose where to begin.
+
+
+## Inspiration
+
+[Matt Pocock skills](https://github.com/mattpocock/skills) - incredible resource, very 
+helpful while I have iterated on my own skills, if you do not use these you are missing
+out!
