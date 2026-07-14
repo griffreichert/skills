@@ -45,6 +45,9 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
 - [`test-stickler`](skills/test-stickler/SKILL.md) — audit pytest tests for the
   ones that cannot go red. Flags the smell by name, suggests the fix, names the
   missing edge cases.
+- [`pydantic-principles`](skills/pydantic-principles/SKILL.md) — structure
+  pydantic code so the library does the work: construction validates, settings
+  own the knobs, contracts live at boundaries.
 
 **Session handover** — *yesterday's agent leaving tomorrow's a note.*
 

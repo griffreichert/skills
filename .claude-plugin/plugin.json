@@ -3,6 +3,7 @@
   "skills": [
     "./skills/write-clearly",
     "./skills/purge-slop",
+    "./skills/pydantic-principles",
     "./skills/review-slop",
     "./skills/test-stickler",
     "./skills/daily-capture",
