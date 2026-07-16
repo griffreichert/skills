@@ -1,91 +1,119 @@
 ---
 name: test-stickler
-description: Audit pytest tests for the ones that cannot go red, flag the smell by name, suggest the fix. Use when writing or reviewing tests, or when asked whether the coverage is real.
+description: Audit unit and integration pytest tests for coverage that can go red and a healthy test harness. Use when writing or reviewing tests, or when asked whether coverage is real.
 ---
 
 # Test stickler
 
-Ask one question of every test: **if the behaviour it covers broke, would this test go red?**
+Ask of every test: **would it go red if the behaviour broke?**
 
-The tests that stay green are the findings. Coverage percentages, assertion counts and a passing suite all stay green too, so none of them can answer this for you.
+The red question beats coverage, assertion counts, and a passing suite. Report
+findings. Do not change code or tests unless asked. **purge-slop** defers here
+for test-shaped work.
 
-Report what you find. The code and the tests stay as they are, unless you are asked to fix them.
+## Lanes
 
-Single source of truth for pytest quality, so **purge-slop** defers here for anything test-shaped.
+**Unit tests** prove one component's decisions. Keep the loop **tight**: in-memory
+inputs, controlled boundaries, no I/O or credentials, fast and deterministic.
+They must run repeatedly from a clean checkout.
 
-## The audit
+**Integration tests** prove owned components and real boundaries work together:
+serialization, persistence, queues, HTTP, framework wiring, or migrations. Keep
+the loop **wide**: explicit setup, isolated resources, and known I/O cost.
 
-Work in this order. Each step feeds the next.
+Classify by execution, not directory:
 
-**1. Read the source first, and list its behaviours.** Every branch, every `raise`, every early return, every boundary the code cares about. This list is the yardstick, and it comes from the code. Derive it from the test names instead and you inherit whatever the tests already missed.
+| Lane | Proof | Default |
+| --- | --- | --- |
+| Unit | Component behaviour | Fast local loop |
+| Integration | Boundary and wiring contract | Marker or CI lane |
 
-**2. Read each test body before its name.** Names promise, bodies deliver. Judge what the body checks, then read the name and see whether it agrees. A gap between the two is a finding.
+Boundary mocks belong in unit tests. Integration tests run the adapter or
+framework boundary they claim to prove. Local resources need fixture-owned setup
+and teardown. Live third-party systems use a separate opt-in lane.
 
-**3. Bind every assertion to a line of source.** Follow each assert back to the line that produces the value it checks. This answers the red question statically, with nothing run and nothing edited. An assertion that binds to a mock, to its own input, or to a literal binds to no source at all, and a test built only from those can never go red.
+## Split review
 
-**4. Map the behaviours from step 1 onto the tests.** A behaviour with no test is a missing case. Name each one. The cases that hide from a plain read of the source are listed under [Where the missing cases hide](#where-the-missing-cases-hide).
+When subagents exist, use two smallest capable subagents:
 
-**5. Rank, then report.** Tests that cannot go red come first, because they are worse than no test: they buy false confidence. Untested error paths and branches next. Readability smells last.
+- **Unit reviewer:** component source and unit tests; red assertions, branches,
+  errors, boundaries, mocks, and tight-loop cost.
+- **Integration reviewer:** integration tests and harness; real contracts,
+  lifecycle, isolation, cleanup, markers, I/O cost, and CI selection.
+
+Give each only its lane's paths and source dependencies. Request ranked
+`file:line`, smell, evidence, and fix. Combine duplicate findings yourself.
+
+If subagents cannot run, ask the user to enable them. Then make sequential unit
+and integration passes; state that the review was sequential.
+
+## Audit
+
+1. **Map lanes and harness.** Read test config, fixtures, docs, and CI. Classify
+   every in-scope test and selector. Name wrong or invisible lanes.
+2. **List source behaviours.** Read source before tests. List branches, raises,
+   early returns, and boundaries.
+3. **Read test bodies.** Judge assertions before names. Flag names that promise
+   different behaviour.
+4. **Bind assertions.** Trace each assertion to source. Assertions tied only to
+   mocks, inputs, or literals cannot go red on source failure.
+5. **Map behaviour to tests.** Name missing cases and put component decisions in
+   unit tests, boundary contracts in integration tests.
+6. **Audit harness.** Confirm narrow unit selection works cleanly; integration
+   selection, resource ownership, cleanup, and CI coverage are explicit. Read
+   [running-tests.md](running-tests.md) for commands and documentation.
 
 ## Smells
 
-Flag by name. These names are standard, so they carry weight in review.
-
-| Smell | How it shows up in pytest | Suggest |
+| Smell | Signal | Fix |
 | --- | --- | --- |
-| **Unknown test** | No assertion. Calls the function and ends. | Assert the observable result. If "it didn't raise" really is the contract, say so in the name. |
-| **Redundant assertion** | `assert x == x`, `assert True`. Green under every possible change. | Assert the value the code actually computed. |
-| **Testing the mock** | The body is `assert_called_once_with` and friends. It checks the mock got wired up. | Assert what the caller sees: the return value, the persisted row, the emitted event. |
-| **Mocking the subject** | The function under test is patched, or patched so deep no real logic runs. | Mock at the boundary: the network, the clock, the LLM, the object store. |
-| **Eager test** | One test exercises five functions. The first failure hides the rest. | One behaviour per test. |
-| **Assertion roulette** | Twenty bare asserts. A failure gives a line number and no reason. | Split it, parametrize it, or add assertion messages. |
-| **Conditional test logic** | `if` or `for` inside the test, so a branch quietly skips the assert. | Parametrize the cases instead of branching through them. |
-| **Vague name** | `test_upload`, `test_it_works`. The failure line names a function and no behaviour. | Name the behaviour and the condition: `test_upload_rejects_zero_byte_file`. |
-| **Mystery guest** | Depends on a file, DB row or bucket object that something else created. | `tmp_path`, a fixture, or a sample payload committed to the repo. |
-| **Resource optimism** | Assumes the external thing exists. Green locally, red in CI. | Build the resource in a fixture, or mark the test and deselect it by default. |
-| **Sleepy test** | `time.sleep` to wait for async work. Slow, and flaky under load. | Await the event, poll with a timeout, or freeze the clock. |
-| **General fixture** | A conftest builds things most of its tests never touch. | Move the fixture down to the tests that use it. |
-| **Sensitive equality** | Compares `str(obj)` or `repr(obj)`. Breaks when formatting changes. | Compare the fields, or give the object a real `__eq__`. |
-| **Ignored test** | `skip` or `xfail` with no reason and no date. | Fix it or delete it. A permanently skipped test is a lie with a green tick. |
+| **Unknown test** | No assertion. | Assert the observable contract. |
+| **Redundant assertion** | `assert x == x` or `assert True`. | Assert computed output. |
+| **Testing the mock** | Only `assert_called_*`. | Assert caller-visible result. |
+| **Mocking the subject** | Subject patched; no real logic runs. | Mock the boundary. |
+| **Eager test** | Several behaviours share one test. | One behaviour per test. |
+| **Assertion roulette** | Many unlabelled asserts. | Split, parametrize, or label. |
+| **Conditional test logic** | Test branches or loops around assertions. | Parametrize cases. |
+| **Vague name** | Name omits condition or behaviour. | Name behaviour and condition. |
+| **Mystery guest** | Depends on leftover state. | Create state in a fixture. |
+| **Resource optimism** | Assumes an external resource exists. | Own it in a fixture or opt in. |
+| **Sleepy test** | Uses `time.sleep`. | Await, poll with timeout, or freeze time. |
+| **General fixture** | Broad fixture hides simple setup. | Narrow fixture scope. |
+| **Sensitive equality** | Compares `str` or `repr`. | Compare fields or equality. |
+| **Ignored test** | Undated `skip` or `xfail`. | Fix or delete it. |
+| **Lane leak** | Unit test uses services, credentials, or shared state. | Move boundary proof to integration. |
+| **Fake integration** | Mocks claimed boundary. | Use real adapter and owned resource. |
+| **Unowned resource** | Shared DB, port, bucket, queue, or service. | Use unique fixture-owned resources. |
+| **Invisible lane** | Integration selector is unregistered, undocumented, or absent from CI. | Register, document, and run it. |
 
-## Where the missing cases hide
+## Missing cases
 
-Step 1 catches most of them. These are the ones that hide from a plain read of the source.
+- **Boundaries:** empty, `None`, zero, one, limit, and limit plus one.
+- **Errors:** pin exception type and relevant message.
+- **Strings:** duplicates, order, unicode, and case.
+- **Async:** cancellation, timeout, and concurrent shared state.
+- **Idempotency:** retry, replay, and second call.
 
-- **Boundaries.** `[]`, `""`, `{}`, `None`, zero, one item, at-limit, one-over-limit.
-- **Errors.** `pytest.raises(ValueError, match=...)` pins the type and the message. A bare `pytest.raises(Exception)` goes green on a typo.
-- **Strings.** Duplicates, ordering, unicode, case. Filenames and user text bite hardest.
-- **Async.** Cancellation, timeout, concurrent callers on shared state.
-- **Idempotency.** Call it twice. Retry, replay, re-run.
+Parametrize variations. One test per behaviour.
 
-Parametrize the variations. One test function per distinct behaviour.
+## Fixtures
 
-## Fixtures and conftest
-
-**Fixtures** carry setup that is shared or non-trivial: a DB session, a client, a `tmp_path` tree, seeded records. Scope as wide as is safe. Use `session` for expensive, immutable things and `function` for anything a test mutates. Keep one-line setup inline, since a fixture wrapping a bare constructor hides more than it saves.
-
-**`conftest.py`** carries config and cross-file fixtures: `pytest_addoption` flags, session hooks, fixtures shared across a directory. Put it at the narrowest directory that needs it. People maintain the tests they can read from the test body and one conftest.
-
-## Running the suite
-
-Selectors, markers, the setup a test is allowed to need, and what the test docs must state: **[running-tests.md](running-tests.md)**. Read it when running tests, when a test needs setup before it can pass, or when a change adds a marker or a flag.
-
-## Where the stickler rests
-
-Not everything needs a test. Trivial one-liners and pure data classes are fine untested. A mocked LLM, payment API or clock is a boundary correctly drawn, so leave it.
-
-Say when a suite is good. One line is enough. Padding a clean audit with weak findings to prove it ran is its own failure.
+Use fixtures for shared or non-trivial setup. Keep one-line construction inline.
+Use the narrowest safe scope. Put shared config and cross-file fixtures in the
+narrowest `conftest.py`.
 
 ## Report
 
-Rank by severity. One line per finding: the location, the smell by name, the suggested change.
+Rank: tests that cannot go red; missing behaviours; lane or harness gaps;
+readability. One line each:
 
 ```
-tests/io/test_upload.py:42   testing the mock   assert the uploaded key, not upload_file.assert_called_once
-tests/io/test_upload.py:88   vague name         test_upload -> test_upload_retries_on_timeout
-io/upload.py:17              missing case       zero-byte file hits the early return, no test reaches it
+tests/io/test_upload.py:42   testing the mock   assert the uploaded key
+io/upload.py:17              missing case       zero-byte early return untested
 ```
 
 ## Done when
 
-Every behaviour listed in step 1 is covered by a test that can go red, or named as a gap. Every test in scope is sound, or carries a named smell and a suggested fix.
+Every source behaviour can go red through a test or is named as a gap. Every
+test has a deliberate lane. Unit and integration commands, resource ownership,
+and CI coverage are evidenced or reported as harness gaps.
