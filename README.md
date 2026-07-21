@@ -64,3 +64,8 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
 [Matt Pocock skills](https://github.com/mattpocock/skills) - incredible resource, very 
 helpful while I have iterated on my own skills, if you do not use these you are missing
 out!
+
+[@Voxyz_ai](https://x.com/Voxyz_ai) - for pointing out that banning words one at a time
+is not a writing system, and for naming corrective juxtaposition, the "not X, it's Y"
+tic. Both landed in [`write-clearly`](skills/write-clearly/SKILL.md), which also leans
+on Orwell's six rules from "Politics and the English Language" (1946).
