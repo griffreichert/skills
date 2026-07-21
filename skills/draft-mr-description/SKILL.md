@@ -9,7 +9,10 @@ disable-model-invocation: true
 Turn a finished issue branch into a reviewer-ready MR description. The output
 must read like a change story, not a commit dump.
 
-Use `write-clearly` when available.
+Use `write-clearly` and `write-technical-english` when available. Apply the
+second one hardest to the operator notes and the testing steps, which the
+reader executes. Overview and Description are descriptive writing, so let them
+run as prose.
 
 ## Steps
 

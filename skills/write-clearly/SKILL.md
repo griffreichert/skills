@@ -11,6 +11,10 @@ Mark Twain once said "I didn't have time to write a short letter, so I wrote a l
 
 The best sentences are the ones you delete. More text buries the point and loses the reader. Convey the message in as few words as possible without losing the key bits.
 
+Writing steps a reader will execute, a runbook, or reference docs? Use
+`write-technical-english` for the sentence mechanics. This skill still decides
+how much you say.
+
 ## The rules
 
 - **Start from the reader's need.** Write what they need to know to do or decide, not what you want to say.

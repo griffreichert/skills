@@ -12,7 +12,9 @@ existing style. Explain why the change exists, not just what moved.
 Draft the message only. Do not run `git commit`. Hand the text back for the user
 to commit.
 
-Use `write-clearly` when available.
+Use `write-clearly` and `write-technical-english` when available. The second one
+governs the imperative form, the sentence length, and using one word per
+concept. It waives its own article rule for the subject line.
 
 ## Steps
 
