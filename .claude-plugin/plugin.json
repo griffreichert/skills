@@ -2,6 +2,7 @@
   "name": "skills",
   "skills": [
     "./skills/write-clearly",
+    "./skills/write-technical-english",
     "./skills/purge-slop",
     "./skills/pydantic-principles",
     "./skills/review-slop",

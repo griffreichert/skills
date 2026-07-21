@@ -31,6 +31,9 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
 
 - [`write-clearly`](skills/write-clearly/SKILL.md) — cut prose to the bone.
   Clear, human, no AI slop.
+- [`write-technical-english`](skills/write-technical-english/SKILL.md) — one
+  reading only. Sized sentences, imperative steps, one term per thing, no
+  phrasal verbs. The useful subset of ASD-STE100.
 - [`draft-mr-description`](skills/draft-mr-description/SKILL.md) — turn a finished
   branch into a reviewer-ready MR description: old shape, new shape, why.
 - [`draft-git-commit`](skills/draft-git-commit/SKILL.md) — draft a commit title
@@ -69,3 +72,21 @@ out!
 is not a writing system, and for naming corrective juxtaposition, the "not X, it's Y"
 tic. Both landed in [`write-clearly`](skills/write-clearly/SKILL.md), which also leans
 on Orwell's six rules from "Politics and the English Language" (1946).
+
+## Sources
+
+[`write-technical-english`](skills/write-technical-english/SKILL.md) paraphrases the
+subset of **ASD-STE100 Simplified Technical English** that applies to software docs.
+
+- [ASD-STE100 specification](https://www.asd-ste100.org/) - Issue 9, 2025-01-15. Free
+  download. 53 writing rules in 9 sections, plus a dictionary of ~900 approved words.
+- [STEMG](https://www.asd-ste100.org/about_STE.html) - the ASD Simplified Technical
+  English Maintenance Group, who have maintained the standard since 1983.
+- [ASD](https://www.asd-europe.org/standards-specifications/simplified-technical-english/) -
+  Aerospace, Security and Defence Industries Association of Europe, the copyright holder.
+- [@geogristle](https://x.com/geogristle/status/2078492579511906771) - the tweet that
+  pointed out STE constrains LLMs away from AI-slop documentation.
+
+The specification is copyright ASD and is not reproduced in this repo. Rules are
+paraphrased with their rule numbers cited. Part 2, the approved-word dictionary, is out
+of scope. Download the spec when you need a rule's exact wording.
