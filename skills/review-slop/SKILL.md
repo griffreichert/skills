@@ -12,7 +12,7 @@ The rules live in purge-slop (single source of truth): no defensive type-checkin
 ## How to review
 
 - **Comment, don't change.** Never edit the code under review. Output findings only.
-- **One line per finding:** `path:line — slop → fix`. Point at the exact spot, commit hash, name the slop, give the replacement.
+- **Report as conventional comments.** Label and group the findings per the **review-comments** skill.
 - **Respect the carve-out.** A type check at a trust boundary (API edge, user input, deserialization) is not slop — don't flag it.
 
 ## Done when
