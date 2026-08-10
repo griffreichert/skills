@@ -21,6 +21,7 @@ how much you say.
 - **Front-load everything.** Most important point first, in the document, the section, the paragraph, the sentence. Conclusion first, then detail, then background.
 - **One idea per sentence, one topic per paragraph.** More than one idea in a sentence? Split it.
 - **Be specific.** Give the number, the name, the date, the path. Cut vague abstractions ("a range of", "going forward", "in terms of").
+- **Name the subject.** A claim opening on "It", "This" or "That" makes the reader hunt backwards for the referent, and they will guess wrong. Repeat the noun.
 - **Prefer the short word.** Use over utilize, use over leverage, full over comprehensive, help over facilitate, method over methodology. Same for jargon and foreign phrases when an everyday word carries the meaning.
 - **Use the active voice.** "We added error handling to every endpoint", never "error handling has been implemented across all endpoints". Passive only when the actor is genuinely unknown.
 - **Say it once.** Make the point, then move on. Restating it a second way is padding, however good the second way sounds.
@@ -59,14 +60,42 @@ The structure is fine in speech and fine once in a piece of writing. Budget one,
 and spend it only where the reader actually holds the belief you are correcting.
 Everywhere else: cut X, state Y.
 
+## Aphoristic register
+
+The second tic to kill, and the one that hides behind good writing.
+
+```text
+Vim was never inadequate, it was never wired.
+Plugins move on :Lazy update + commit, never behind your back.
+It means the pool is won by avoiding bad picks.
+```
+
+Each reaches for the shape of a maxim: balanced clause, a closing beat, a
+flourish where a fact belongs. The register promises the sentence is wise, then
+the sentence has to be. It rarely is.
+
+Test: if the line would work as a standalone tweet, it is decoration. Paragraphs
+do not need punchlines. A section that ends on a plain fact has ended.
+
+Rewriting is mostly deletion. `Vim was never inadequate, it was never wired.`
+becomes `Vim was never wired, so edits fell back to a GUI.` The flourish went and
+the causal fact arrived.
+
+The urge behind it drives half the patterns in this skill: corrective
+juxtaposition, the em-dash pivot, "genuinely", the punchline closer. All are one
+impulse, to make a sentence *sound* like insight. Insight is a property of the
+content. You cannot add it at the sentence level.
+
 ## AI slop to strip
 
+- **Answer labels.** "Short answer:", "TL;DR", "Bottom line", "In short". They announce the answer instead of giving it. Delete the label and keep the answer.
 - **Em-dashes.** Obvious AI tell. Delete or replace with a period.
 - **Needless punctuation.** Avoid reaching for a hyphen or semicolon when regular commas would suffice. If a comma won't do, the sentence should be two.
 - **Restating after punctuation.** Assert, dash, assert the same thing again in different words. The cadence is the tell. Keep the first half.
 - **Puffery adjectives.** Comprehensive, robust, seamless, powerful, rich. They assert quality without earning it. Cut the word or give the number.
-- **"This is genuinely / truly / really."** Show it, don't assert it.
+- **"This is genuinely / truly / really / actually."** Show it, don't assert it. "Actually" is the worst of the four: it implies the reader believed otherwise.
 - **Announcing before saying.** "Let's look at", "In this section we'll cover", "It's worth noting". Say the thing.
+- **Grading your own output.** "That's the whole finding in one sentence." "Put simply." Brevity that needs pointing out was not brevity. Delete the commentary and leave the sentence.
 - **The third example.** Two examples make the point. A third is padding wearing the costume of thoroughness.
 - **Machine cadence.** Punchlines two paragraphs running, or six sentences of the same length and shape. Vary the rhythm or cut one.
 - **Achievement language in reports.** No ✅, no "Successfully", no "Perfect". Say what changed, what failed, what comes next, in plain sentences.
