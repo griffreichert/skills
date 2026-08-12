@@ -6,6 +6,7 @@
     "./skills/purge-slop",
     "./skills/pydantic-principles",
     "./skills/review-slop",
+    "./skills/review-comments",
     "./skills/test-stickler",
     "./skills/daily-capture",
     "./skills/log-decisions",
