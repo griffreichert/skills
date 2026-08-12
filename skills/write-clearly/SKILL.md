@@ -120,6 +120,10 @@ content. You cannot add it at the sentence level.
   assert quality without earning it. Cut the word or give the number.
 - **"This is genuinely / truly / really / actually."** Show it, don't assert it.
   "Actually" is the worst of the four: it implies the reader believed otherwise.
+- **Condescension words.** "Simply", "just", "easy", "obviously", "of course".
+  They rate the difficulty of the step for the reader, and when the step fails
+  the reader concludes the fault is theirs. Delete the word and the instruction
+  is unchanged.
 - **Announcing before saying.** "Let's look at", "In this section we'll cover",
   "It's worth noting". Say the thing.
 - **Grading your own output.** "That's the whole finding in one sentence." "Put
