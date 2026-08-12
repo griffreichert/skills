@@ -12,6 +12,6 @@
     "./skills/log-decisions",
     "./skills/orient",
     "./skills/draft-mr-description",
-    "./skills/draft-git-commit"
+    "./skills/commit-changes"
   ]
 }
