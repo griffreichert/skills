@@ -36,8 +36,8 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
   phrasal verbs. The useful subset of ASD-STE100.
 - [`draft-mr-description`](skills/draft-mr-description/SKILL.md) — turn a finished
   branch into a reviewer-ready MR description: old shape, new shape, why.
-- [`commit-changes`](skills/commit-changes/SKILL.md) — draft a commit title
-  and body matching the repo's convention. Drafts only, does not commit.
+- [`commit-changes`](skills/commit-changes/SKILL.md) — write a commit matching
+  the repo's convention, split moves from edits, then commit it.
 
 **Python hygiene**
 
