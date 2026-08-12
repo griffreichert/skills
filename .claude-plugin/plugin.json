@@ -12,6 +12,7 @@
     "./skills/log-decisions",
     "./skills/orient",
     "./skills/draft-mr-description",
-    "./skills/commit-changes"
+    "./skills/commit-changes",
+    "./skills/explain-visually"
   ]
 }

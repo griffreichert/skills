@@ -39,6 +39,12 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
 - [`commit-changes`](skills/commit-changes/SKILL.md) — write a commit matching
   the repo's convention, split moves from edits, then commit it.
 
+**Explaining**
+
+- [`explain-visually`](skills/explain-visually/SKILL.md) — one worked example,
+  the data shapes, an ASCII lifecycle diagram, and a table of what is stored
+  versus what is temporary. For when the parts are clear and the wiring is not.
+
 **Python hygiene**
 
 - [`purge-slop`](skills/purge-slop/SKILL.md) — write Python without slop: no
