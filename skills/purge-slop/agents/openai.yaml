@@ -1,0 +1,3 @@
+interface:
+  display_name: "Purge Slop"
+  short_description: "Write Python without the slop"

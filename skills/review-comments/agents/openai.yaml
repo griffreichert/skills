@@ -1,0 +1,3 @@
+interface:
+  display_name: "Review Comments"
+  short_description: "Label findings as conventional comments"

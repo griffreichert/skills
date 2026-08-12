@@ -1,0 +1,3 @@
+interface:
+  display_name: "Review Slop"
+  short_description: "Flag Python slop in a diff"

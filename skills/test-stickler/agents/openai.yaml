@@ -1,0 +1,3 @@
+interface:
+  display_name: "Test Stickler"
+  short_description: "Audit tests that cannot go red"

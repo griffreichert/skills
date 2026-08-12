@@ -1,0 +1,3 @@
+interface:
+  display_name: "Log Decisions"
+  short_description: "Capture a decision as it lands"

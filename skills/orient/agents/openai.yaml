@@ -1,0 +1,5 @@
+interface:
+  display_name: "Orient"
+  short_description: "Pick up where the last session ended"
+policy:
+  allow_implicit_invocation: false

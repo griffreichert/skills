@@ -1,0 +1,5 @@
+interface:
+  display_name: "Draft MR Description"
+  short_description: "Turn a branch into an MR description"
+policy:
+  allow_implicit_invocation: false

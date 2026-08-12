@@ -1,0 +1,5 @@
+interface:
+  display_name: "Daily Capture"
+  short_description: "Snapshot the session into a note"
+policy:
+  allow_implicit_invocation: false
