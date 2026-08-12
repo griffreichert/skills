@@ -90,3 +90,20 @@ subset of **ASD-STE100 Simplified Technical English** that applies to software d
 The specification is copyright ASD and is not reproduced in this repo. Rules are
 paraphrased with their rule numbers cited. Part 2, the approved-word dictionary, is out
 of scope. Download the spec when you need a rule's exact wording.
+
+[`write-technical-english`](skills/write-technical-english/SKILL.md) also takes its
+document-furniture rules from the **Google developer documentation style guide**.
+
+- [Style guide highlights](https://developers.google.com/style/highlights)
+- [Writing for a global audience](https://developers.google.com/style/translation)
+- [Timeless documentation](https://developers.google.com/style/timeless-documentation)
+
+Google's American-spelling rule is dropped. This corpus writes British English.
+
+[`commit-changes`](skills/commit-changes/SKILL.md) takes its formatting numbers,
+and the reasons behind them, from the two canonical posts on the subject.
+
+- [A Note About Git Commit Messages](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html) -
+  Tim Pope, 2008. Where 50/72 comes from.
+- [How to Write a Git Commit Message](https://cbea.ms/git-commit/) - Chris Beams,
+  2014. The seven rules, and the "If applied, this commit will" test.
