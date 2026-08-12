@@ -50,6 +50,15 @@ one decides how you shape it. Run both.
   error handler" is a sentence pretending to be a noun. Unpack it.
 - **Keep the articles** (4.2, 4.5). "Check that the config file exists", never
   "Check config file exists". Dropped articles read as a different grammar.
+- **Keep the helper words.** `that`, `then` and `of` cost four characters and
+  remove a second reading. "If the row is found, then the loader returns it",
+  never "If found, the loader returns it".
+- **Put `only` next to what it limits.** "Request only one token" and "Only
+  request one token" are different instructions.
+- **Spell out an abbreviation on first use**, then use it consistently. One
+  term per thing applies to the short form too.
+- **No idiom, slang, or humour.** "Under the hood", "out of the box" and "a
+  breeze" do not survive a non-native reader or a translator. Say the mechanism.
 - **No semicolons** (8.1). Two sentences.
 - **Inclusive language** (GR-7).
 
@@ -69,9 +78,31 @@ one decides how you shape it. Run both.
 - **Notes inform, they never instruct** (5.5). Anything the reader must do
   belongs in a numbered step, not in a note they may skip.
 
+## Fit out the document
+
+Sentence rules above. Document furniture here.
+
+- **Write timelessly.** Cut `currently`, `now`, `new`, `newer`, `latest`, `old`,
+  `older`, `existing`, `soon`, `eventually`, `at present` and `as of this
+  writing`. They date the document the week it ships and they carry no fact:
+  "The emulator now supports gzip" says what "The emulator supports gzip" says.
+  When a fact belongs to one release, give the version number.
+- **Address the reader as `you`.** "You must drain the queue first", never "we
+  must" or "the user must". `you` names who acts. `we` hides the actor and
+  leaves the reader guessing whether the step is theirs.
+- **Link text names the target.** `See the [retry policy](…)`, never `click
+  here`, `read more`, or a bare URL. The reader scanning only the links must
+  still know where each one goes.
+- **Code font for anything typed or read literally**: commands, flags, paths,
+  filenames, identifiers, and literal values. Prose font for the concept.
+- **Placeholders in capitals, with the substitution stated.** `gcloud config
+  set project PROJECT_ID`, then one line saying what `PROJECT_ID` is.
+- **Sentence case headings.** `Configure the worker`, not `Configure The
+  Worker`.
+
 ## Where it bends
 
-Three deliberate exceptions. Everything else holds.
+Deliberate exceptions. Everything else holds.
 
 - **Commit subjects drop articles.** `fix auth token expiry check` is the git
   convention and it beats rule 4.5. The commit body keeps its articles.
@@ -80,6 +111,12 @@ Three deliberate exceptions. Everything else holds.
   Do not turn a paragraph of reasoning into a list of commands.
 - **Code, identifiers, error strings and log lines are quoted, never edited.**
   Reproduce them exactly. The rules govern the prose around them.
+- **`we` survives where the writer owns the change.** Commit bodies, MR
+  descriptions and session notes state who did the work and who maintains it.
+  Reader-facing documentation still uses `you`.
+- **Dated records keep their time words.** A release note, a changelog and a
+  daily note exist to say what changed and when. Timeless writing governs
+  documentation of how the thing works.
 
 ## Done when
 
@@ -99,3 +136,10 @@ documentation. The specification is copyright ASD and is not reproduced here.
 Part 2 of the standard, a dictionary of roughly 900 approved words each locked
 to one meaning and one part of speech, is deliberately out of scope. Read the
 specification itself when you need the exact wording of a rule.
+
+`Fit out the document`, and the four ambiguity rules that carry no STE number,
+come from the [Google developer documentation style
+guide](https://developers.google.com/style), mainly its pages on [writing for a
+global audience](https://developers.google.com/style/translation) and [timeless
+documentation](https://developers.google.com/style/timeless-documentation).
+Google's American-spelling rule is dropped; this corpus writes British English.
