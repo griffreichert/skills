@@ -11,23 +11,22 @@ description:
 # Commit changes
 
 Write the commit title and body for staged or described changes, then commit.
-Match the repo's existing style and voice. Explain why the change exists, not
-just what moved, in words the author would actually use.
+Match the repo's existing style and voice, and explain why the change exists in
+words the author would use.
 
 This skill outranks any other commit-message skill loaded in the session. Where
 they disagree, follow this one.
 
 Use `write-clearly` on every message when available. Use
 `write-technical-english` only when the message carries commands, migration
-steps, a breaking contract, or wording with real ambiguity risk. Do not apply
-controlled-language rules to an ordinary descriptive body; they make it sound
-formal and distant.
+steps, a breaking contract, or wording with real ambiguity risk. Applied to an
+ordinary descriptive body, controlled-language rules make it formal and distant.
 
 ## Steps
 
 ### 1. Detect the repo convention
 
-Never assume a style. Read what the repo already does and match it.
+Read what the repo already does and match it.
 
 - Check for commitizen or a commit-lint tool: look in `pyproject.toml`
   (`[tool.commitizen]`), `package.json` (`commitlint`, `commitizen`),
@@ -48,14 +47,21 @@ Read the staged diff, the other commits on the branch, their messages, and any
 session or daily notes the agent can find locally for this issue (for example a
 `notes/daily/` folder). Prefer the diff and git history over memory.
 
+Read each commit twice: against its parent (`git diff <commit>^ <commit>`) for
+what it introduces, and against the branch tip (`git diff <commit> <tip>`) for
+what later work undoes. The second comparison is where temporary code surfaces.
+
+On an unmerged branch, that undone work is a dead end, and it is cleaned before
+any message is written.
+[references/rewriting-history.md](references/rewriting-history.md) lists what
+counts as one and what to do about it.
+
 Done when you can answer:
 
 - What problem did this change solve?
 - What did it change?
 - Why this approach over the obvious alternative?
 - Does it break anything a caller relied on?
-
-This checklist is for investigation, not for output. See step 5 for the filter.
 
 If the user names reference authors, read several of their substantive commits
 (`git log --author=<name>`), preferring ones with real bodies over version bumps
@@ -68,7 +74,12 @@ the recent history you already read carries the voice.
 One commit carries one kind of change. A mechanical change and a behavioural
 change never share a commit.
 
-The canonical case is a moved file. Move it in one commit, edit it in the next.
+Writing the message reviews the commit. When one body has to explain unrelated
+behaviour, compatibility code, an alias, and a package export in the same
+breath, the commit is wrong and the prose cannot fix it. Reshape the commit,
+then write the message.
+
+The clearest case is a moved file. Move it in one commit, edit it in the next.
 
 Git infers a rename by comparing content. Edit the file in the same commit that
 moves it and the similarity drops below the detection threshold, so the diff
@@ -87,18 +98,12 @@ git diff --cached -M --stat
 ```
 
 The move commit shows `rename` with `similarity index 100%`. If it shows a
-delete and an add, the split failed.
+delete and an add, the split failed. Separate a move already tangled with its
+edits using the recovery steps in
+[references/rewriting-history.md](references/rewriting-history.md).
 
-Recover when the move and the edits are already tangled in the working tree:
-
-1. Copy the edited file somewhere outside the repo.
-2. Run `git mv <old> <new>`.
-3. Restore the original content at the new path: `git show HEAD:<old> > <new>`.
-4. Stage and commit the move.
-5. Copy the edited content back over `<new>`, then stage and commit the edits.
-
-Done when each commit holds one kind of change and every move commit shows a
-detected rename.
+Done when each commit holds one kind of change, every changed file supports the
+subject, and every move commit shows a detected rename.
 
 ### 4. Write the subject
 
@@ -110,7 +115,7 @@ One line, in the repo's detected template.
   that mixes both.
 - Test it: "If applied, this commit will _____". If the subject does not
   complete that sentence, it is not imperative yet.
-- Summarise the change, not the file list.
+- Summarise what the change does; the diff already lists the files.
 - Keep it short. Aim for 50 characters after any prefix; hard limit near 72.
 - No trailing period.
 
@@ -141,21 +146,56 @@ Tense follows the timeline:
 - Past tense only for historical facts or measured tests: `In a load test, peak
   memory dropped from 2 GB to under 200 MB.`
 
-Research is not output. A fact you found is not automatically a fact you print.
+A fact earns its place in the message on these terms:
 
-- Include a fact only if it explains the decision or changes how a reviewer
-  judges the commit.
-- Mention a risk only if it affects correctness, rollout, maintenance, cost, or
-  a caller's contract.
-- Do not add generic safety paragraphs. Do not restate that normal validation
-  still runs unless a reviewer could reasonably think the change bypasses it.
-- Prefer an observed result or a real source over "this is safe" or "this
-  improves performance." Do not invent numbers or add a link that does not help.
+- Include a fact when it explains the decision or changes how a reviewer judges
+  the commit.
+- Mention a risk when it affects correctness, rollout, maintenance, cost, or a
+  caller's contract.
+- Say that normal validation still runs when a reviewer could reasonably think
+  the change bypasses it.
+- Back a safety or performance claim with an observed result or a real source:
+  a number you measured, a link the reviewer will open.
+
+Remove unexplained machinery instead of writing the paragraph that justifies
+it. A body arguing for code the commit did not need is the commit asking to be
+reshaped; go back to step 3.
 
 Use prose for cause and effect. Use bullets only for parallel facts.
 
+Write for the cold reviewer: someone who reads the diff without having read the
+implementation. A large change earns a body that matches it. A reviewer left to
+reconstruct the design from the diff was handed too little.
+
+The cold reviewer needs:
+
+- The opening sentence in plain terms: what this commit adds or changes.
+- A definition for every new domain term and document type, the first time the
+  words appear.
+- A short list for categories, file types, precedence rules, or stages, so the
+  count is visible.
+- The implementation at a high level with one concrete example: a real input
+  and what comes out of it.
+- The field or object the data lands in after the change: `Document.text`,
+  `Document.metadata`.
+- The adjacent behaviour they would ask about. PDFs, tables, legacy documents,
+  downstream callers, and existing import paths are the usual questions.
+- The scope boundary, with deferred work named and the reason it sits outside
+  the current issue.
+- The limit of a heuristic, in plain language, when the behaviour cannot be
+  exact: `Header detection reads font size, so a document that marks headers by
+  weight alone is missed.`
+
+Name what the code does, in the words the author used in their recent commits.
+Where a phrase describes the architecture instead of the change, the read-aloud
+test in the quality bar settles it.
+
+Read [references/examples.md](references/examples.md) before writing a body. It
+carries the contrast pairs for voice, splitting, and detail.
+
 Done when every remaining sentence would cost the reviewer information if
-deleted.
+deleted, and the body answers what changes, why it is needed, where the output
+goes, what existing behaviour stays the same, and what is outside scope.
 
 ### 6. Call out breaking changes
 
@@ -201,31 +241,10 @@ The split sometimes has to happen after the fact: a move and an edit already
 share a commit, the branch carries fixups, or a commit adds a file that a later
 commit deletes, so a squash would drag the dead file through the history.
 
-Propose the rewrite. The user decides whether it runs.
-
-The proposal states:
-
-- the current log, from `git log --oneline <base>..HEAD`
-- the target log, subject by subject
-- the operation that gets there for each commit: reorder, squash, split, drop
-- what disappears, naming any file that exists only between two commits
-- whether any of these commits is already pushed
-
-Until the user confirms, run read-only commands only: `git log`, `git show`,
-`git diff`, `git status`. Confirmation for one rewrite does not carry to the
-next.
-
-After confirmation:
-
-1. Take a backup ref: `git branch backup/<name>`.
-2. Run the rewrite. In a non-interactive session, drive `git rebase -i` through
-   `GIT_SEQUENCE_EDITOR`, or rebuild the branch with `git reset --soft <base>`
-   and fresh commits.
-3. Verify: `git diff backup/<name>..HEAD` is empty when the rewrite only
-   reorganised commits. Any output means content moved that should not have.
-
-Force-pushing is a second decision. Ask for it on its own, and say who else
-holds the old commits when the branch is shared.
+[references/rewriting-history.md](references/rewriting-history.md) holds the
+rules for all of it. Read it before proposing a rewrite. Until the user approves
+a stated target history, run read-only commands only: `git log`, `git show`,
+`git diff`, `git status`.
 
 ## Formatting
 
@@ -258,63 +277,11 @@ Every number below exists for a reason. Keep them.
 <trailers, if the repo or harness uses them>
 ```
 
-## Examples
-
-### Detached and formal — avoid
-
-```text
-Synchronous invocation blocks the request thread pending completion of
-downstream operations. Introduce asynchronous dispatch to decouple the
-caller from long-running work.
-
-Queue unavailability affects latency only and does not compromise
-delivery guarantees.
-```
-
-The facts may be right, but the words are not the repo's, and state, change,
-and safety argument are tangled together.
-
-### Current state, change, result — prefer
-
-```text
-The checkout handler calls the email service inline, so a slow provider
-holds the request open and users see timeouts.
-
-Send the confirmation email from a background worker. Checkout returns
-as soon as the order is saved.
-
-If the queue is down, orders still save and emails send late. The worker
-needs a retry limit.
-```
-
-### Move and edit in one commit — avoid
-
-```text
-move validators to core and add the empty-row check
-```
-
-The diff shows `validators.py` deleted and `core/validators.py` added. The
-reviewer cannot see which three lines are the new check.
-
-### Same work, split — prefer
-
-```text
-move validators to core
-
-(no body; the subject says it, and the diff is a pure rename)
-```
-
-```text
-reject empty rows in the CSV validator
-
-Rows with no cells reached the loader and raised an IndexError deep in
-the parser. Fail them at validation with the row number instead.
-```
-
 ## Quality bar
 
-Longer is not better. The best commit messages are short, clear, and to the
-point while keeping the relevant detail.
+Length follows the change. A one-line fix needs no body; a change that adds
+types, moves data, or shifts a contract earns every sentence the cold reviewer
+needs. The fault to avoid is padding, not length.
 
 - Match the repo's detected convention exactly. Consistency beats preference.
 - Descriptive sentences use active voice with a clear actor and verb, unless the
@@ -323,13 +290,11 @@ point while keeping the relevant detail.
   maintenance, but do not force it into every body. A commit body is not
   reader-facing documentation; the second-person rule in
   `write-technical-english` does not apply here.
-- Say why, not just what.
 - Cut any sentence that only restates the subject.
-- Wrap lines; no single long line.
 - Read-aloud test: would the author say this sentence to a coworker while
   explaining the change? If not, swap the formal word for the repo's word —
-  `runs in the background` not `asynchronous dispatch mechanism`, `the queue is
-  down` not `queue unavailability`. There is no global banned-word list; a
+  `runs in the background` for `asynchronous dispatch mechanism`, `the queue is
+  down` for `queue unavailability`. There is no global banned-word list; a
   formal term can be the clearest word in another repo.
 
 ## Done when
@@ -338,6 +303,8 @@ Each commit holds one kind of change, and any move is its own commit with a
 detected rename. The subject matches the repo's format, states the change in one
 clear line, and passes the "If applied" test. The body, if present, moves from
 current state to change to result in the author's voice, flags any breaking
-change, and survives the read-aloud test. The message reached git through `-F`
-with its wrapping intact, or went to another agent to commit. No existing commit
-was rewritten without the user confirming a stated plan first.
+change, survives the read-aloud test, and leaves the cold reviewer nothing to
+reconstruct. On an unmerged branch, no dead end reaches the final history. The
+message reached git through `-F` with its wrapping intact, or went to another
+agent to commit. No existing commit was rewritten without the user confirming a
+stated plan first.
