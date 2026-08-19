@@ -38,11 +38,18 @@ how much you say.
 - **Prefer the short word.** Use over utilize, use over leverage, full over
   comprehensive, help over facilitate, method over methodology. Same for jargon
   and foreign phrases when an everyday word carries the meaning.
+- **Assume no prior context in an explanation.** Plain words over jargon, but
+  keep every technical fact. Simplifying the language is not the same as
+  cutting the substance.
 - **Use the active voice.** "We added error handling to every endpoint", never
   "error handling has been implemented across all endpoints". Passive only when
   the actor is genuinely unknown.
 - **Say it once.** Make the point, then move on. Restating it a second way is
   padding, however good the second way sounds.
+- **Abstract glue is a symptom.** When a paragraph needs abstract terms to
+  connect several changes, the changes are unrelated and the writing is
+  covering for them. Inspect the work being described, then remove or split it
+  before rewriting the paragraph.
 - **Write examples that travel.** An example only works if the reader already
   has the context it assumes. Internal names, private repos and in-house jargon
   do not survive the trip.
@@ -118,6 +125,13 @@ content. You cannot add it at the sentence level.
   different words. The cadence is the tell. Keep the first half.
 - **Puffery adjectives.** Comprehensive, robust, seamless, powerful, rich. They
   assert quality without earning it. Cut the word or give the number.
+- **Grand register words.** "Canonical", "ephemeral". Where the domain uses the
+  term exactly, a canonical URL or an ephemeral container, keep it. Everywhere
+  else the plain word carries the meaning: the usual one, short-lived.
+- **Naming a thing one level above what it is.** "Pipeline seam" for the point
+  where the parser hands off, "physical unit" for a page, "persisted sidecar"
+  for a file next to the original. The reader cannot picture any of them. Name
+  the thing, then say what it does.
 - **"This is genuinely / truly / really / actually."** Show it, don't assert it.
   "Actually" is the worst of the four: it implies the reader believed otherwise.
 - **Condescension words.** "Simply", "just", "easy", "obviously", "of course".
