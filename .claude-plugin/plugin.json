@@ -7,6 +7,7 @@
     "./skills/pydantic-principles",
     "./skills/review-slop",
     "./skills/review-comments",
+    "./skills/decision-brief",
     "./skills/test-stickler",
     "./skills/daily-capture",
     "./skills/log-decisions",
