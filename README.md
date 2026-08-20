@@ -45,15 +45,26 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
   the data shapes, an ASCII lifecycle diagram, and a table of what is stored
   versus what is temporary. For when the parts are clear and the wiring is not.
 
+**Reporting** — *two shapes for the same findings.*
+
+- [`review-comments`](skills/review-comments/SKILL.md) — label and group findings
+  as conventional comments: issue, todo, suggestion, quibble, praise. For a
+  reader who must verify.
+- [`decision-brief`](skills/decision-brief/SKILL.md) — a prioritised list of
+  decisions: the problem in plain language, the action you recommend, the exact
+  approval needed. Evidence held back until asked. For a reader who must choose.
+
 **Python hygiene**
 
 - [`purge-slop`](skills/purge-slop/SKILL.md) — write Python without slop: no
   defensive checks, no fake tests, no needless private helpers.
 - [`review-slop`](skills/review-slop/SKILL.md) — flag that same slop in a diff
-  or PR as review comments, no edits.
+  or PR as review comments, no edits. Switches to a decision brief when the
+  question is what to fix.
 - [`test-stickler`](skills/test-stickler/SKILL.md) — audit pytest tests for the
   ones that cannot go red. Flags the smell by name, suggests the fix, names the
-  missing edge cases.
+  missing edge cases. Reports as a decision brief by default, or as a full
+  evidence-backed audit on request.
 - [`pydantic-principles`](skills/pydantic-principles/SKILL.md) — structure
   pydantic code so the library does the work: construction validates, settings
   own the knobs, contracts live at boundaries.
@@ -66,6 +77,12 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
   decisions, open questions, working tree) into the day's note.
 - [`orient`](skills/orient/SKILL.md) — start cold? Read the notes, open issues,
   and working tree, then propose where to begin.
+
+**Skill upkeep**
+
+- [`skill-ci`](skills/skill-ci/SKILL.md) — end of session, turn the friction you
+  hit into a copyable blurb the skills-repo agent can implement. Evidence
+  required, three proposals maximum, "nothing this session" allowed.
 
 
 ## Inspiration

@@ -7,6 +7,8 @@ description: Label and group review findings as conventional comments — issue,
 
 Findings land as **conventional comments**: each carries a label saying what it demands of the author, and the report groups by label so the **binding** ones read first.
 
+This is the shape for a reader who must **verify**. When the reader has to choose what happens next, use the **decision-brief** skill instead: a prioritised list of decisions, evidence held back until asked.
+
 ## The labels
 
 Five **primary** labels carry the review; four **secondaries** exist for what the five can't say. Ranked by how binding each is — this is also the report order:

@@ -1,0 +1,3 @@
+interface:
+  display_name: "Decision Brief"
+  short_description: "Report findings as decisions the user must make"
