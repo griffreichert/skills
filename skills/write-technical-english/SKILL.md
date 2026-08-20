@@ -18,6 +18,10 @@ countable, so you can check your own output.
 Use `write-clearly` when available. That skill decides how much you say. This
 one decides how you shape it. Run both.
 
+For an MR, a PR, an RFC summary or an architecture note, run
+`draft-mr-description` for the document-level story. This skill governs the
+sentences inside it.
+
 ## Size the sentence
 
 - **Instructions: 20 words maximum** (5.1). Count them. Over the line, split.
@@ -46,6 +50,12 @@ one decides how you shape it. Run both.
 - **One term per thing, forever** (1.11). Job, task and run are one concept with
   three names, or they are three concepts. Pick one word and never vary it,
   however repetitive it reads.
+- **Name the logical thing and the physical thing separately** (1.11 again).
+  When one domain object produces several stored objects, fix both names before
+  the first paragraph: the logical table a person sees, the physical chunk that
+  stores part of it. Use those exact words for identity, ordering, ownership,
+  and transformation. A reader working out which "table" a sentence means has
+  stopped reading the argument.
 - **Noun clusters: three words maximum** (2.1). "Pipeline config validation
   error handler" is a sentence pretending to be a noun. Unpack it.
 - **Keep the articles** (4.2, 4.5). "Check that the config file exists", never
@@ -100,6 +110,23 @@ Sentence rules above. Document furniture here.
 - **Sentence case headings.** `Configure the worker`, not `Configure The
   Worker`.
 
+## Match the author's voice
+
+You are usually not the author. Their commit messages, their previous
+descriptions, and the notes beside the file are a voice corpus. Read it before
+you draft.
+
+- Take vocabulary from the corpus. Where the author writes `worksheet text`, do
+  not write `non-tabular content`.
+- Keep their spelling and their register. British spelling stays British. A
+  writer who says `we kept the old path` does not want `it was determined that`.
+- Keep their sentence rhythm. Short declaratives stay short declaratives.
+- Fix the errors and keep the voice. Correcting a run-on is editing. Rewriting
+  the paragraph into corporate prose is a substitution the author did not ask
+  for.
+- When the author supplies a skeleton, draft inside it: their headings, their
+  order, their emphasis. Propose a structural change, never perform one.
+
 ## Where it bends
 
 Deliberate exceptions. Everything else holds.
@@ -107,8 +134,17 @@ Deliberate exceptions. Everything else holds.
 - **Commit subjects drop articles.** `fix auth token expiry check` is the git
   convention and it beats rule 4.5. The commit body keeps its articles.
 - **Narrative sections are descriptive writing.** An MR Overview or a README
-  intro tells a change story. Give it the 25-word cap, not the imperative form.
+  intro tells a change story. Give it the 25-word cap and the descriptive form.
   Do not turn a paragraph of reasoning into a list of commands.
+- **In narrative, the word count is a diagnostic.** The caps hold absolutely for
+  instructions and safety-critical steps. In an Overview, a long sentence is a
+  prompt to look. Split it when it carries two decisions or two consequences.
+  Leave it when identifiers and one causal clause carry it over, because
+  splitting a single causal claim into fragments drops the link that was the
+  point of the sentence.
+- **Uncertainty that belongs to the design stays in.** "Layout detection is
+  heuristic, so content outside a detected table stays worksheet text" is a fact
+  the reader needs. Jokes, slogans and punchlines still go.
 - **Code, identifiers, error strings and log lines are quoted, never edited.**
   Reproduce them exactly. The rules govern the prose around them.
 - **`we` survives where the writer owns the change.** Commit bodies, MR
