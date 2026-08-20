@@ -1,0 +1,3 @@
+interface:
+  display_name: "Skill CI"
+  short_description: "Turn session friction into a skill-repo blurb"
