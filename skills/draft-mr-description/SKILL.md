@@ -112,7 +112,22 @@ complete logical table before chunking. Every physical chunk therefore repeats
 the header and shares one logical table ID.
 ```
 
-Two rules keep those paragraphs honest.
+**Name the code that implements it.** State the domain behaviour, name the
+symbol that carries it, then state the consequence for the reviewer.
+
+```text
+Tabular documents bypass page reconstruction. `DocumentStager.__call__()`
+checks `document_type` and adds worksheet-text and table-chunk documents to
+`transformation_pass_through_documents`. Their reader-owned IDs and boundaries
+therefore reach metadata extraction unchanged.
+```
+
+Ground the claim wherever data changes shape, ownership moves, an ID is
+created, a fallback picks a path, or one object fans out into several. Leave
+the symbol out when it would only pad the sentence. The full rule, including
+the abstract verbs worth auditing, lives in `write-technical-english`.
+
+Two more rules keep those paragraphs honest.
 
 **Name the logical thing and the physical thing separately.** When one domain
 object produces several stored objects, fix both names in the Overview and never
@@ -249,6 +264,7 @@ it would not, the sentence is already gone.
 - The opening states the problem and the outcome.
 - Every domain concept has exactly one name.
 - Each major design choice is followed by its consequence.
+- Every major claim names code a reviewer can open.
 - Durable data and temporary data are distinguished.
 - Compatibility behaviour is explicit.
 - Scope exclusions are one line each.

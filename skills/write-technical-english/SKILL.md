@@ -72,6 +72,52 @@ sentences inside it.
 - **No semicolons** (8.1). Two sentences.
 - **Inclusive language** (GR-7).
 
+## Ground the claim in code
+
+Applies to any sentence claiming what code does: commit bodies, MR
+descriptions, design notes, code comments. Reader-facing instructions are
+exempt, because the operator does not care which class runs.
+
+A sentence can pass every rule above and still hide the mechanism.
+
+```text
+The application reads the file during diagnostics and ingestion.
+```
+
+Grammatical, inside the cap, one reading, and useless to a reviewer. It does
+not say what runs, or that the workbook gets parsed twice.
+
+Name four things: the **actor** that performs the behaviour, the **action** it
+takes, the **data** in and out, and the **consequence** for the reader.
+
+```text
+`XlsxFileDiagnosticGenerator.generate_diagnostic()` calls
+`CustomExcelReader.load_data()` and receives `Document` objects. Ingestion
+calls the same reader again through `SimpleDirectoryReader.load_data()`, so
+the workbook is parsed twice.
+```
+
+The shape is `SYMBOL` performs ACTION on DATA. CONSEQUENCE.
+
+**Audit the abstract verbs after the first draft.** Search for `handles`,
+`uses`, `processes`, `supports`, `routes`, `preserves`, `manages`,
+`evaluates`, `transforms`, `integrates`, and `remains separate`. Each one is a
+placeholder where a mechanism should be. Where the mechanism matters, swap the
+abstract subject for the symbol responsible and name what it does. Where it
+does not, leave the verb alone.
+
+**Ground every claim at a seam.** Name the symbol when data changes shape,
+when ownership changes, when an ID is created or replaced, when a
+compatibility fallback picks a path, when a branch bypasses normal processing,
+when an expensive operation happens, when temporary data becomes stored data,
+when one object fans out into several, and when several objects combine into
+one operation.
+
+**Stay selective.** Naming every private helper is a code tour, and a reviewer
+skims a code tour. A symbol earns its place when it lets the reader verify a
+contract, understand a cost, trace ownership, or find the code that enforces
+the claim. Leave the rest out.
+
 ## Order the step
 
 - **Condition first** (5.4). "Before you restart the service, drain the queue."
@@ -159,6 +205,12 @@ Deliberate exceptions. Everything else holds.
 - **Writing:** every instruction is imperative and under 20 words, every concept
   has exactly one name throughout, and no sentence has a second possible
   reading.
+- **Claiming what code does:** a reviewer can find the enforcing code from
+  every major claim. Each cost claim names the repeated call or allocation,
+  each compatibility claim names the branch and the fallback field, each
+  identity claim names the function and its inputs, and each data-flow claim
+  names the input and output types. Abstract verbs are gone where the mechanism
+  mattered, and low-value symbols never went in.
 - **Reviewing:** name the rule each violation breaks, then give the rewrite.
 
 ## Source

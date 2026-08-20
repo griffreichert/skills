@@ -21,6 +21,8 @@ Use `write-clearly` on every message when available. Use
 `write-technical-english` only when the message carries commands, migration
 steps, a breaking contract, or wording with real ambiguity risk. Applied to an
 ordinary descriptive body, controlled-language rules make it formal and distant.
+Its **Ground the claim in code** rule is the exception: apply that to any body
+claiming what the code now does, whatever else the message carries.
 
 ## Steps
 
@@ -160,6 +162,18 @@ A fact earns its place in the message on these terms:
 Remove unexplained machinery instead of writing the paragraph that justifies
 it. A body arguing for code the commit did not need is the commit asking to be
 reshaped; go back to step 3.
+
+Name the symbol when the subject alone leaves the mechanism unclear. The rule
+and its limits live in `write-technical-english`; the short version is that a
+symbol earns its place when it lets the reviewer verify a contract, understand
+a cost, or find the code that enforces the claim.
+
+```text
+Route XLSX diagnostics through `CustomExcelReader.load_data()`.
+
+`get_table_tokens()` and `get_text_from_documents()` now inspect the same
+`Document` contract used by ingestion.
+```
 
 Use prose for cause and effect. Use bullets only for parallel facts.
 
