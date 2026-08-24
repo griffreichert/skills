@@ -57,7 +57,9 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
 **Python hygiene**
 
 - [`purge-slop`](skills/purge-slop/SKILL.md) — write Python without slop: no
-  defensive checks, no fake tests, no needless private helpers.
+  defensive checks, no re-validating what the owner already proved, no fake
+  tests, no needless private helpers. Escalates a helper chain to the flow it
+  hides.
 - [`review-slop`](skills/review-slop/SKILL.md) — flag that same slop in a diff
   or PR as review comments, no edits. Switches to a decision brief when the
   question is what to fix.
