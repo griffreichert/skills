@@ -1,0 +1,3 @@
+interface:
+  display_name: "Timesheet"
+  short_description: "Reconstruct the week from notes and commits"

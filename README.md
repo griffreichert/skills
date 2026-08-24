@@ -79,6 +79,9 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
   decisions, open questions, working tree) into the day's note.
 - [`orient`](skills/orient/SKILL.md) — start cold? Read the notes, open issues,
   and working tree, then propose where to begin.
+- [`timesheet`](skills/timesheet/SKILL.md) — what did I do last week? Rebuild
+  the days from the daily notes and your commits, every claim carrying its
+  evidence and every blank day named as a gap.
 
 **Skill upkeep**
 

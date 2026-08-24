@@ -12,6 +12,7 @@
     "./skills/daily-capture",
     "./skills/log-decisions",
     "./skills/orient",
+    "./skills/timesheet",
     "./skills/draft-mr-description",
     "./skills/commit-changes",
     "./skills/explain-visually",
