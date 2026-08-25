@@ -25,6 +25,16 @@ Slop is code that adds no value: it survives deletion with nothing lost. Optimiz
 - **A test must be able to fail.** A test that passes no matter what the code does is slop. Defer to the **test-stickler** skill for anything test-shaped — mutation, mocks, missing edge cases, fixtures — that's its job, not this one.
 - **Don't over-privatize.** Private methods only inside a class, for genuine internals. Standalone module functions don't need a `_` prefix — default to importable. Slop names ride along with the prefix: `_short`, `_handle`, `_in_kb` say nothing — name the function for what it does (`truncate_title`, `handle_update`, `has_graph_node`).
 - **No comments that restate the code.** Comment the *why*, never the *what* the line already says. Docstrings earn their place on complex logic, edge cases, or non-obvious decisions; every function still gets a one-line docstring for ruff format.
+- **The function-docstring rule stops at the function.** "Every function gets a docstring" says nothing about modules and packages. Before topping a file with `"""CSV decoding and parsing for the shared tabular reader contract."""`, read `AGENTS.md` / `CLAUDE.md` and open two neighbouring modules. Where they start at the imports, so does yours:
+
+  ```python
+  # slop — the filename and the imports already say this
+  """XLSX parsing through OpenPyXL and the shared worksheet parser."""
+
+  from io import BytesIO
+  ```
+
+  Keep the module docstring where the repo's tooling demands it (ruff `D100`, generated docs), where local style is consistent about it, or where the module carries a public contract its names can't convey.
 - **No `from __future__ import annotations`.**
 
 For over-engineering, speculative abstraction, reinvented stdlib, or trivial single-use helpers, defer to the **ponytail** skill — that's its job, not this one.
@@ -56,3 +66,4 @@ Every file you touched is free of the slop patterns above, or each deliberate ex
 
 - For each check that survived, which trust boundary does it protect? If an upstream validated model already guarantees the fact, it goes.
 - Can a maintainer read each main path top to bottom without opening a chain of single-use helpers?
+- Does every module docstring you added match what the neighbouring modules do, or something the tooling requires?

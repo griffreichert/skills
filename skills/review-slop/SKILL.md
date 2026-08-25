@@ -7,7 +7,7 @@ description: Review a diff or PR for Python slop — flag it, don't fix it. Use 
 
 Apply the slop rules from the **purge-slop** skill to a diff — but as review comments, not edits. You are reviewing, so leave the code alone and report.
 
-The rules live in purge-slop (single source of truth): no defensive type-checking, no re-validating what an upstream owner already guaranteed, tests that can't fail, over-privatized helpers, helper chains that hide one flow, and its "don't purge" carve-out for validation, data-safety, and security. Read that skill for the full rule set.
+The rules live in purge-slop (single source of truth): no defensive type-checking, no re-validating what an upstream owner already guaranteed, tests that can't fail, over-privatized helpers, module docstrings the repo's own files don't use, helper chains that hide one flow, and its "don't purge" carve-out for validation, data-safety, and security. Read that skill for the full rule set.
 
 ## How to review
 
