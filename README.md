@@ -34,10 +34,6 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
 - [`write-technical-english`](skills/write-technical-english/SKILL.md) — one
   reading only. Sized sentences, imperative steps, one term per thing, no
   phrasal verbs. The useful subset of ASD-STE100.
-- [`draft-mr-description`](skills/draft-mr-description/SKILL.md) — turn a finished
-  branch into a reviewer-ready MR description: old shape, new shape, why.
-- [`commit-changes`](skills/commit-changes/SKILL.md) — write a commit matching
-  the repo's convention, split moves from edits, then commit it.
 
 **Explaining**
 
@@ -58,8 +54,9 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
 
 - [`purge-slop`](skills/purge-slop/SKILL.md) — write Python without slop: no
   defensive checks, no re-validating what the owner already proved, no fake
-  tests, no needless private helpers. Escalates a helper chain to the flow it
-  hides.
+  tests, honest type hints on every signature. Matches the file it lands in,
+  and escalates a helper chain to the flow it hides. Has a scoped mode for
+  stripping an agent's fingerprints off a diff.
 - [`review-slop`](skills/review-slop/SKILL.md) — flag that same slop in a diff
   or PR as review comments, no edits. Switches to a decision brief when the
   question is what to fix.
@@ -70,6 +67,16 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
 - [`pydantic-principles`](skills/pydantic-principles/SKILL.md) — structure
   pydantic code so the library does the work: construction validates, settings
   own the knobs, contracts live at boundaries.
+
+**Shipping** — *the gate between written and submitted.*
+
+- [`prove-it`](skills/prove-it/SKILL.md) — you ran it, you automated it, you
+  reverted the change and watched the test go red, you named the edges. Hands
+  back an evidence block that pastes into the MR.
+- [`commit-changes`](skills/commit-changes/SKILL.md) — write a commit matching
+  the repo's convention, split moves from edits, then commit it.
+- [`draft-mr-description`](skills/draft-mr-description/SKILL.md) — turn a finished
+  branch into a reviewer-ready MR description: old shape, new shape, why.
 
 **Session handover** — *yesterday's agent leaving tomorrow's a note.*
 
@@ -95,6 +102,25 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
 [Matt Pocock skills](https://github.com/mattpocock/skills) - incredible resource, very 
 helpful while I have iterated on my own skills, if you do not use these you are missing
 out!
+
+[`prove-it`](skills/prove-it/SKILL.md) started from a gist on
+[meaningful contribution](https://gist.github.com/bdsqqq/1e7e6f454271d5f856a1176d0e800d89)
+by [@bdsqqq](https://github.com/bdsqqq), which takes its opening line from
+[Simon Willison](https://simonwillison.net/2025/Dec/18/code-proven-to-work/):
+"your job is to deliver code you have proven to work".
+
+[`purge-slop`](skills/purge-slop/SKILL.md) picked up its typing rule, its
+match-the-neighbours principle, and its diff-scoped mode from the anti-slop
+skills going around. Worth reading in full:
+
+- [dmmulroy/anti-slop](https://github.com/dmmulroy/anti-slop) - 16 oxlint rules
+  built on one idea: never discard type evidence the code already had.
+- [cursor/plugins deslop](https://github.com/cursor/plugins) and
+  [brianlovin/agent-config](https://github.com/brianlovin/agent-config) - strip
+  what the agent added, match the file, summarise in three sentences.
+- [AsyrafHussin/agent-skills](https://github.com/asyrafhussin/agent-skills) -
+  `code-slop`, 24 patterns over six categories, where the snapshot-abuse smell
+  in [`test-stickler`](skills/test-stickler/SKILL.md) came from.
 
 [@Voxyz_ai](https://x.com/Voxyz_ai) - for pointing out that banning words one at a time
 is not a writing system, and for naming corrective juxtaposition, the "not X, it's Y"
