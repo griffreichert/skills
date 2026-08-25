@@ -210,7 +210,8 @@ Split local checks from runtime validation.
 Local checks name runnable commands: the working directory they run from, the
 markers or filters they use, and the credentials or extras they need. Keep local
 suites separate from anything that needs cloud access. Do not claim a passing
-count unless you recorded it from the current tree.
+count unless you recorded it from the current tree. The **prove-it** skill
+produces exactly this evidence; paste its block in here when the author ran it.
 
 Runtime validation should prove the behaviour in the real path. Include where
 to look for logs, what to query, what result should change on a rerun, and what
