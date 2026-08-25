@@ -8,8 +8,8 @@ description: Audit unit and integration pytest tests for coverage that can go re
 Ask of every test: **would it go red if the behaviour broke?**
 
 The red question beats coverage, assertion counts, and a passing suite. Report
-findings. Do not change code or tests unless asked. **purge-slop** defers here
-for test-shaped work.
+findings. Do not change code or tests unless asked. **purge-slop** and **prove-it** both
+defer here for test-shaped work.
 
 ## Lanes
 
@@ -70,6 +70,7 @@ and integration passes; state that the review was sequential.
 | **Unknown test** | No assertion. | Assert the observable contract. |
 | **Redundant assertion** | `assert x == x` or `assert True`. | Assert computed output. |
 | **Testing the mock** | Only `assert_called_*`. | Assert caller-visible result. |
+| **Snapshot stand-in** | A snapshot replaces the assertion. | Assert the fields the behaviour changes. |
 | **Mocking the subject** | Subject patched; no real logic runs. | Mock the boundary. |
 | **Eager test** | Several behaviours share one test. | One behaviour per test. |
 | **Assertion roulette** | Many unlabelled asserts. | Split, parametrize, or label. |
