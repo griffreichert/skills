@@ -104,8 +104,19 @@ delete and an add, the split failed. Separate a move already tangled with its
 edits using the recovery steps in
 [references/rewriting-history.md](references/rewriting-history.md).
 
+**Providers before consumers.** A commit may import, subclass, decorate, or
+call only symbols it defines, inherits from an earlier commit, or takes from
+an installed dependency. Split by topic and the call site lands ahead of its
+definition, so those commits cannot import.
+
+Order the split by what each commit provides: contracts, then the code that
+reads them, then the exports and callers. The read-only walk that checks it is
+in [references/rewriting-history.md](references/rewriting-history.md).
+Documentation-only history skips it.
+
 Done when each commit holds one kind of change, every changed file supports the
-subject, and every move commit shows a detected rename.
+subject, every move commit shows a detected rename, and every symbol a commit
+uses exists at that commit.
 
 ### 4. Write the subject
 
@@ -314,7 +325,8 @@ needs. The fault to avoid is padding, not length.
 ## Done when
 
 Each commit holds one kind of change, and any move is its own commit with a
-detected rename. The subject matches the repo's format, states the change in one
+detected rename. Every commit imports on its own tree and passes the narrow
+tests it carries. The subject matches the repo's format, states the change in one
 clear line, and passes the "If applied" test. The body, if present, moves from
 current state to change to result in the author's voice, flags any breaking
 change, survives the read-aloud test, and leaves the cold reviewer nothing to

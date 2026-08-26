@@ -58,6 +58,46 @@ Tests use the canonical public name. A test written against a temporary branch
 name records a development detour; it establishes no compatibility
 requirement.
 
+## Dependency closure
+
+A commit may import, export, subclass, decorate, or call only symbols that
+exist in its own tree or in an installed dependency.
+
+Work out the order before running anything. Trace every new import, export,
+base class, decorator, and cross-module call to the commit that defines it,
+then move each provider ahead of its consumers. A topic-shaped split is where
+this breaks:
+
+```text
+broken:  contracts + call sites → helper → implementation
+                     ^ the call sites import both later modules
+
+closed:  contracts → helper → implementation → call sites → exports
+```
+
+A detached worktree checks each commit in isolation, so the branch keeps its
+hashes:
+
+```bash
+git worktree add -d /tmp/closure <base>
+for c in $(git rev-list --reverse <base>..HEAD); do
+  git -C /tmp/closure checkout -q "$c"
+  (cd /tmp/closure \
+     && python -c "import pkg.changed_module" \
+     && pytest tests/pkg -q) || echo "not closed at $c"
+done
+git worktree remove /tmp/closure
+```
+
+Tests on the final tree prove nothing about the order. They pass over a
+history whose middle commits cannot import.
+
+Skip the walk for documentation-only history. Leave generated commits alone
+where their generator owns the dependency order.
+
+Done when every commit imports on its own tree, its narrow tests pass there,
+and the target log reads provider before consumer.
+
 ## Propose the rewrite
 
 The proposal states:
@@ -78,6 +118,7 @@ After confirmation:
    and fresh commits.
 4. Verify: `git diff backup/<name>..HEAD` is empty when the rewrite only
    reorganised commits. Any output means content moved that should not have.
+   Run the closure walk again over the new range.
 5. Read the result again, `git show --stat <commit>` then the full diff. A
    smaller diff often earns a clearer subject and a shorter body than the one
    drafted against the tangled version.
