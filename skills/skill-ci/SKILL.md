@@ -89,7 +89,11 @@ Inside the fence, in this order:
 3. **The rule**, stated narrowly. Narrow enough that a reader can tell when it
    does *not* apply.
 4. **The shape**, if the rule has one. A sentence pattern or a template.
-5. **A worked example.** Before and after, drawn from step 2's real moment.
+5. **A worked example.** Before and after, drawn from step 2's real moment,
+   then stripped of it. The blurb keeps the session's names so the reader can
+   check the claim. The lines that land in the skill use names a stranger
+   would recognise, since a rule illustrated with one library or one repo's
+   modules fires again only when that session repeats.
 6. **When it applies.** The specific triggers. A list of seams, verbs, or
    conditions beats "when relevant".
 7. **The scope guard.** When to *not* apply it. Every rule over-applied becomes
@@ -99,7 +103,8 @@ Inside the fence, in this order:
    the `description:` needs to change too.
 
 Write the blurb in the target skill's voice, not as a report about it. The
-implementing agent should be able to lift sentences straight into the file.
+implementing agent should be able to lift the rule straight into the file, and
+should have to generalise nothing but the example.
 
 New-skill proposals carry the same nine, plus a proposed `name:`, a
 `description:` written to fire on the right sessions, and the reason it isn't a
