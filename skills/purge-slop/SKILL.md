@@ -1,6 +1,6 @@
 ---
 name: purge-slop
-description: Purge Python slop — code that adds no value. Use when writing or refactoring Python, cleaning up code, when code is called hard to maintain or helper-heavy, or when the agent reaches for defensive type checks, fake tests, needless private helpers, or missing and dishonest type hints.
+description: Purge Python slop — code that adds no value. Use when writing or refactoring Python, cleaning up code, when code is called hard to maintain or helper-heavy, or when the agent reaches for defensive type checks, fake tests, needless private helpers, wrappers around a library's own API, or missing and dishonest type hints.
 ---
 
 # Purge slop
@@ -34,6 +34,18 @@ Slop is code that adds no value: it survives deletion with nothing lost. Optimiz
   ```
 
   Keep the escape hatch where the type isn't knowable: untyped third-party returns, dynamic dispatch, a genuine `object` boundary. Name the reason in a comment on the same line, the way you would for a removed check.
+- **Read the library's API before you wrap it.** A helper that renames, unwraps, or forwards one native call is slop. Delete it and call the native operation directly.
+
+  ```python
+  # slop — Path already reads
+  def read_file(path: Path) -> str:
+      with path.open() as handle:
+          return handle.read()
+
+  text = path.read_text()
+  ```
+
+  A helper earns its name by owning what the library can't: a multi-step domain rule, error or resource policy, an unstable third-party contract pinned behind one name, or one operation shared by several callers. One caller, one return expression, no domain rule, and it goes inline.
 - **No comments that restate the code.** Comment the *why*, never the *what* the line already says. Docstrings earn their place on complex logic, edge cases, or non-obvious decisions; every function still gets a one-line docstring for ruff format. Delete what you left behind while working: `print()`, `breakpoint()`, commented-out code, `# TODO: implement`.
 - **The function-docstring rule stops at the function.** "Every function gets a docstring" says nothing about modules and packages. Before topping a file with `"""CSV decoding and parsing for the shared tabular reader contract."""`, match the neighbours. Where they start at the imports, so does yours:
 
@@ -96,3 +108,4 @@ Every file you touched is free of the slop patterns above, or each deliberate ex
 - Can a maintainer read each main path top to bottom without opening a chain of single-use helpers?
 - Does every module docstring you added match what the neighbouring modules do, or something the tooling requires?
 - Is every signature annotated, and does every `Any`, `cast()`, and `# type: ignore` name the reason it survived?
+- Did you read the API of every library object you wrapped, and does each surviving wrapper own a rule the library lacks?
