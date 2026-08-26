@@ -47,7 +47,7 @@ git stash pop
 
 For a new file, or a change that spans the test and the source together, break
 the behaviour by hand instead: change the return value, delete the branch, and
-put it back after. Record what the failure said. `KeyError: 'table'` is
+put it back after. Record what the failure said. `KeyError: 'checksum'` is
 evidence; "it failed" is not.
 
 If the test stays green with the change reverted, the test is asserting on its
@@ -77,17 +77,18 @@ An evidence block, written so it pastes into the MR `## Testing` section
 unedited. Commands carry the directory they ran from.
 
 ```markdown
-**Ran** — `uv run pytest tests/ingest/test_tables.py -q` from the repo root.
+**Ran** — `uv run pytest tests/upload/test_session.py -q` from the repo root.
 14 passed.
 
-**Red on revert** — stashed `ingest/tables.py`, `test_groups_by_table_id`
-failed with `KeyError: 'table'`. Restored, green again.
+**Red on revert** — stashed `upload/session.py`, `test_resumes_from_manifest`
+failed with `KeyError: 'checksum'`. Restored, green again.
 
-**By hand** — ingested `fixtures/two-table.xlsx`. Both tables land as separate
-chunks, `chunk_index` 0 and 1, checked in the retrieval output.
+**By hand** — uploaded a 12 MB file, killed the process after part 2, resumed.
+Parts 1 and 2 skipped, 3 and 4 sent, manifest lists all four in order.
 
-**Edges** — empty sheet returns no chunks (tested). Missing `table` key raises
-at the reader (tested). Merged cells untested, out of scope, flagged in the MR.
+**Edges** — empty file writes one part (tested). A manifest missing `checksum`
+raises at the reader (tested). Concurrent resumes untested, out of scope,
+flagged in the MR.
 ```
 
 When the change is not ready, say so first and report per the

@@ -47,13 +47,13 @@ Slop is code that adds no value: it survives deletion with nothing lost. Optimiz
 
   A helper earns its name by owning what the library can't: a multi-step domain rule, error or resource policy, an unstable third-party contract pinned behind one name, or one operation shared by several callers. One caller, one return expression, no domain rule, and it goes inline.
 - **No comments that restate the code.** Comment the *why*, never the *what* the line already says. Docstrings earn their place on complex logic, edge cases, or non-obvious decisions; every function still gets a one-line docstring for ruff format. Delete what you left behind while working: `print()`, `breakpoint()`, commented-out code, `# TODO: implement`.
-- **The function-docstring rule stops at the function.** "Every function gets a docstring" says nothing about modules and packages. Before topping a file with `"""CSV decoding and parsing for the shared tabular reader contract."""`, match the neighbours. Where they start at the imports, so does yours:
+- **The function-docstring rule stops at the function.** "Every function gets a docstring" says nothing about modules and packages. Before topping a file with `"""Retry helpers for the shared HTTP client contract."""`, match the neighbours. Where they start at the imports, so does yours:
 
   ```python
   # slop — the filename and the imports already say this
-  """XLSX parsing through OpenPyXL and the shared worksheet parser."""
+  """Date parsing built on the standard library."""
 
-  from io import BytesIO
+  from datetime import datetime
   ```
 
   Keep the module docstring where the repo's tooling demands it (ruff `D100`, generated docs), where local style is consistent about it, or where the module carries a public contract its names can't convey.

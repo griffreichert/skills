@@ -81,20 +81,19 @@ exempt, because the operator does not care which class runs.
 A sentence can pass every rule above and still hide the mechanism.
 
 ```text
-The application reads the file during diagnostics and ingestion.
+The application reads the file during diagnostics and upload.
 ```
 
 Grammatical, inside the cap, one reading, and useless to a reviewer. It does
-not say what runs, or that the workbook gets parsed twice.
+not say what runs, or that the file gets read twice.
 
 Name four things: the **actor** that performs the behaviour, the **action** it
 takes, the **data** in and out, and the **consequence** for the reader.
 
 ```text
-`XlsxFileDiagnosticGenerator.generate_diagnostic()` calls
-`CustomExcelReader.load_data()` and receives `Document` objects. Ingestion
-calls the same reader again through `SimpleDirectoryReader.load_data()`, so
-the workbook is parsed twice.
+`UploadDiagnostics.report()` calls `PartReader.load()` and receives `Part`
+objects. The uploader calls the same reader again through
+`UploadSession.start()`, so the file is read twice.
 ```
 
 The shape is `SYMBOL` performs ACTION on DATA. CONSEQUENCE.
@@ -162,8 +161,8 @@ You are usually not the author. Their commit messages, their previous
 descriptions, and the notes beside the file are a voice corpus. Read it before
 you draft.
 
-- Take vocabulary from the corpus. Where the author writes `worksheet text`, do
-  not write `non-tabular content`.
+- Take vocabulary from the corpus. Where the author writes `retry budget`, do
+  not write `attempt allowance`.
 - Keep their spelling and their register. British spelling stays British. A
   writer who says `we kept the old path` does not want `it was determined that`.
 - Keep their sentence rhythm. Short declaratives stay short declaratives.
@@ -188,9 +187,9 @@ Deliberate exceptions. Everything else holds.
   Leave it when identifiers and one causal clause carry it over, because
   splitting a single causal claim into fragments drops the link that was the
   point of the sentence.
-- **Uncertainty that belongs to the design stays in.** "Layout detection is
-  heuristic, so content outside a detected table stays worksheet text" is a fact
-  the reader needs. Jokes, slogans and punchlines still go.
+- **Uncertainty that belongs to the design stays in.** "Part matching is
+  heuristic, so an upload retried outside the window stores a duplicate" is a
+  fact the reader needs. Jokes, slogans and punchlines still go.
 - **Code, identifiers, error strings and log lines are quoted, never edited.**
   Reproduce them exactly. The rules govern the prose around them.
 - **`we` survives where the writer owns the change.** Commit bodies, MR

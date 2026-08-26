@@ -180,10 +180,10 @@ symbol earns its place when it lets the reviewer verify a contract, understand
 a cost, or find the code that enforces the claim.
 
 ```text
-Route XLSX diagnostics through `CustomExcelReader.load_data()`.
+Route upload diagnostics through `UploadSession.resume()`.
 
-`get_table_tokens()` and `get_text_from_documents()` now inspect the same
-`Document` contract used by ingestion.
+`count_parts()` and `read_manifest()` now inspect the same `Part` contract
+used by the uploader.
 ```
 
 Use prose for cause and effect. Use bullets only for parallel facts.

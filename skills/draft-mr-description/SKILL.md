@@ -107,19 +107,18 @@ Each design decision gets one paragraph in three moves: the problem, the
 contract you chose, the effect downstream.
 
 ```text
-Parser fragments can separate a table from its header. The reader detects the
-complete logical table before chunking. Every physical chunk therefore repeats
-the header and shares one logical table ID.
+Network limits can split one upload into several parts. The client records the
+complete upload before splitting it. Every physical part therefore carries the
+checksum and shares one upload ID.
 ```
 
 **Name the code that implements it.** State the domain behaviour, name the
 symbol that carries it, then state the consequence for the reviewer.
 
 ```text
-Tabular documents bypass page reconstruction. `DocumentStager.__call__()`
-checks `document_type` and adds worksheet-text and table-chunk documents to
-`transformation_pass_through_documents`. Their reader-owned IDs and boundaries
-therefore reach metadata extraction unchanged.
+Resumed uploads bypass re-chunking. `UploadSession.resume()` checks
+`part_state` and adds every completed part to `skipped_parts`. Their
+client-owned checksums therefore reach the manifest unchanged.
 ```
 
 Ground the claim wherever data changes shape, ownership moves, an ID is
@@ -131,8 +130,8 @@ Two more rules keep those paragraphs honest.
 
 **Name the logical thing and the physical thing separately.** When one domain
 object produces several stored objects, fix both names in the Overview and never
-vary them: the logical table a person sees, the physical chunk that stores part
-of it, the worksheet text outside any table. Identity, ordering, ownership, and
+vary them: the logical upload a person starts, the physical part that stores a
+slice of it, the manifest that lists them. Identity, ordering, ownership, and
 transformation all get explained in those exact words.
 
 **Separate final state from temporary processing.** Say which object owns the
