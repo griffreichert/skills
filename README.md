@@ -54,9 +54,10 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
 
 - [`purge-slop`](skills/purge-slop/SKILL.md) — write Python without slop: no
   defensive checks, no re-validating what the owner already proved, no fake
-  tests, honest type hints on every signature. Matches the file it lands in,
-  and escalates a helper chain to the flow it hides. Has a scoped mode for
-  stripping an agent's fingerprints off a diff.
+  tests, honest type hints on every signature, no wrapper around what the
+  library already does. Matches the file it lands in, and escalates a helper
+  chain to the flow it hides. Has a scoped mode for stripping an agent's
+  fingerprints off a diff.
 - [`review-slop`](skills/review-slop/SKILL.md) — flag that same slop in a diff
   or PR as review comments, no edits. Switches to a decision brief when the
   question is what to fix.
@@ -66,7 +67,8 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
   evidence-backed audit on request.
 - [`pydantic-principles`](skills/pydantic-principles/SKILL.md) — structure
   pydantic code so the library does the work: construction validates, settings
-  own the knobs, contracts live at boundaries.
+  own the knobs, contracts live at boundaries, and the package's own model
+  convention outranks the boundary test.
 
 **Shipping** — *the gate between written and submitted.*
 
@@ -74,7 +76,8 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
   reverted the change and watched the test go red, you named the edges. Hands
   back an evidence block that pastes into the MR.
 - [`commit-changes`](skills/commit-changes/SKILL.md) — write a commit matching
-  the repo's convention, split moves from edits, then commit it.
+  the repo's convention, split moves from edits, order providers before
+  consumers, then commit it.
 - [`draft-mr-description`](skills/draft-mr-description/SKILL.md) — turn a finished
   branch into a reviewer-ready MR description: old shape, new shape, why.
 
