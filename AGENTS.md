@@ -23,8 +23,22 @@ repo. The repo is the authority. Before editing:
   of it, a manifest, a checksum.
 - **Run the shipping lines through `write-clearly`.** Blurbs arrive in report
   register. The file is not a report.
+- **Price the addition.** A rule that needs a second code block in one bullet
+  is two rules, or one rule written twice. Merge the example into the block
+  that is already there, or split the bullet. Name what the addition replaces.
 
-Report what you moved and why.
+Report what you moved and why, then run `python3 check.py`.
+
+## check.py
+
+`python3 check.py` enforces what this file can only ask for. It fails on a
+skill missing from `plugin.json` or `README.md`, broken frontmatter, a retired
+example name, two code blocks in one bullet, and a bullet over 250 words. It
+warns on the prose patterns `write-clearly` bans and leaves the call to you,
+since the skill budgets one deliberate contrast.
+
+Retiring an example domain means adding its names to `RETIRED` in that file,
+so the next session cannot reintroduce them.
 
 ## Conventions
 
