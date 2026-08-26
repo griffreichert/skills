@@ -100,7 +100,12 @@ Inside the fence, in this order:
    noise, and the implementing agent cannot see that boundary from the repo.
 8. **The completion check.** Questions the skill's own "done when" can absorb.
 9. **Placement.** Which file the rule lives in, which skills invoke it, whether
-   the `description:` needs to change too.
+   the `description:` needs to change too. Take the smallest structure that
+   holds the rule: a clause in an existing rule, then a bullet, then a section,
+   then a numbered step, then a reference file, then a new skill. Name the rung
+   you picked and why the one below it fails. Flag any skill you have not
+   opened this session, since a name you know only from a `defer to` line may
+   live outside the repo.
 
 Write the blurb in the target skill's voice, not as a report about it. The
 implementing agent should be able to lift the rule straight into the file, and
