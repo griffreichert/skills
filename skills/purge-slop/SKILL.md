@@ -26,11 +26,17 @@ Slop is code that adds no value: it survives deletion with nothing lost. Optimiz
 - **Don't over-privatize.** Private methods only inside a class, for genuine internals. Standalone module functions don't need a `_` prefix — default to importable. Slop names ride along with the prefix: `_short`, `_handle`, `_in_kb` say nothing — name the function for what it does (`truncate_title`, `handle_update`, `has_graph_node`).
 - **Types are contracts. Write them, and don't fake them.** Every signature gets parameter and return annotations, including `None` returns and private functions. Then keep them honest: a type that widens what the code already knows is a lie to the checker and to the next reader. `Any` in a signature, a `cast()`, a `# type: ignore`, or a `dict[str, Any]` standing in for a real model each throw away a fact you had. The same goes for names: one that needs a comment to be understood, or reads as "X but really Y", is the wrong name.
 
-  ```python
-  # slop — the caller knows the model, the signature discards it
-  def summarise(node: Any) -> dict[str, Any]: ...
+  A collection is the same fact, widened. `Sequence[Sequence[object]]` is correct and leaves the reviewer guessing what arrives. Where the repo owns both sides of the call, annotate the `tuple` or `list` the code enforces, and alias a nested one so the shape survives a glance. Skip the alias for a short type used once. Abstract collection types earn their place at a public extension point, where taking several representations is the contract.
 
-  def summarise(node: TableNode) -> TableSummary: ...
+  ```python
+  # slop — both signatures throw away what the caller already knew
+  def summarise(item: Any) -> dict[str, Any]: ...
+  def write_rows(rows: Sequence[Sequence[object]]) -> str: ...
+
+  Row = tuple[object, ...]  # the caller freezes each row
+
+  def summarise(item: Item) -> ItemSummary: ...
+  def write_rows(rows: tuple[Row, ...]) -> str: ...
   ```
 
   Keep the escape hatch where the type isn't knowable: untyped third-party returns, dynamic dispatch, a genuine `object` boundary. Name the reason in a comment on the same line, the way you would for a removed check.
@@ -108,4 +114,5 @@ Every file you touched is free of the slop patterns above, or each deliberate ex
 - Can a maintainer read each main path top to bottom without opening a chain of single-use helpers?
 - Does every module docstring you added match what the neighbouring modules do, or something the tooling requires?
 - Is every signature annotated, and does every `Any`, `cast()`, and `# type: ignore` name the reason it survived?
+- Can a reviewer name the runtime collection from the annotation, and does every abstract one mark a caller who may pass its own?
 - Did you read the API of every library object you wrapped, and does each surviving wrapper own a rule the library lacks?
