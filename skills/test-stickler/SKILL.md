@@ -34,18 +34,21 @@ teardown from a fixture. Live third-party systems use a separate opt-in lane.
 
 ## Split review
 
-When subagents exist, use two smallest capable subagents:
+Two lanes, and by default you run both yourself, one after the other:
 
-- **Unit reviewer:** component source and unit tests; red assertions, branches,
+- **Unit lane:** component source and unit tests; red assertions, branches,
   errors, boundaries, mocks, and tight-loop cost.
-- **Integration reviewer:** integration tests and harness; real contracts,
+- **Integration lane:** integration tests and harness; real contracts,
   lifecycle, isolation, cleanup, markers, I/O cost, and CI selection.
 
-Give each only its lane's paths and source dependencies. Request ranked
-`file:line`, smell, evidence, and fix. Combine duplicate findings yourself.
+Hold each lane to its own paths and source dependencies. Record ranked
+`file:line`, smell, evidence, and fix. Say that the review ran sequentially.
 
-If subagents cannot run, ask the user to enable them. Then make sequential unit
-and integration passes; state that the review was sequential.
+Split the lanes across two subagents only where the user asks for them. A
+subagent starts cold and re-reads the context you are already holding, which
+costs more than the second pass it saves. Where you do split, give each only
+its lane's paths, request the same four fields, and combine duplicate findings
+yourself.
 
 ## Audit
 
