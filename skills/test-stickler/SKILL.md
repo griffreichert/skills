@@ -29,8 +29,8 @@ Classify by execution, not directory:
 | Integration | Boundary and wiring contract | Marker or CI lane |
 
 Boundary mocks belong in unit tests. Integration tests run the adapter or
-framework boundary they claim to prove. Local resources need fixture-owned setup
-and teardown. Live third-party systems use a separate opt-in lane.
+framework boundary they claim to prove. Local resources get their setup and
+teardown from a fixture. Live third-party systems use a separate opt-in lane.
 
 ## Split review
 
@@ -84,7 +84,7 @@ and integration passes; state that the review was sequential.
 | **Ignored test** | Undated `skip` or `xfail`. | Fix or delete it. |
 | **Lane leak** | Unit test uses services, credentials, or shared state. | Move boundary proof to integration. |
 | **Fake integration** | Mocks claimed boundary. | Use real adapter and owned resource. |
-| **Unowned resource** | Shared DB, port, bucket, queue, or service. | Use unique fixture-owned resources. |
+| **Unowned resource** | Shared DB, port, bucket, queue, or service. | Use unique resources the fixture creates. |
 | **Invisible lane** | Integration selector is unregistered, undocumented, or absent from CI. | Register, document, and run it. |
 
 ## Missing cases

@@ -45,7 +45,7 @@ by that ID and makes one call for the whole session.
 1. `recorder/base.py` owns buffering and recorder orchestration.
 2. `recorder/boundary.py` decides where one session ends.
 3. `recorder/document_builder.py` builds header, segments, and IDs.
-4. `shipper.py` preserves recorder-owned IDs through staging.
+4. `shipper.py` preserves IDs the recorder assigns through staging.
 5. `enrichment.py` groups segments into one logical session.
 
 </details>

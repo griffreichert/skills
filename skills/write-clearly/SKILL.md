@@ -138,6 +138,16 @@ content. You cannot add it at the sentence level.
   They rate the difficulty of the step for the reader, and when the step fails
   the reader concludes the fault is theirs. Delete the word and the instruction
   is unchanged.
+- **Ruling on the message before answering it.** Praise ("Good question",
+  "Fair", "Makes sense") and verdicts ("Whole class", "Two things went wrong
+  here", "That's the same bug") are the same move. Both spend the first line on
+  your assessment of what you were sent. Open on the fact: "Repo does it 6
+  times."
+- **Hyphens standing in for prepositions.** "Reader-owned IDs", "fixture-owned
+  setup", "parent-field". The hyphen buries the relation and leaves it
+  ambiguous: owned can mean assigns, holds, or frees. Write the preposition or
+  the verb. "IDs the reader assigns", "setup the fixture creates", "the field on
+  the parent".
 - **Announcing before saying.** "Let's look at", "In this section we'll cover",
   "It's worth noting". Say the thing.
 - **Grading your own output.** "That's the whole finding in one sentence." "Put

@@ -117,8 +117,8 @@ symbol that carries it, then state the consequence for the reviewer.
 
 ```text
 Resumed uploads bypass re-chunking. `UploadSession.resume()` checks
-`part_state` and adds every completed part to `skipped_parts`. Their
-client-owned checksums therefore reach the manifest unchanged.
+`part_state` and adds every completed part to `skipped_parts`. The checksums
+the client computed therefore reach the manifest unchanged.
 ```
 
 Ground the claim wherever data changes shape, ownership moves, an ID is
