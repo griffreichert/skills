@@ -76,6 +76,13 @@ or justify the growth against what the skill already does.
 
 ### 5. Write the blurb
 
+Open the report with one provenance line: which agent ran the session
+(`claude`, `codex`, whichever harness), its session id, and the transcript
+path. Claude Code writes it to
+`~/.claude/projects/<project-slug>/<session-id>.jsonl`. The implementing agent
+reads the source session when a blurb is thin, and without the path it has to
+take every quoted moment on trust.
+
 One fenced `text` block per proposal, self-contained, addressed to the
 implementing agent. Above the fence, one line of your own naming the target
 skill and the class from step 3.
@@ -117,6 +124,7 @@ section inside an existing skill.
 
 ## Done when
 
-Every proposal traces to a quoted moment from this session, carries its class
-and its edit target, and reads as a standalone brief to an agent with the repo
-and no context. Or you reported that nothing this session warranted one.
+The report names the agent, session id, and transcript path it came from. Every
+proposal traces to a quoted moment from this session, carries its class and its
+edit target, and reads as a standalone brief to an agent with the repo and no
+context. Or you reported that nothing this session warranted one.
