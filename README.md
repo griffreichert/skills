@@ -67,8 +67,9 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
   evidence-backed audit on request.
 - [`pydantic-principles`](skills/pydantic-principles/SKILL.md) — structure
   pydantic code so the library does the work: construction validates, settings
-  own the knobs, contracts live at boundaries, and the package's own model
-  convention outranks the boundary test.
+  own the knobs, contracts live at boundaries, the package's own model
+  convention outranks the boundary test, and `frozen=True` earns its place with
+  a bug.
 
 **Shipping** — *the gate between written and submitted.*
 
