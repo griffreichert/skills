@@ -117,3 +117,4 @@ Every file you touched is free of the slop patterns above, or each deliberate ex
 - Is every signature annotated, and does every `Any`, `cast()`, and `# type: ignore` name the reason it survived?
 - Can a reviewer name the runtime collection from the annotation, and does every abstract one mark a caller who may pass its own?
 - Did you read the API of every library object you wrapped, and does each surviving wrapper own a rule the library lacks?
+- Has every symbol and return shape named for removal disappeared, along with its callers and its tests? A replacement added beside the original leaves both alive, which is the seam you were asked to close.
