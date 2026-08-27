@@ -12,6 +12,8 @@ RETIRED = [
     "openpyxl", "XLSX", "Xlsx", "xlsx", "worksheet", "Worksheet", "tabular",
     "CustomExcelReader", "TableNode", "TableSummary", "CellRange",
     "chunk_index", "two-table", "DocumentStager",
+    "TableSummaryResult", "prepare_table_elements", "table ID",
+    "reader metadata", "node.metadata", "TableNode",
 ]
 BULLET_WORDS = 250
 # Corrective juxtaposition and the other tics write-clearly bans.

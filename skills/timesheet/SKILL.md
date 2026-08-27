@@ -93,13 +93,13 @@ release tag, short hash.
 ```markdown
 ## 2026-08-18 · Tuesday
 
-**ingest-pipeline**
-- Table summarisation reads validated reader metadata, five private helpers
-  gone. `a1b2c3d`, MR !412
-- Reviewed the retrieval-eval MR, blocked on the fixture question. [[2026-08-18]]
+**upload-service**
+- Resume now reads the manifest the client wrote, five private helpers gone.
+  `a1b2c3d`, MR !412
+- Reviewed the retry-budget MR, blocked on the fixture question. [[2026-08-18]]
 
 **Planned, not landed**
-- Chunk-index backfill — carried to Wednesday.
+- Checksum backfill, carried to Wednesday.
 ```
 
 Above the days, state the resolved range and every gap in one place: notes that

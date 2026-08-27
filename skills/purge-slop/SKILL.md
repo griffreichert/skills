@@ -13,12 +13,12 @@ Slop is code that adds no value: it survives deletion with nothing lost. Optimiz
 - **Validate once, at the owner.** A model, parser, reader, or API schema that already validated the data owns that contract. Downstream code reads its fields directly and trusts them. Re-checking is slop even when the check is spelled as a helper:
 
   ```python
-  # slop — the reader already guaranteed this shape
-  table = metadata.get("table")
-  return table if isinstance(table, Mapping) else None
+  # slop — the parser already guaranteed this shape
+  source = metadata.get("source")
+  return source if isinstance(source, Mapping) else None
 
   # the whole helper
-  table_id = node.metadata["table"]["id"]
+  source_id = record.metadata["source"]["id"]
   ```
 
   Re-validate only where a caller can hand you a partial or untrusted set: cross-record checks over results you assembled yourself. A fact an upstream model already proved needs no second proof. For contracts that are pydantic models, defer to the **pydantic-principles** skill.
@@ -80,7 +80,7 @@ Three or more helpers translating one contract, validating the same data, or shu
 
 ```
 before:  metadata helper → fallback helper → ID helper → validator → grouping
-after:   validated reader metadata → group by table ID → parser → retrieval pairs
+after:   validate on load → group by owner ID → transform → emit pairs
 ```
 
 The trigger is the shape, and the words the user reaches for: hard to maintain, helper-heavy, fragmented, hard to follow. Leave alone the module whose helpers are independent domain operations that stand up on their own. For the vocabulary of the seam this restructuring lands on, defer to the **codebase-design** skill.

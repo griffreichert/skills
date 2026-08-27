@@ -18,9 +18,15 @@ repo. The repo is the authority. Before editing:
   reference file, then a new skill. A new numbered step renumbers every step
   after it. A new skill adds a sync burden across its callers and the README.
 - **Generalise the example.** The blurb carries the session's names so its
-  claim can be checked. The file gets names a stranger recognises. Examples
-  here run on one domain: a resumable file upload, the parts that store slices
-  of it, a manifest, a checksum.
+  claim can be checked. The file gets names a stranger recognises. Two kinds,
+  and they take different names:
+  - **Structural examples** demonstrate a shape: a signature, an annotation, a
+    helper that should be inlined. Use placeholders (`Item`, `Row`, `record`,
+    `source`). Any domain they borrow is noise the reader discounts, and it
+    reads as a leak from whichever project the session came from.
+  - **Prose examples** demonstrate writing: a commit body, MR text, an evidence
+    report. These need a story a stranger can follow, so they run on one
+    domain, a resumable file upload with parts, a manifest, and a checksum.
 - **Run the shipping lines through `write-clearly`.** Blurbs arrive in report
   register. The file is not a report.
 - **Price the addition.** A rule that needs a second code block in one bullet

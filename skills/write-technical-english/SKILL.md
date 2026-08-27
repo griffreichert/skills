@@ -52,10 +52,10 @@ sentences inside it.
   however repetitive it reads.
 - **Name the logical thing and the physical thing separately** (1.11 again).
   When one domain object produces several stored objects, fix both names before
-  the first paragraph: the logical table a person sees, the physical chunk that
-  stores part of it. Use those exact words for identity, ordering, ownership,
-  and transformation. A reader working out which "table" a sentence means has
-  stopped reading the argument.
+  the first paragraph: the logical upload a person starts, the physical part
+  that stores a slice of it. Use those exact words for identity, ordering,
+  ownership, and transformation. A reader working out which "upload" a sentence
+  means has stopped reading the argument.
 - **Noun clusters: three words maximum** (2.1). "Pipeline config validation
   error handler" is a sentence pretending to be a noun. Unpack it.
 - **Keep the articles** (4.2, 4.5). "Check that the config file exists", never
