@@ -24,6 +24,10 @@ and ask the user** to point you at the notes folder or vault. Do not guess a
 path and do not silently write elsewhere. `orient` may still orient from git and
 the working tree while it asks.
 
+Placing a new working note works the same way: a folder with no established
+layout and a project file silent on the question is a question for the user,
+answered once and recorded in that project file.
+
 ## The daily note
 
 One note per day: `notes/daily/<YYYY-MM-DD>.md`. Sections:
@@ -37,6 +41,34 @@ Filter every bullet by the **altitude test**: log only what still matters in a
 month — scope boundaries, architecture choices, hard constraints, direction
 changes, and *why*. Skip task-level mechanics. Unsure it survives a month? Leave
 it out.
+
+## Working notes
+
+Anything outside the dated-note folder (usually `daily/`) is a working note:
+one project, one issue, one milestone, one piece of research. Layouts differ
+per project. A flat `notes/<name>.md` and a nested
+`projects/<project>/issues/<id>.md` are the same kind of file.
+
+**Placing a new working note.** Read the project's `AGENTS.md` or `CLAUDE.md`
+first; it states how that project handles notes. The folder's existing layout
+answers the rest, and matching it is the default. Where both come up short,
+stop and ask, offering this repo's suggestion: `notes/items/<name>.md` for work
+with no tracker, `notes/issues/<issue-id>/` where a tracker numbers it. A
+guessed location buries the note where the next session looks past it. Once
+settled, write the answer into the project's `AGENTS.md` or `CLAUDE.md` and add
+the file to `_index.md`.
+
+A working note tracking live work holds state under **Goal**, **Decisions**,
+**Remaining**. Each session edits those sections.
+
+Decisions is the durable part, at design altitude: the shape chosen, the
+constraint that forced it, the option dropped. Every bullet carries its
+rationale. Reversing a decision rewrites its bullet to hold both sides, so the
+abandoned option keeps the reason it was abandoned.
+
+- Steps, file lists and verification runs stay in the session and in git.
+- One dated section per session turns the note into a transcript. Fold those
+  back into Goal, Decisions and Remaining, keeping every rationale.
 
 ## The _index map
 

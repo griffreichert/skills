@@ -30,6 +30,17 @@ Front-loaded, one idea, terse (**write-clearly** if available). Append directly
 to the dated note with your file-editing tools — never a script. Create the note
 and its `_index.md` link only if `daily-capture` hasn't; otherwise just append.
 
+One or two lines. State the decision and the why, then stop. Evidence goes in
+the commit and the PR, where a reader who wants the file list and the test run
+looks for it. Reaching for a second bullet on one turn is the sign that the
+first was a task.
+
+## Where it lands
+
+The day's dated note, under **Decisions**. Where the same decision changes a
+working note's state, edit that note's existing bullet to match, so both files
+agree and each stays short.
+
 If no destination is configured or the notes folder can't be found, **ask the
 user to steer** rather than guess.
 
