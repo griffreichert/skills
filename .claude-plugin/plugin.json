@@ -17,6 +17,7 @@
     "./skills/draft-mr-description",
     "./skills/commit-changes",
     "./skills/explain-visually",
+    "./skills/explain-root-cause",
     "./skills/skill-ci"
   ]
 }

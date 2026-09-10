@@ -40,6 +40,9 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
 - [`explain-visually`](skills/explain-visually/SKILL.md) — one worked example,
   the data shapes, an ASCII lifecycle diagram, and a table of what is stored
   versus what is temporary. For when the parts are clear and the wiring is not.
+- [`explain-root-cause`](skills/explain-root-cause/SKILL.md) — a confirmed bug
+  cause as an ordered chain, from the first changed contract to the exact
+  failure, with a pinned primary source beside every link.
 
 **Reporting** — *two shapes for the same findings.*
 
