@@ -107,10 +107,27 @@ the decision you need.
   Agent-written code raises the bar on scrutiny, since neither the reviewer nor
   the agent is accountable for it.
 - **Record from this tree.** Never quote a passing count you did not just see.
+- **A scripted edit is unproven until you read it back.** `sed -i`, a heredoc
+  calling `str.replace`, a codemod, `jq` writing over its input: each exits 0
+  when it matches nothing, and the build stays green because a no-op leaves
+  valid code. Every check downstream passes and the edit never happened. Assert
+  the match before the write, then confirm the new text in the file or in the
+  built artifact. A formatter run between two edits to the same file
+  invalidates the strings you matched on last time.
+
+  ```python
+  old = "timeout=30"
+  assert old in text, f"no match: {old!r}"
+  path.write_text(text.replace(old, "timeout=60"))
+  ```
+
+  The Edit tool and a patch you read already fail loudly on a missed match.
+  Apply the rule where a failed match and a successful one exit the same way.
 
 ## Done when
 
 Each of the four proofs is answered or named as a gap. The revert check ran and
-you saw the failure it produced. Every name in the change survives being
-explained out loud. The evidence block is concrete enough that a reviewer could
+you saw the failure it produced. Every scripted substitution asserted its match
+or had its result read back. Every name in the change survives being explained
+out loud. The evidence block is concrete enough that a reviewer could
 rerun it, and it goes into the MR without editing.
