@@ -2,8 +2,9 @@
 name: write-clearly
 description:
   Cut writing to the bone. Clear, human, no AI slop. Use when writing or
-  reviewing prose, docs, comments, commit messages, or PR text, or when asked to
-  make text clearer, tighter, or less AI-sounding.
+  reviewing prose, docs, comments, commit messages, PR text, or display copy
+  (titles, taglines, headlines, captions, UI microcopy), or when asked to make
+  text clearer, tighter, or less AI-sounding.
 ---
 
 # Write clearly
@@ -108,6 +109,26 @@ Rewriting is mostly deletion. `Vim was never inadequate, it was never wired.`
 becomes `Vim was never wired, so edits fell back to a GUI.` The flourish went
 and the causal fact arrived.
 
+### Display copy stands alone
+
+A title, tagline, subhead, caption, callout or axis label is read on its own,
+ahead of the body under it. Cover that body and read the line. If you cannot
+say what it claims, the line is the opening sentence of the paragraph under it.
+Cut it, or write the claim.
+
+```text
+before: Three numbers from the upload run. The last one is the fix.
+after:  Resumed uploads dropped parts whenever the manifest checksum was
+        stale.
+```
+
+The before promises a payoff the reader has not reached yet. The after states
+the finding, and the bullets beneath it become its evidence.
+
+Running prose is exempt. A sentence inside a paragraph can lean on the sentence
+before it. Apply the rule to a line set in a different size or weight from its
+body, which a reader takes as a signal to read it alone.
+
 The urge behind it drives half the patterns in this skill: corrective
 juxtaposition, the em-dash pivot, "genuinely", the punchline closer. All are one
 impulse, to make a sentence _sound_ like insight. Insight is a property of the
@@ -169,3 +190,5 @@ content. You cannot add it at the sentence level.
 - **Reviewing:** name each violation before you rewrite, so the author sees the
   pattern and not just the patch. Every slop pattern above is removed or
   flagged, and every sentence passes the no-op test.
+- **Display copy:** every heading, tagline and caption still carries its claim
+  with the body under it covered.
