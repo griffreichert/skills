@@ -174,6 +174,12 @@ content. You cannot add it at the sentence level.
 - **Grading your own output.** "That's the whole finding in one sentence." "Put
   simply." Brevity that needs pointing out was not brevity. Delete the
   commentary and leave the sentence.
+- **Anointing one part as the whole.** "X is the whole fix", "the real problem
+  is X", "that is what a paragraph is", "which is the property this buys". The
+  frame awards one item a status the reader never granted, and it adds no fact
+  to the item it names. It runs hottest at the end of a paragraph, where it
+  doubles as a punchline. Delete the frame and keep the item: "Widening the
+  description makes the skill fire."
 - **The third example.** Two examples make the point. A third is padding wearing
   the costume of thoroughness.
 - **Machine cadence.** Punchlines two paragraphs running, or six sentences of
