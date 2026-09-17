@@ -140,8 +140,34 @@ passes the "If applied" test.
 Skip the body when the subject fully explains the change. A version bump or a
 one-line rename needs no body.
 
-When the change has a non-obvious why, a chosen trade-off, a breaking change, or
-a subtle mechanism, write a body in this default order:
+Default, for every commit that needs a body, including a reword: check that
+author's recent commits and match their length and vocabulary. Lead with the
+problem or reason, then state the change and its result, in this shape:
+
+```text
+<subject>
+
+<why/problem>. <change/result>.
+```
+
+Add a third sentence only for a real behaviour boundary, a test result, or a
+migration step. Name a symbol only when a reviewer needs the exact contract,
+seam, migration, or risk — a draft that lists internal functions without the
+user-visible reason has reached for jargon the reader does not need.
+
+Before: "Workflow.run() starts its handler task immediately. Creating handlers
+before the route generator loses the route span from workflow child spans.
+Create and consume event streams through `stream_workflow_events`, which
+restores the route span around handler creation, event reads, parsing,
+rewriting, completion, and cancellation."
+
+After: "The workflow starts before the request trace is active, so agent and
+tool work appears outside the request trace. Run workflow creation and event
+handling inside one shared request-trace helper for both streaming endpoints."
+
+Escalate past the default only for a breaking contract, a data migration, an
+operational risk, or a change that introduces domain concepts the diff alone
+won't teach. There, write in this order instead:
 
 1. **Current state:** what happens before this commit, and why it is a problem.
 2. **Change:** what this commit does.
@@ -149,9 +175,26 @@ a subtle mechanism, write a body in this default order:
 4. **Trade-off:** a real cost or maintenance requirement, only if one exists.
 
 This order is a drafting aid, not a four-section template. Omit any part that
-adds no useful fact.
+adds no useful fact. Write for the cold reviewer: someone who reads the diff
+without having read the implementation. The escalated body also covers:
 
-Tense follows the timeline:
+- A definition for every new domain term and document type, the first time the
+  words appear.
+- A short list for categories, file types, precedence rules, or stages, so the
+  count is visible.
+- The implementation at a high level with one concrete example: a real input
+  and what comes out of it.
+- The field or object the data lands in after the change: `Document.text`,
+  `Document.metadata`.
+- The adjacent behaviour they would ask about. PDFs, tables, legacy documents,
+  downstream callers, and existing import paths are the usual questions.
+- The scope boundary, with deferred work named and the reason it sits outside
+  the current issue.
+- The limit of a heuristic, in plain language, when the behaviour cannot be
+  exact: `Header detection reads font size, so a document that marks headers by
+  weight alone is missed.`
+
+Tense follows the timeline, in either branch:
 
 - Present tense for the state before the commit: `The importer loads the whole
   file into memory before parsing.`
@@ -187,29 +230,6 @@ used by the uploader.
 ```
 
 Use prose for cause and effect. Use bullets only for parallel facts.
-
-Write for the cold reviewer: someone who reads the diff without having read the
-implementation. A large change earns a body that matches it. A reviewer left to
-reconstruct the design from the diff was handed too little.
-
-The cold reviewer needs:
-
-- The opening sentence in plain terms: what this commit adds or changes.
-- A definition for every new domain term and document type, the first time the
-  words appear.
-- A short list for categories, file types, precedence rules, or stages, so the
-  count is visible.
-- The implementation at a high level with one concrete example: a real input
-  and what comes out of it.
-- The field or object the data lands in after the change: `Document.text`,
-  `Document.metadata`.
-- The adjacent behaviour they would ask about. PDFs, tables, legacy documents,
-  downstream callers, and existing import paths are the usual questions.
-- The scope boundary, with deferred work named and the reason it sits outside
-  the current issue.
-- The limit of a heuristic, in plain language, when the behaviour cannot be
-  exact: `Header detection reads font size, so a document that marks headers by
-  weight alone is missed.`
 
 Name what the code does, in the words the author used in their recent commits.
 Where a phrase describes the architecture instead of the change, the read-aloud
