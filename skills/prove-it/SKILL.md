@@ -16,6 +16,11 @@ the commit and the MR description, because both of those consume its output.
 A computer cannot be held accountable. The change carries your name, so the
 proof is yours to produce.
 
+Run this once, at completion. Rerunning the suite after every small edit
+proves nothing new until the change is finished, it only burns cycles.
+Automate only the test this change needs to prove itself; skip adding one
+beyond what was asked for.
+
 ## The four proofs
 
 Answer all four, or name the one you skipped and why.
