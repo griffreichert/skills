@@ -112,25 +112,22 @@ One ranking, two shapes. Rank every finding the same way: tests that cannot go
 red; missing behaviours; lane or harness gaps; readability. Then pick the shape
 from what the user asked for.
 
-### Decision brief
+### Priority report
 
 The default. Use it when the user asks what is wrong, what the gaps are, what to
-fix, or what you would do next. They want to decide, not to read evidence.
+fix, or what you would do next. They want the fix, not the evidence.
 
-Report per the **decision-brief** skill: a numbered priority list, each item
-carrying the problem in plain language, the action you recommend, and the exact
-decision you need. Order failing tests first, then high-risk missing behaviour,
-then harness gaps, then low-priority coverage. State test totals once. Hold back
-file paths, line numbers, commands, and per-finding evidence until they ask, then
-hand over the detailed audit for the items they picked.
+A numbered priority list, each item carrying the problem in plain language and
+the fix you recommend. Order failing tests first, then high-risk missing
+behaviour, then harness gaps, then low-priority coverage. State test totals
+once. Hold back file paths, line numbers, commands, and per-finding evidence
+until they ask, then hand over the detailed audit for the items they picked.
 
 ```
-1. S3 tests crash on optional metadata. Recommend fixing the marker filter.
-   Need: approval.
-2. Retry path has no test that can go red. Recommend one integration test for
-   the second call. Need: a decision on whether retries are in scope.
-3. Integration lane runs nowhere in CI. Recommend registering the marker.
-   Need: which pipeline owns it.
+1. S3 tests crash on optional metadata. Fix: correct the marker filter.
+2. Retry path has no test that can go red. Fix: add one integration test for
+   the second call.
+3. Integration lane runs nowhere in CI. Fix: register the marker.
 ```
 
 ### Detailed audit
@@ -157,5 +154,5 @@ of a behaviour with real risk is an **issue**; the rest is a **todo** or a
 Every source behaviour can go red through a test or is named as a gap. Every
 test has a deliberate lane. Unit and integration commands, resource ownership,
 and CI coverage are evidenced or reported as harness gaps. The report shape
-matches what the user asked for, and a decision brief names the decision it
-needs on every line.
+matches what the user asked for, and a priority report names the fix it
+recommends on every line.

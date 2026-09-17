@@ -91,9 +91,8 @@ raises at the reader (tested). Concurrent resumes untested, out of scope,
 flagged in the MR.
 ```
 
-When the change is not ready, say so first and report per the
-**decision-brief** skill: what is unproven, what it would take to prove it, and
-the decision you need.
+When the change is not ready, say so first, then report plainly: what is
+unproven, and what it would take to prove it.
 
 ## Rules
 

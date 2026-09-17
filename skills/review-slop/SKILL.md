@@ -20,9 +20,9 @@ One sweep, two shapes. Find everything either way, then pick the shape from what
 
 **Detailed review — the default.** "Review this diff", "review the PR", "what did I miss". Label and group the findings per the **review-comments** skill, worst first inside each label.
 
-**Decision brief.** "What should I fix", "is this mergeable", "what's blocking", "where do we stand". Report per the **decision-brief** skill: a numbered priority list, each item carrying the problem in plain language, the action you recommend, and the exact decision you need. Order what already breaks first, then risky slop, then structural slop, then preference. State the finding count once. Hold back file paths, line numbers, and diff quotes until they ask, then hand over the labelled review for the items they picked.
+**Priority report.** "What should I fix", "is this mergeable", "what's blocking", "where do we stand". A numbered list, findings ranked by severity: what already breaks first, then risky slop, then structural slop, then preference. Each item states the problem in plain language and the fix you recommend. State the finding count once. Hold back file paths, line numbers, and diff quotes until they ask, then hand over the labelled review for the items they picked.
 
-The labelled comments are the deliverable — they get pasted onto the MR, one per finding, and the author works through them. That is why they are the default. The brief is for whoever decides whether the MR merges, who wants the call and not the thread.
+The labelled comments are the deliverable — they get pasted onto the MR, one per finding, and the author works through them. That is why they are the default. The priority report is for whoever wants the ranked list and not the thread.
 
 ## Done when
 

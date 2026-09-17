@@ -44,14 +44,11 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
   cause as an ordered chain, from the first changed contract to the exact
   failure, with a pinned primary source beside every link.
 
-**Reporting** — *two shapes for the same findings.*
+**Reporting**
 
 - [`review-comments`](skills/review-comments/SKILL.md) — label and group findings
   as conventional comments: issue, todo, suggestion, quibble, praise. For a
   reader who must verify.
-- [`decision-brief`](skills/decision-brief/SKILL.md) — a prioritised list of
-  decisions: the problem in plain language, the action you recommend, the exact
-  approval needed. Evidence held back until asked. For a reader who must choose.
 
 **Python hygiene**
 
@@ -62,11 +59,11 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
   chain to the flow it hides. Has a scoped mode for stripping an agent's
   fingerprints off a diff.
 - [`review-slop`](skills/review-slop/SKILL.md) — flag that same slop in a diff
-  or PR as review comments, no edits. Switches to a decision brief when the
+  or PR as review comments, no edits. Switches to a priority report when the
   question is what to fix.
 - [`test-stickler`](skills/test-stickler/SKILL.md) — audit pytest tests for the
   ones that cannot go red. Flags the smell by name, suggests the fix, names the
-  missing edge cases. Reports as a decision brief by default, or as a full
+  missing edge cases. Reports as a priority list by default, or as a full
   evidence-backed audit on request.
 - [`pydantic-principles`](skills/pydantic-principles/SKILL.md) — structure
   pydantic code so the library does the work: construction validates, settings
