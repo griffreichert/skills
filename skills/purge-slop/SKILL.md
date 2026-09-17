@@ -21,12 +21,12 @@ Slop is code that adds no value: it survives deletion with nothing lost. Optimiz
   source_id = record.metadata["source"]["id"]
   ```
 
-  Re-validate only where a caller can hand you a partial or untrusted set: cross-record checks over results you assembled yourself. A fact an upstream model already proved needs no second proof. For contracts that are pydantic models, defer to the **pydantic-principles** skill.
+  Re-validate only where a caller can hand you a partial or untrusted set: cross-record checks over results you assembled yourself. A fact an upstream model already proved needs no second proof. The same trust covers data your own code produces: a `frozen=True` dataclass or a pydantic validator guarding a shape only your own writer builds is the same re-check in different clothes, and so is a `try`/`except` or an `if`/`else` fallback chain wrapped around a file type, format, or path your own code produced. `dict.get(key, default)` is a plain substitution and stays; an `if`/`else` chain guarding the same lookup is the fallback in disguise. For contracts that are pydantic models, defer to the **pydantic-principles** skill.
 - **A test must be able to fail.** A test that passes no matter what the code does is slop. Defer to the **test-stickler** skill for anything test-shaped — mutation, mocks, missing edge cases, fixtures — that's its job, not this one.
 - **Don't over-privatize.** Private methods only inside a class, for genuine internals. Standalone module functions don't need a `_` prefix — default to importable. Slop names ride along with the prefix: `_short`, `_handle`, `_in_kb` say nothing — name the function for what it does (`truncate_title`, `handle_update`, `has_graph_node`).
 - **Types are contracts. Write them, and don't fake them.** Every signature gets parameter and return annotations, including `None` returns and private functions. Then keep them honest: a type that widens what the code already knows is a lie to the checker and to the next reader. `Any` in a signature, a `cast()`, a `# type: ignore`, or a `dict[str, Any]` standing in for a real model each throw away a fact you had.
 
-  A collection is the same fact, widened. `Sequence[Sequence[object]]` is correct and leaves the reviewer guessing what arrives. Where the repo owns both sides of the call, annotate the `tuple` or `list` the code enforces, and alias a nested one so the shape survives a glance. Skip the alias for a short type used once. Abstract collection types earn their place at a public extension point, where taking several representations is the contract.
+  A collection or a domain type is the same fact, widened: `Sequence[Sequence[object]]` for a `tuple[Row, ...]` the repo builds, or `Path | PurePosixPath` where the neighbours just take `Path`. Where the repo owns both sides, annotate the concrete type it enforces, match the neighbours, and alias a nested collection so the shape survives a glance. Abstract types earn their place at a public extension point, where taking several representations is the contract.
 
   ```python
   # slop — both signatures throw away what the caller already knew
@@ -39,9 +39,8 @@ Slop is code that adds no value: it survives deletion with nothing lost. Optimiz
   def write_rows(rows: tuple[Row, ...]) -> str: ...
   ```
 
-  Keep the escape hatch where the type isn't knowable: untyped third-party returns, dynamic dispatch, a genuine `object` boundary. Name the reason in a comment on the same line, the way you would for a removed check.
-
-  Local variables don't get the same blanket rule. Add an annotation when a helper or factory call returns an unclear semantic type, or when an empty, nested, or branch-dependent collection needs its shape documented. Skip it when the right-hand side and name already make the type obvious. An annotation that only repeats what the right-hand side already says is slop; one that names a shape the right-hand side hides is a fact worth keeping.
+  Keep the escape hatch where the type isn't knowable: untyped third-party returns, dynamic dispatch, a genuine `object` boundary. Name the reason in a comment on the same line. A `Protocol` or abstract stub body is `...`, never `raise NotImplementedError`: the method never runs, so raising defends against a call that can't happen.
+- **Local variables don't need blanket annotations.** Add one when a helper or factory call returns an unclear semantic type, or when an empty, nested, or branch-dependent collection needs its shape documented. Skip it when the right-hand side and name already make the type obvious, including a construction or a `cast()` on the same line: `items: list[Item] = []` repeats what `[]` and the name already say, and `path = Path(raw)` needs no `path: Path` beside it. An annotation that only repeats what the right-hand side already says is slop; one that names a shape the right-hand side hides is a fact worth keeping.
 - **A name that needs a comment is the wrong name.** One that reads as "X but really Y" is worse, since the reader trusts it until it burns them. Rename the thing after what it holds.
 - **Read the library's API before you wrap it.** A helper that renames, unwraps, or forwards one native call is slop. Delete it and call the native operation directly.
 
@@ -55,7 +54,7 @@ Slop is code that adds no value: it survives deletion with nothing lost. Optimiz
   ```
 
   A helper earns its name by owning what the library can't: a multi-step domain rule, error or resource policy, an unstable third-party contract pinned behind one name, or one operation shared by several callers. One caller, one return expression, no domain rule, and it goes inline.
-- **No comments that restate the code.** Comment the *why*, never the *what* the line already says. Docstrings earn their place on complex logic, edge cases, or non-obvious decisions; every function still gets a one-line docstring for ruff format. Delete what you left behind while working: `print()`, `breakpoint()`, commented-out code, `# TODO: implement`.
+- **No comments that restate the code.** Comment the *why*, never the *what* the line already says. Docstrings earn their place on complex logic, edge cases, or non-obvious decisions; every function still gets a one-line docstring for ruff format. Delete what you left behind while working: `print()`, `breakpoint()`, commented-out code, `# TODO: implement`. Leave a human-written docstring's voice alone: fix the line that's wrong, don't rewrite the rest into your own register. Name a thing plainly instead of inventing a compound for it: `IDs the reader supplies` reads to every maintainer, a coined term reads only to whoever wrote it.
 - **The function-docstring rule stops at the function.** "Every function gets a docstring" says nothing about modules and packages. Before topping a file with `"""Retry helpers for the shared HTTP client contract."""`, match the neighbours. Where they start at the imports, so does yours:
 
   ```python
@@ -92,7 +91,7 @@ The trigger is the shape, and the words the user reaches for: hard to maintain, 
 An agent wrote it and you are stripping its fingerprints before anyone reviews it. Scope to `git diff main` and touch changed lines only.
 
 - Match the neighbours. The target is the file's existing style. These rules describe what you would write from scratch; the neighbours describe what belongs here.
-- Cut what the agent added on top: comments the file wouldn't carry, `try`/`except` the area doesn't use, a `cast()` or `# type: ignore` papering over a type problem, helpers called once.
+- Cut what the agent added on top: comments the file wouldn't carry, `try`/`except` the area doesn't use, a `cast()` or `# type: ignore` papering over a type problem, helpers called once, and any comment calling this branch's own code "legacy" — code the diff introduces or changes is current, even mid-migration.
 - Keep the behaviour. Fix a real bug you find, and report that separately from the cleanup.
 - Surgical edits. A rewrite belongs in "When cleanup isn't enough" above, with the user's agreement first.
 - Report in two or three sentences: what you removed, and anything you left because the neighbours do it too.
