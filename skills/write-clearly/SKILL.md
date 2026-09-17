@@ -155,6 +155,9 @@ content. You cannot add it at the sentence level.
   the thing, then say what it does.
 - **"This is genuinely / truly / really / actually."** Show it, don't assert it.
   "Actually" is the worst of the four: it implies the reader believed otherwise.
+- **Sorting a decision into whose call it is.** "Your call", "my call", "yours
+  to decide", "that one is yours", "I shouldn't decide this". Give the facts,
+  the options, and a pick instead of naming who owns the choice.
 - **Condescension words.** "Simply", "just", "easy", "obviously", "of course".
   They rate the difficulty of the step for the reader, and when the step fails
   the reader concludes the fault is theirs. Delete the word and the instruction

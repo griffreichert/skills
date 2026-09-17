@@ -21,6 +21,8 @@ BANNED = [
     r", not ", r" rather than ", r"isn't [a-z]+, it's", r"not just .*, it's",
     r"\bactually\b", r"\bgenuinely\b", r"\bsimply\b", r"\bobviously\b",
     r"Short answer", r"TL;DR", r"Bottom line",
+    # Sorting a decision into whose call it is.
+    r"\b(your|my) call\b", r"\b(is|are) (all )?yours\b", r"shouldn.t decide",
     # A hyphen standing in for a preposition: "reader-owned IDs".
     r"\b\w+-owned\b",
 ]

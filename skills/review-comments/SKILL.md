@@ -23,7 +23,7 @@ Five **primary** labels carry the review; four **secondaries** exist for what th
 | **quibble** | primary | No | Preference. Say out loud that it's optional. |
 | **note** | secondary | No | Something the reader should know. No action asked. |
 | **thought** | secondary | No | An idea the review threw up, worth saying, not worth doing now. |
-| **praise** | primary | — | Genuinely good, and worth the author knowing why. |
+| **praise** | primary | — | Good, and worth the author knowing why. |
 
 Size doesn't decide a label, obligation does. A one-character fix that breaks production is an **issue**; a whole-file rewrite the author can refuse is a **suggestion**.
 
