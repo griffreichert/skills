@@ -17,6 +17,7 @@
     "./skills/commit-changes",
     "./skills/explain-visually",
     "./skills/explain-root-cause",
-    "./skills/skill-ci"
+    "./skills/skill-ci",
+    "./skills/harness-ci"
   ]
 }

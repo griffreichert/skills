@@ -1,0 +1,3 @@
+interface:
+  display_name: "Harness CI"
+  short_description: "Turn session papercuts and transcripts into harness and skill fixes"

@@ -99,6 +99,10 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
 - [`skill-ci`](skills/skill-ci/SKILL.md) — end of session, turn the friction you
   hit into a copyable blurb the skills-repo agent can implement. Evidence
   required, three proposals maximum, "nothing this session" allowed.
+- [`harness-ci`](skills/harness-ci/SKILL.md) — end of session, turn the
+  papercuts you hit (env vars, setup, failed commands, failed notes writes)
+  into proposed `AGENTS.md`, `CLAUDE.md`, dotfiles, and skill edits. Project
+  scope first, you decide what to apply and what to hand off.
 
 
 ## Inspiration
