@@ -17,6 +17,9 @@ words the author would use.
 This skill outranks any other commit-message skill loaded in the session. Where
 they disagree, follow this one.
 
+Two checks gate every commit, and step 7 holds the scripts: the message body
+wraps at 72 characters, and the repo's pre-commit hooks run when it has them.
+
 Use `write-clearly` on every message when available. Use
 `write-technical-english` only when the message carries commands, migration
 steps, a breaking contract, or wording with real ambiguity risk. Applied to an
@@ -309,8 +312,9 @@ finished text, the same `-F` instruction, and both scripts to run first.
 Check the result with `git log -1`: subject on its own line, blank line, body
 wrapped.
 
-Done when the commit exists with the message intact, or the finished text is
-handed off.
+Done when `check_wrap.py` reports nothing, the pre-commit hooks passed or the
+repo has none, and the commit exists with the message intact, or the finished
+text is handed off.
 
 ## Rewriting history
 
@@ -383,6 +387,6 @@ clear line, and passes the "If applied" test. The body, if present, moves from
 current state to change to result in the author's voice, flags any breaking
 change, survives the read-aloud test, and leaves the cold reviewer nothing to
 reconstruct. On an unmerged branch, no dead end reaches the final history. The
-message reached git through `-F` with its wrapping intact, or went to another
-agent to commit. No existing commit was rewritten without the user confirming a
+message wraps at 72, the repo's pre-commit hooks ran when it has them, and it
+reached git through `-F`, or went to another agent to commit. No existing commit was rewritten without the user confirming a
 stated plan first.
