@@ -115,10 +115,16 @@ After confirmation:
    already rewrote survive byte for byte, with their hashes.
 3. Run the rewrite. In a non-interactive session, drive `git rebase -i` through
    `GIT_SEQUENCE_EDITOR`, or rebuild the branch with `git reset --soft <base>`
-   and fresh commits.
+   and fresh commits. A `reword` stop needs the new message supplied before the
+   rebase continues: `git commit --amend -F -`, then `git rebase --continue`.
+   `GIT_EDITOR=true git rebase --continue` accepts whatever message is already
+   on the commit, old wording included, and produces a new commit with the
+   text unchanged. Reserve `GIT_EDITOR=true` for continuations with no pending
+   message edit.
 4. Verify: `git diff backup/<name>..HEAD` is empty when the rewrite only
    reorganised commits. Any output means content moved that should not have.
-   Run the closure walk again over the new range.
+   Read every rewritten subject and body against the target log from step 2,
+   not just the diff. Run the closure walk again over the new range.
 5. Read the result again, `git show --stat <commit>` then the full diff. A
    smaller diff often earns a clearer subject and a shorter body than the one
    drafted against the tangled version.
