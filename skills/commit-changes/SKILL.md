@@ -228,35 +228,7 @@ compatibility tests. Skip it for a one-line assertion whose subject already
 names the full contract. Done when a cold reviewer can name the protected
 behaviour, the reason the test changed, and any legacy case still covered.
 
-Escalate past the default only for a breaking contract, a data migration, an
-operational risk, or a change that introduces domain concepts the diff alone
-won't teach. There, write in this order instead:
-
-1. **Current state:** what happens before this commit, and why it is a problem.
-2. **Change:** what this commit does.
-3. **Result:** what becomes faster, safer, simpler, or possible.
-4. **Trade-off:** a real cost or maintenance requirement, only if one exists.
-
-This order is a drafting aid, not a four-section template. Omit any part that
-adds no useful fact. The escalated body also covers:
-
-- A definition for every new domain term and document type, the first time the
-  words appear.
-- A short list for categories, file types, precedence rules, or stages, so the
-  count is visible.
-- The implementation at a high level with one concrete example: a real input
-  and what comes out of it.
-- The field or object the data lands in after the change: `Document.text`,
-  `Document.metadata`.
-- The adjacent behaviour they would ask about. PDFs, tables, legacy documents,
-  downstream callers, and existing import paths are the usual questions.
-- The scope boundary, with deferred work named and the reason it sits outside
-  the current issue.
-- The limit of a heuristic, in plain language, when the behaviour cannot be
-  exact: `Header detection reads font size, so a document that marks headers by
-  weight alone is missed.`
-
-Tense follows the timeline, in either branch:
+Tense follows the timeline, in every body:
 
 - Present tense for the state before the commit: `The importer loads the whole
   file into memory before parsing.`
@@ -264,32 +236,14 @@ Tense follows the timeline, in either branch:
 - Past tense only for historical facts or measured tests: `In a load test, peak
   memory dropped from 2 GB to under 200 MB.`
 
-A fact earns its place in the message on these terms:
-
-- Include a fact when it explains the decision or changes how a reviewer judges
-  the commit.
-- Mention a risk when it affects correctness, rollout, maintenance, cost, or a
-  caller's contract.
-- Say that normal validation still runs when a reviewer could reasonably think
-  the change bypasses it.
-- Back a safety or performance claim with an observed result or a real source:
-  a number you measured, a link the reviewer will open.
+Escalate past the default for a breaking contract, a data migration, an
+operational risk, or a change that introduces domain concepts the diff alone
+won't teach. [references/body-detail.md](references/body-detail.md) holds the
+drafting order, the tense rules, and what earns a fact a place.
 
 Remove unexplained machinery instead of writing the paragraph that justifies
 it. A body arguing for code the commit did not need is the commit asking to be
 reshaped; go back to step 3.
-
-Name the symbol when the subject alone leaves the mechanism unclear. The rule
-and its limits live in `write-technical-english`; the short version is that a
-symbol earns its place when it lets the reviewer verify a contract, understand
-a cost, or find the code that enforces the claim.
-
-```text
-Route upload diagnostics through `UploadSession.resume()`.
-
-`count_parts()` and `read_manifest()` now inspect the same `Part` contract
-used by the uploader.
-```
 
 Use prose for cause and effect, a numbered list for ordered operations, and
 bullets only for parallel facts.
@@ -426,13 +380,6 @@ fault, and length is not.
 
 ## Done when
 
-Each commit holds one kind of change, and any move is its own commit with a
-detected rename. Every commit imports on its own tree and passes the narrow
-tests it carries. The subject matches the repo's format, states the change in one
-clear line, and passes the "If applied" test. The body, if present, moves from
-current state to change to result in the author's voice, flags any breaking
-change, survives the read-aloud test, and lets a cold reviewer reconstruct the
-changed flow. On an unmerged branch, no dead end reaches the final history. The
-message wraps at 72, the repo's pre-commit hooks ran when it has them, and it
-reached git through `-F`, or went to another agent to commit. No existing
-commit was rewritten without the user confirming a stated plan first.
+Every step's own done condition holds, and the message reached git through
+`-F`, or went to another agent to commit. No existing commit was rewritten
+without the user confirming a stated plan first.
