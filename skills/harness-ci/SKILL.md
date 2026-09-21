@@ -45,11 +45,11 @@ Session mode looks for:
 - A fact the user supplied that the repo could have supplied.
 - A user correction of how the agent wrote or behaved.
 
-Harvest mode lets the scanner find the moments and never opens a transcript
-whole:
+Harvest mode lets the scanner in the `scripts/` folder beside this file find the
+moments, and never opens a transcript whole:
 
 ```bash
-~/code/dot-g/claude/scripts/harness-scan.sh --since YYYY-MM-DD --agent all
+<skill-dir>/scripts/harness-scan.sh --since YYYY-MM-DD --agent all
 ```
 
 Flags: `--since`, `--agent claude|codex|all`, `--project SLUG`. Output is TSV
