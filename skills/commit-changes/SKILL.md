@@ -272,10 +272,12 @@ You may run `git commit`. Whether a commit was asked for is decided by the
 session's own rules; this skill decides what the message says and how it reaches
 git intact.
 
-Write the message to a file first, then validate it before it reaches git:
+Write the message to a file first, then validate it before it reaches git. The
+scripts live in the `scripts/` folder beside this file, so call them by that
+path from the skill directory, whichever agent loaded it:
 
 ```bash
-"$CLAUDE_PLUGIN_ROOT/skills/commit-changes/scripts/check_wrap.py" <message-file>
+<skill-dir>/scripts/check_wrap.py <message-file>
 ```
 
 Fix any line it reports and recheck. Hand wrapping to a script rather than
@@ -287,7 +289,7 @@ files before committing, since `pre-commit run` is what fires them, not
 clone:
 
 ```bash
-"$CLAUDE_PLUGIN_ROOT/skills/commit-changes/scripts/run_pre_commit.sh"
+<skill-dir>/scripts/run_pre_commit.sh
 ```
 
 Fix whatever it flags and re-stage before committing. A hook already installed
