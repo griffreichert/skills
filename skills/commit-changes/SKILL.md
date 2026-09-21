@@ -143,6 +143,13 @@ passes the "If applied" test.
 Skip the body when the subject fully explains the change. A version bump or a
 one-line rename needs no body.
 
+**Body quality bar.** A cold reviewer with no code context must understand the
+problem, change, result, and scope from the body alone. Write the rationale
+before the implementation detail: the old behaviour or problem first, then the
+change, the result, and the boundary that limits it. Name preserved behaviour
+when a reviewer could ask whether it changed. The diff then confirms how the
+code implements the described behaviour, and never teaches the intent first.
+
 Default, for every commit that needs a body, including a reword: check that
 author's recent commits and match their length and vocabulary. Lead with the
 problem or reason, then state the change and its result, in this shape:
@@ -167,6 +174,44 @@ rewriting, completion, and cancellation."
 After: "The workflow starts before the request trace is active, so agent and
 tool work appears outside the request trace. Run workflow creation and event
 handling inside one shared request-trace helper for both streaming endpoints."
+
+When operation order affects the result, list the operations in order:
+
+```text
+<problem or current behaviour>.
+
+Apply the change in this order:
+1. <first operation>
+2. <next operation>
+3. <final operation>
+
+<result and scope boundary>.
+```
+
+Before: "Reset the handoff state, save a checkpoint, and recover both context
+paths."
+
+After: "The request can end after cancellation, leaving the saved operation
+incomplete.
+
+When cancellation occurs:
+1. Stop the operation.
+2. Save the current context and messages.
+3. Mark the operation for recovery.
+
+When the next request arrives:
+1. Detect the recovery marker.
+2. Load the saved history.
+3. Resume without duplicating the request.
+4. Clear the marker after success.
+
+Normal requests keep their existing input path."
+
+This covers commits that change request flows, migrations, retries,
+persistence, lifecycle behaviour, API contracts, or other behaviour with
+ordered operations. A one line fix, a pure rename, a formatting change, or a
+mechanical change whose order carries no meaning keeps the default shape, with
+no list.
 
 For a non-trivial test commit, a subject naming only the mechanics ("check X
 survives Y") reads as generated rather than intended. State the contract the
@@ -193,8 +238,7 @@ won't teach. There, write in this order instead:
 4. **Trade-off:** a real cost or maintenance requirement, only if one exists.
 
 This order is a drafting aid, not a four-section template. Omit any part that
-adds no useful fact. Write for the cold reviewer: someone who reads the diff
-without having read the implementation. The escalated body also covers:
+adds no useful fact. The escalated body also covers:
 
 - A definition for every new domain term and document type, the first time the
   words appear.
@@ -247,7 +291,8 @@ Route upload diagnostics through `UploadSession.resume()`.
 used by the uploader.
 ```
 
-Use prose for cause and effect. Use bullets only for parallel facts.
+Use prose for cause and effect, a numbered list for ordered operations, and
+bullets only for parallel facts.
 
 Name what the code does, in the words the author used in their recent commits.
 Where a phrase describes the architecture instead of the change, the read-aloud
@@ -256,9 +301,10 @@ test in the quality bar settles it.
 Read [references/examples.md](references/examples.md) before writing a body. It
 carries the contrast pairs for voice, splitting, and detail.
 
-Done when every remaining sentence would cost the reviewer information if
-deleted, and the body answers what changes, why it is needed, where the output
-goes, what existing behaviour stays the same, and what is outside scope.
+Done when a cold reviewer can reconstruct the changed flow from the body, every
+remaining sentence would cost that reviewer information if deleted, and the
+body answers what changes, why it is needed, where the output goes, what
+existing behaviour stays the same, and what is outside scope.
 
 ### 6. Call out breaking changes
 
@@ -360,9 +406,9 @@ Every number below exists for a reason. Keep them.
 
 ## Quality bar
 
-Length follows the change. A one-line fix needs no body; a change that adds
-types, moves data, or shifts a contract earns every sentence the cold reviewer
-needs. The fault to avoid is padding, not length.
+Length follows the change. A one-line fix needs no body, and a change that
+shifts a contract earns every sentence step 5's bar demands. Padding is the
+fault, and length is not.
 
 - Match the repo's detected convention exactly. Consistency beats preference.
 - Descriptive sentences use active voice with a clear actor and verb, unless the
@@ -385,8 +431,8 @@ detected rename. Every commit imports on its own tree and passes the narrow
 tests it carries. The subject matches the repo's format, states the change in one
 clear line, and passes the "If applied" test. The body, if present, moves from
 current state to change to result in the author's voice, flags any breaking
-change, survives the read-aloud test, and leaves the cold reviewer nothing to
-reconstruct. On an unmerged branch, no dead end reaches the final history. The
+change, survives the read-aloud test, and lets a cold reviewer reconstruct the
+changed flow. On an unmerged branch, no dead end reaches the final history. The
 message wraps at 72, the repo's pre-commit hooks ran when it has them, and it
-reached git through `-F`, or went to another agent to commit. No existing commit was rewritten without the user confirming a
-stated plan first.
+reached git through `-F`, or went to another agent to commit. No existing
+commit was rewritten without the user confirming a stated plan first.
