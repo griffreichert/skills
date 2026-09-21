@@ -165,6 +165,21 @@ After: "The workflow starts before the request trace is active, so agent and
 tool work appears outside the request trace. Run workflow creation and event
 handling inside one shared request-trace helper for both streaming endpoints."
 
+For a non-trivial test commit, a subject naming only the mechanics ("check X
+survives Y") reads as generated rather than intended. State the contract the
+test protects, why it is newly at risk, and what the assertion proves:
+
+```text
+<behaviour under protection> because <the change that put it at risk>.
+<test change> so <the contract is asserted>.
+<compatibility case retained>, when one exists.
+```
+
+Applies to dependency upgrades, changed expectations, replaced fixtures, and
+compatibility tests. Skip it for a one-line assertion whose subject already
+names the full contract. Done when a cold reviewer can name the protected
+behaviour, the reason the test changed, and any legacy case still covered.
+
 Escalate past the default only for a breaking contract, a data migration, an
 operational risk, or a change that introduces domain concepts the diff alone
 won't teach. There, write in this order instead:
@@ -257,22 +272,37 @@ You may run `git commit`. Whether a commit was asked for is decided by the
 session's own rules; this skill decides what the message says and how it reaches
 git intact.
 
-Never pass a body through `-m`. Repeated `-m` flags and shell quoting flatten
-the wrapping and blank lines you just chose. Pipe the message instead:
+Write the message to a file first, then validate it before it reaches git:
 
 ```bash
-git commit -F - <<'EOF'
-<subject>
-
-<body>
-EOF
+"$CLAUDE_PLUGIN_ROOT/skills/commit-changes/scripts/check_wrap.py" <message-file>
 ```
 
-Write the message to a file and use `git commit -F <file>` when the body
-contains a heredoc terminator or other shell-hostile text.
+Fix any line it reports and recheck. Hand wrapping to a script rather than
+counting characters by eye; that count has been the recurring miss.
+
+If the repo has a `.pre-commit-config.yaml`, run its hooks against the staged
+files before committing, since `pre-commit run` is what fires them, not
+`git commit`, unless `pre-commit install` has already wired a hook into this
+clone:
+
+```bash
+"$CLAUDE_PLUGIN_ROOT/skills/commit-changes/scripts/run_pre_commit.sh"
+```
+
+Fix whatever it flags and re-stage before committing. A hook already installed
+in `.git/hooks/pre-commit` runs again on `git commit`; running it twice is
+harmless.
+
+Never pass a body through `-m`. Repeated `-m` flags and shell quoting flatten
+the wrapping and blank lines you just chose. Commit with the validated file:
+
+```bash
+git commit -F <message-file>
+```
 
 Handing the message to another agent to commit is equally fine. Give it the
-finished text and the same `-F` instruction.
+finished text, the same `-F` instruction, and both scripts to run first.
 
 Check the result with `git log -1`: subject on its own line, blank line, body
 wrapped.
