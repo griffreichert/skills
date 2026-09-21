@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Draft MR Description
 
-Turn a finished issue branch into a reviewer-ready MR description. The output
+Turn a finished issue branch into an MR description ready for review. The output
 must read like a change story, not a commit dump.
 
 The same shape covers a PR description, an RFC summary, and an architecture

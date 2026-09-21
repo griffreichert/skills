@@ -29,7 +29,7 @@ Choose the smallest example that still exercises the behaviour in question.
 Aim for a case with real tension in it: two siblings sharing a parent, one
 temporary artifact, one persisted derivative, one branch.
 
-Use real-looking values — `order_2481`, `attempt=2`, an actual line of input —
+Use values that look real — `order_2481`, `attempt=2`, an actual line of input —
 over `foo` and `<placeholder>`. Reuse exactly the same example through every
 later step. A second example halves the reader's grip on the first.
 

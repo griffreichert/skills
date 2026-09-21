@@ -9,7 +9,7 @@ Ask of every test: **would it go red if the behaviour broke?**
 
 The red question beats coverage, assertion counts, and a passing suite. Report
 findings. Do not change code or tests unless asked. **purge-slop** and **prove-it** both
-defer here for test-shaped work.
+defer here for work shaped like tests.
 
 ## Lanes
 

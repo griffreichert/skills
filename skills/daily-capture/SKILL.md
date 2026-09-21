@@ -31,8 +31,8 @@ Cap ~3-5 bullets per section. Hitting the cap means consolidate, not expand.
 Omit a section that's genuinely empty; don't pad.
 
 Phrase every bullet by the **write-clearly** skill's guidelines if it's
-available: front-loaded, one idea each, cut to the bone. If it isn't, still keep
-bullets terse.
+available: leads with the point, one idea each, cut to the bone. If it isn't,
+still keep bullets terse.
 
 ### 2. Find the destination
 

@@ -55,7 +55,7 @@ how much you say.
   has the context it assumes. Internal names, private repos and in-house jargon
   do not survive the trip.
 
-Break any of these rules before writing something barbarous or machine-shaped.
+Break any of these rules before writing something barbarous or shaped like a machine wrote it.
 
 Same facts, before and after:
 
@@ -191,6 +191,14 @@ content. You cannot add it at the sentence level.
   Say what changed, what failed, what comes next, in plain sentences.
 - **Long list items.** Keep list elements to a label and a simple sentence. A
   list item running to a full paragraph belongs in prose.
+- **Hyphenated words built for the occasion.** Not only the preposition case
+  above, any compound coined for this sentence: "well-suited", "context-aware",
+  "purpose-built", "reviewer-ready". Rewrite in plain words: "fits the case",
+  "reads the context", "built for this", "ready for review". Leave an
+  established technical compound alone when the field already uses it as one
+  word ("read-only", "no-op", "type-checking", "in-memory"); breaking those
+  apart adds words without adding clarity. Hyphens also stay in code, paths,
+  flags, dates, and names.
 
 ## Done when
 

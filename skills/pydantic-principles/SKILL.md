@@ -5,17 +5,17 @@ description: Structure pydantic code so the model does the work — construction
 
 # Pydantic principles
 
-Pydantic already parses, validates, coerces, defaults, and reports errors. Every hand-rolled version of that is slop. The model is the loader, the validator, and the error message — write the class, not the machinery around it.
+Pydantic already parses, validates, coerces, defaults, and reports errors. Every version of that built by hand is slop. The model is the loader, the validator, and the error message — write the class, not the machinery around it.
 
 ## Structure
 
-- **Construction is loading.** No `load_config()` beside a self-validating model — `Config()` *is* the loader. Env vars, files, defaults, coercion, and derived values live inside the class. Catching `ValidationError` to re-raise it as `ConfigError` adds a stack frame and nothing else.
+- **Construction is loading.** No `load_config()` beside a model that validates itself — `Config()` *is* the loader. Env vars, files, defaults, coercion, and derived values live inside the class. Catching `ValidationError` to re-raise it as `ConfigError` adds a stack frame and nothing else.
 - **Settings own the knobs.** Tunables — token caps, TTLs, retries, timeouts, model names — are fields on the settings model, with a `Field(description=...)` where the name doesn't carry it. Not `_MAX_SUMMARY_TOKENS = 120` halfway down a module. Fixed facts (enum members, model-keyed lookup tables) stay module-level; a knob someone will want to turn does not.
 - **Contracts are models, plumbing is plain.** Pydantic where data crosses a boundary: LLM structured output, files on disk, API payloads, queue messages, config. Plain classes for internal machinery: stateful workers, parsers, adapters, transient algorithm state. Don't model what never leaves the function. Repository consistency never justifies modelling behaviour as data.
 - **The package's convention outranks the boundary test.** Before swapping a model for a dataclass or a plain class, read what its neighbours in `schema.py` use. A value inside an established contract family stays in it, even when every producer and consumer is internal. A second model system gives one package parallel validation, serialization, and equality paths.
 - **`frozen=True` earns its place with a bug.** Name the mutation it prevents and the caller that would have made it. Where nothing mutates the model and construction already validates the shape, leave it mutable. It holds for an observed mutation bug, a cached identity, a value shared across threads, or a public value object documented as immutable. A model frozen on principle, sitting beside mutable neighbours in the same `schema.py`, gives one package two conventions and no reason. The table below still applies once you have the reason: the config replaces the "don't mutate this" comment.
 - **Group contracts in `schema.py`.** Data contracts live in a per-package `schema.py`. Stateful classes with behavior stay in their own module.
-- **One model per contract.** No parallel dataclass or `TypedDict` mirroring a model to "decouple" from pydantic. No hand-written `to_dict()`/`from_dict()` — `model_dump()` and `model_validate()` are the API.
+- **One model per contract.** No parallel dataclass or `TypedDict` mirroring a model to "decouple" from pydantic. No `to_dict()`/`from_dict()` written by hand — `model_dump()` and `model_validate()` are the API.
 - **Validate at the edge, once.** Data that entered as a model stays a model. Downstream functions take the model, not a dict they re-validate.
 
 ## Use the native feature
@@ -48,7 +48,7 @@ Reach for the library before writing the code:
 
 - Code that survives deletion with nothing lost → **purge-slop**.
 - Speculative abstraction, a base class with one subclass, config for a value that never changes → **ponytail**.
-- Anything test-shaped → **test-stickler**.
+- Anything shaped like test work → **test-stickler**.
 
 ## Done when
 

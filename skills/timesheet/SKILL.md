@@ -108,13 +108,13 @@ the week has a shape worth naming; skip it when it would just re-list the days.
 
 Days with nothing say so explicitly — `No daily note`, `No relevant commits` —
 so a blank Thursday reads as missing evidence. Phrase every bullet by the
-**write-clearly** skill: front-loaded, one idea, no padding.
+**write-clearly** skill: leads with the point, one idea, no padding.
 
 ## Rules
 
-- **Evidence or nothing.** Every claim traces to a note line or a commit. A
-  plausible-sounding day that no source supports is fabrication, and it is worse
-  than a gap because the user will sign it.
+- **Evidence or nothing.** Every claim traces to a note line or a commit. A day
+  that sounds plausible but has no source behind it is fabrication, and it is
+  worse than a gap because the user will sign it.
 - **Commit count is not effort.** One commit can be a week; forty can be an
   afternoon of rebasing. Never rank or size a day by how many there are.
 - **No hours.** Estimate time only when the user asks *and* supplies the basis

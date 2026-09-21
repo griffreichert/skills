@@ -26,7 +26,7 @@ not just the *what*:
 > - Split daily-capture into three skills — one was doing continuous logging and
 >   end-of-session snapshotting at once. Why: scope creep, two triggers in one.
 
-Front-loaded, one idea, terse (**write-clearly** if available). Append directly
+Leads with the point, one idea, terse (**write-clearly** if available). Append directly
 to the dated note with your file-editing tools — never a script. Create the note
 and its `_index.md` link only if `daily-capture` hasn't; otherwise just append.
 
