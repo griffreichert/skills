@@ -144,23 +144,24 @@ Skip the body when the subject fully explains the change. A version bump or a
 one-line rename needs no body.
 
 **Body quality bar.** A cold reviewer with no code context must understand the
-problem, change, result, and scope from the body alone. Write the rationale
-before the implementation detail: the old behaviour or problem first, then the
-change, the result, and the boundary that limits it. Name preserved behaviour
-when a reviewer could ask whether it changed. The diff then confirms how the
-code implements the described behaviour, and never teaches the intent first.
+problem, change, result, and scope from the body alone. Open with the overall
+goal of the commit, in terms a user or operator would recognise. Then explain
+the problem, change, result, and boundary. A small symptom or implementation
+detail cannot carry that opening. Name preserved behaviour when a reviewer
+could ask whether it changed. The diff confirms how the code implements the
+intent; the body states it first.
 
 Default, for every commit that needs a body, including a reword: check that
-author's recent commits and match their length and vocabulary. Lead with the
-problem or reason, then state the change and its result, in this shape:
+author's recent commits and match their length and vocabulary. State the goal
+before the problem and change, in this shape:
 
 ```text
 <subject>
 
-<why/problem>. <change/result>.
+<goal>. <problem>. <change/result>.
 ```
 
-Add a third sentence only for a real behaviour boundary, a test result, or a
+Add further detail only for a real behaviour boundary, a test result, or a
 migration step. Name a symbol only when a reviewer needs the exact contract,
 seam, migration, or risk — a draft that lists internal functions without the
 user-visible reason has reached for jargon the reader does not need.
