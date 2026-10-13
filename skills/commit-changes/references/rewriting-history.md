@@ -14,7 +14,9 @@ removes, replaces, or corrects work an earlier commit introduced, fold it back
 into the original commit, so the dead ends never reach the reviewer.
 
 - Drop files and abstractions that disappear before the branch is complete.
-- Squash a correction into the commit that introduced the behaviour.
+- Squash a correction into the commit that introduced the behaviour. If later
+  code changes behaviour described by earlier documentation, combine the
+  documentation changes after the last such code commit.
 - Split the result again when it holds separate mechanical and behavioural
   changes.
 - Keep a follow-up commit only when it carries a distinct decision that stays
