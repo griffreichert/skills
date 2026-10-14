@@ -1,19 +1,26 @@
 ---
 name: purge-slop
-description: Purge Python slop — code that adds no value. Use when writing or refactoring Python, cleaning up code, when code is called hard to maintain or helper-heavy, or when the agent reaches for defensive type checks, fake tests, needless private helpers, wrappers around a library's own API, or missing and dishonest type hints.
+description: Purge Python slop, code that adds no value. Use when writing or refactoring Python, cleaning up code, when code is called hard to maintain or helper-heavy, or when the agent reaches for defensive type checks, fake tests, needless private helpers, wrappers around a library's own API, or missing and dishonest type hints.
 ---
 
 # Purge slop
 
-Slop is code that adds no value: it survives deletion with nothing lost. Optimize for reviewable, maintainable code — cut everything that doesn't serve that.
+Slop is code that survives deletion with nothing lost. Optimize for reviewable,
+maintainable code and cut everything that does not serve that.
 
 ## Rules to check
 
-- **No defensive type-checking.** `isinstance`/`hasattr` are almost never needed. Assume the types you expect and let it error when they're wrong. A wrong-attribute crash is better than a silent check that hides the bug.
-- **Validate once, at the owner.** A model, parser, reader, or API schema that already validated the data owns that contract. Downstream code reads its fields directly and trusts them. Re-checking is slop even when the check is spelled as a helper:
+### Validate once, at the owner
+
+- **No defensive type checking.** `isinstance` and `hasattr` are almost never
+  needed. Assume the expected types and let a wrong one raise, since a crash
+  beats a silent check that hides the bug.
+- **A model, parser, reader or API schema that validated the data owns that
+  contract.** Downstream code reads its fields directly. A re-check is slop even
+  when spelled as a helper:
 
   ```python
-  # slop — the parser already guaranteed this shape
+  # slop: the parser already guaranteed this shape
   source = metadata.get("source")
   return source if isinstance(source, Mapping) else None
 
@@ -21,15 +28,35 @@ Slop is code that adds no value: it survives deletion with nothing lost. Optimiz
   source_id = record.metadata["source"]["id"]
   ```
 
-  Re-validate only where a caller can hand you a partial or untrusted set: cross-record checks over results you assembled yourself. A fact an upstream model already proved needs no second proof. The same trust covers data your own code produces: a `frozen=True` dataclass or a pydantic validator guarding a shape only your own writer builds is the same re-check in different clothes, and so is a `try`/`except` or an `if`/`else` fallback chain wrapped around a file type, format, or path your own code produced. `dict.get(key, default)` is a plain substitution and stays; an `if`/`else` chain guarding the same lookup is the fallback in disguise. For contracts that are pydantic models, defer to the **pydantic-principles** skill.
-- **A test must be able to fail.** A test that passes no matter what the code does is slop. Defer to the **test-stickler** skill for anything shaped like test work — mutation, mocks, missing edge cases, fixtures — that's its job, not this one.
-- **Don't privatize past what's needed.** Private methods only inside a class, for genuine internals. Standalone module functions don't need a `_` prefix — default to importable. Slop names ride along with the prefix: `_short`, `_handle`, `_in_kb` say nothing — name the function for what it does (`truncate_title`, `handle_update`, `has_graph_node`).
-- **Types are contracts. Write them, and don't fake them.** Every signature gets parameter and return annotations, including `None` returns and private functions. Then keep them honest: a type that widens what the code already knows is a lie to the checker and to the next reader. `Any` in a signature, a `cast()`, a `# type: ignore`, or a `dict[str, Any]` standing in for a real model each throw away a fact you had.
+  Re-validate only where a caller can hand over a partial or untrusted set, such
+  as cross record checks over results you assembled. The same trust covers data
+  your own code produces: a `frozen=True` dataclass or pydantic validator
+  guarding a shape only your writer builds, and a `try`/`except` or `if`/`else`
+  fallback chain around a file type, format or path your code produced, are
+  re-checks in different clothes. `dict.get(key, default)` is a plain
+  substitution and stays, and an `if`/`else` chain guarding the same lookup is
+  the fallback in disguise. Contracts that are pydantic models defer to
+  **pydantic-principles**.
+- **A test must be able to fail.** A test that passes whatever the code does is
+  slop. Mutation, mocks, missing edge cases and fixtures belong to
+  **test-stickler**.
 
-  A collection or a domain type is the same fact, widened: `Sequence[Sequence[object]]` for a `tuple[Row, ...]` the repo builds, or `Path | PurePosixPath` where the neighbours just take `Path`. Where the repo owns both sides, annotate the concrete type it enforces, match the neighbours, and alias a nested collection so the shape survives a glance. Abstract types earn their place at a public extension point, where taking several representations is the contract.
+### Types are contracts
+
+- **Annotate every signature**, parameters and returns, including `None`
+  returns and private functions. Then keep them honest, since a type that
+  widens what the code knows lies to the checker and the next reader. `Any` in a
+  signature, `cast()`, `# type: ignore`, and `dict[str, Any]` standing in for a
+  real model each discard a fact you had.
+- **A widened collection or domain type is the same lie.**
+  `Sequence[Sequence[object]]` for a `tuple[Row, ...]` the repo builds, or
+  `Path | PurePosixPath` where neighbours take `Path`. Where the repo owns both
+  sides, annotate the concrete type it enforces, match the neighbours, and alias
+  a nested collection so the shape survives a glance. Abstract types earn a place
+  at a public extension point, where several representations are the contract.
 
   ```python
-  # slop — both signatures throw away what the caller already knew
+  # slop: both signatures discard what the caller knew
   def summarise(item: Any) -> dict[str, Any]: ...
   def write_rows(rows: Sequence[Sequence[object]]) -> str: ...
 
@@ -39,13 +66,33 @@ Slop is code that adds no value: it survives deletion with nothing lost. Optimiz
   def write_rows(rows: tuple[Row, ...]) -> str: ...
   ```
 
-  Keep the escape hatch where the type isn't knowable: untyped third-party returns, dynamic dispatch, a genuine `object` boundary. Name the reason in a comment on the same line. A `Protocol` or abstract stub body is `...`, never `raise NotImplementedError`: the method never runs, so raising defends against a call that can't happen.
-- **Local variables don't need blanket annotations.** Add one when a helper or factory call returns an unclear semantic type, or when an empty, nested, or branch-dependent collection needs its shape documented. Skip it when the right-hand side and name already make the type obvious, including a construction or a `cast()` on the same line: `items: list[Item] = []` repeats what `[]` and the name already say, and `path = Path(raw)` needs no `path: Path` beside it. An annotation that only repeats what the right-hand side already says is slop; one that names a shape the right-hand side hides is a fact worth keeping.
-- **A name that needs a comment is the wrong name.** One that reads as "X but really Y" is worse, since the reader trusts it until it burns them. Rename the thing after what it holds.
-- **Read the library's API before you wrap it.** A helper that renames, unwraps, or forwards one native call is slop. Delete it and call the native operation directly.
+- **Keep the escape hatch where the type is unknowable**: untyped third party
+  returns, dynamic dispatch, a real `object` boundary. Name the reason in a
+  comment on the same line.
+- **A `Protocol` or abstract stub body is `...`.** `raise NotImplementedError`
+  defends against a call that cannot happen.
+- **Annotate a local only when the right side hides the shape**: an unclear
+  helper or factory return, or an empty, nested or branch dependent collection.
+  `items: list[Item] = []` and `path: Path = Path(raw)` repeat what the right
+  side and name already say, and an annotation that only repeats is slop.
+
+### Names and wrappers
+
+- **Privatize only what needs it.** Private methods belong inside a class for
+  real internals. Standalone module functions default to importable, with no `_`
+  prefix. Slop names ride along with the prefix: `_short`, `_handle`, `_in_kb`.
+  Name the function for what it does (`truncate_title`, `handle_update`,
+  `has_graph_node`).
+- **A name that needs a comment is the wrong name.** One that reads "X but
+  really Y" is worse, since the reader trusts it until it burns them. Rename the
+  thing after what it holds. Use a plain phrase over a coined compound: `IDs the
+  reader supplies` reads to every maintainer, and a coined term reads only to
+  its writer.
+- **Read the library's API before you wrap it.** A helper that renames, unwraps
+  or forwards one native call is slop, so call the native operation:
 
   ```python
-  # slop — Path already reads
+  # slop: Path already reads
   def read_file(path: Path) -> str:
       with path.open() as handle:
           return handle.read()
@@ -53,69 +100,118 @@ Slop is code that adds no value: it survives deletion with nothing lost. Optimiz
   text = path.read_text()
   ```
 
-  A helper earns its name by owning what the library can't: a multi-step domain rule, error or resource policy, an unstable third-party contract pinned behind one name, or one operation shared by several callers. One caller, one return expression, no domain rule, and it goes inline.
-- **No comments that restate the code.** Comment the *why*, never the *what* the line already says. Docstrings earn their place on complex logic, edge cases, or non-obvious decisions; every function still gets a one-line docstring for ruff format. Delete what you left behind while working: `print()`, `breakpoint()`, commented-out code, `# TODO: implement`. Leave a human-written docstring's voice alone: fix the line that's wrong, don't rewrite the rest into your own register. Name a thing plainly instead of inventing a compound for it: `IDs the reader supplies` reads to every maintainer, a coined term reads only to whoever wrote it.
-- **The function-docstring rule stops at the function.** "Every function gets a docstring" says nothing about modules and packages. Before topping a file with `"""Retry helpers for the shared HTTP client contract."""`, match the neighbours. Where they start at the imports, so does yours:
+  A helper earns its name by owning what the library cannot: a multi step domain
+  rule, an error or resource policy, an unstable third party contract pinned
+  behind one name, or one operation shared by several callers. One caller, one
+  return expression and no domain rule goes inline.
+
+### Comments and docstrings
+
+- **Comment the why, never the what the line already says.** Docstrings earn
+  their place on complex logic, edge cases and non obvious decisions, and every
+  function still gets a one line docstring for ruff format. Delete what you left
+  behind: `print()`, `breakpoint()`, commented out code, `# TODO: implement`.
+  Leave a human written docstring's voice alone and fix only the wrong line.
+- **The function docstring rule stops at the function.** It says nothing about
+  modules and packages, so match the neighbours before topping a file with
+  `"""Retry helpers for the shared HTTP client contract."""`. Where they start
+  at the imports, so does yours:
 
   ```python
-  # slop — the filename and the imports already say this
+  # slop: the filename and the imports already say this
   """Date parsing built on the standard library."""
 
   from datetime import datetime
   ```
 
-  Keep the module docstring where the repo's tooling demands it (ruff `D100`, generated docs), where local style is consistent about it, or where the module carries a public contract its names can't convey.
+  Keep a module docstring where tooling demands it (ruff `D100`, generated
+  docs), where local style is consistent about it, or where the module carries a
+  public contract its names cannot convey.
 - **No `from __future__ import annotations`.**
 
-For over-engineering, speculative abstraction, reinvented stdlib, or trivial single-use helpers, defer to the **ponytail** skill — that's its job, not this one.
+Over engineering, speculative abstraction, reinvented stdlib and single use
+helpers belong to **ponytail**.
 
 ## Match the neighbours
 
-Every rule above bends to the file it lands in. Before you add something the surrounding code doesn't have, and before you cut something it does, read `AGENTS.md` / `CLAUDE.md` and open two neighbouring modules. A file whose comment density, error handling, import style, or docstring habit differs from its neighbours reads as slop even when each line defends itself.
+Every rule bends to the file it lands in. Before you add what the surrounding
+code lacks, or cut what it has, read `AGENTS.md` and `CLAUDE.md` and open two
+neighbouring modules. A file whose comment density, error handling, import style
+or docstring habit differs from its neighbours reads as slop even when each
+line defends itself.
 
-This runs both ways. Consistency is no licence to spread a bad pattern, so when you diverge, say what the neighbours do and why this file doesn't.
+This runs both ways. Consistency is no licence to spread a bad pattern, so when
+you diverge, say what the neighbours do and why this file does not.
 
-## When cleanup isn't enough
+## When cleanup is not enough
 
-Three or more helpers translating one contract, validating the same data, or shuttling state between stages is one broken flow. Each helper reads as small on its own, so fixing them one at a time never lands. Stop editing helpers and trace the flow: who owns the data, what transforms it, who consumes it. Put each rule with its owner, then keep the top-level function readable top to bottom.
+Three or more helpers translating one contract, validating the same data, or
+shuttling state between stages is one broken flow. Each helper reads as small,
+so fixing them one at a time never lands. Stop editing helpers and trace the
+flow: who owns the data, what transforms it, who consumes it. Put each rule with
+its owner, and keep the top level function readable top to bottom.
 
-```
+```text
 before:  metadata helper → fallback helper → ID helper → validator → grouping
 after:   validate on load → group by owner ID → transform → emit pairs
 ```
 
-The trigger is the shape, and the words the user reaches for: hard to maintain, helper-heavy, fragmented, hard to follow. Leave alone the module whose helpers are independent domain operations that stand up on their own. For the vocabulary of the seam this restructuring lands on, defer to the **codebase-design** skill.
+The trigger is the shape, and the user's words: hard to maintain, helper heavy,
+fragmented, hard to follow. Leave a module whose helpers are independent domain
+operations that stand alone. The seam vocabulary comes from **codebase-design**.
 
-## Scope: a diff you didn't write
+## Scope: a diff you did not write
 
-An agent wrote it and you are stripping its fingerprints before anyone reviews it. Scope to `git diff main` and touch changed lines only.
+An agent wrote it and you are stripping its fingerprints before review. Scope to
+`git diff main` and touch changed lines only.
 
-- Match the neighbours. The target is the file's existing style. These rules describe what you would write from scratch; the neighbours describe what belongs here.
-- Cut what the agent added on top: comments the file wouldn't carry, `try`/`except` the area doesn't use, a `cast()` or `# type: ignore` papering over a type problem, helpers called once, and any comment calling this branch's own code "legacy" — code the diff introduces or changes is current, even mid-migration.
-- Keep the behaviour. Fix a real bug you find, and report that separately from the cleanup.
-- Surgical edits. A rewrite belongs in "When cleanup isn't enough" above, with the user's agreement first.
-- Report in two or three sentences: what you removed, and anything you left because the neighbours do it too.
+- **Target the neighbours' style.** The rules describe what you would write from
+  scratch, and the neighbours describe what belongs here.
+- **Cut what the agent added on top**: comments the file would not carry,
+  `try`/`except` the area does not use, a `cast()` or `# type: ignore` papering
+  over a type problem, helpers called once, and any comment calling this
+  branch's own code "legacy". Code the diff introduces or changes is current,
+  even mid migration.
+- **Keep the behaviour.** Fix a real bug you find and report it apart from the
+  cleanup.
+- **Edit surgically.** A rewrite belongs to "When cleanup is not enough", with
+  the user's agreement first.
+- **Report in two or three sentences**: what you removed, and anything you left
+  because the neighbours do it too.
 
-## Don't purge
+## Do not purge
 
-Never remove, even when it looks defensive:
+Keep these even when they look defensive:
 
-- **Input validation at trust boundaries** — API edges, user input, deserialization, config parsing, partial results from an external call.
-- **Error handling that prevents data loss** — writes, migrations, transactions.
+- **Input validation at trust boundaries**: API edges, user input,
+  deserialization, config parsing, partial results from an external call.
+- **Error handling that prevents data loss**: writes, migrations, transactions.
 - **Security and auth checks.**
 
-Removing a check on purpose is fine when the assumption is safe. If it isn't obvious, leave a short comment naming the assumption.
+Removing a check on purpose is fine when the assumption is safe. When it is not
+obvious, leave a short comment naming the assumption.
 
-Defensiveness in the wrong place is its own slop. The common shape: safe internal code wrapped in `try`/`except Exception` that only logs, while the network call three lines down has no timeout and no retry. Move the handling onto the call that can fail.
+Defensiveness in the wrong place is its own slop. The common shape is safe
+internal code wrapped in `try`/`except Exception` that only logs, while the
+network call three lines down has no timeout and no retry. Move the handling
+onto the call that can fail.
 
 ## Done when
 
-Every file you touched is free of the slop patterns above, or each deliberate exception is a justified carve-out. Then ask:
+Every file you touched is free of these patterns, or each exception is a
+justified carve out. Then ask:
 
-- For each check that survived, which trust boundary does it protect? If an upstream validated model already guarantees the fact, it goes.
-- Can a maintainer read each main path top to bottom without opening a chain of single-use helpers?
-- Does every module docstring you added match what the neighbouring modules do, or something the tooling requires?
-- Is every signature annotated, and does every `Any`, `cast()`, and `# type: ignore` name the reason it survived?
-- Can a reviewer name the runtime collection from the annotation, and does every abstract one mark a caller who may pass its own?
-- Did you read the API of every library object you wrapped, and does each surviving wrapper own a rule the library lacks?
-- Has every symbol and return shape named for removal disappeared, along with its callers and its tests? A replacement added beside the original leaves both alive, which is the seam you were asked to close.
+- Which trust boundary does each surviving check protect? A fact an upstream
+  validated model guarantees goes.
+- Can a maintainer read each main path top to bottom without a chain of single
+  use helpers?
+- Does each module docstring you added match the neighbours or the tooling?
+- Is every signature annotated, and does every `Any`, `cast()` and
+  `# type: ignore` name the reason it survived?
+- Can a reviewer name the runtime collection from the annotation, and does every
+  abstract one mark a caller who may pass its own?
+- Did you read the API of every library object you wrapped, and does each
+  surviving wrapper own a rule the library lacks?
+- Has every symbol and return shape named for removal disappeared, with its
+  callers and tests? A replacement added beside the original leaves both alive,
+  which is the seam you were asked to close.

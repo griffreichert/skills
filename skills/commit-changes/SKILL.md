@@ -11,149 +11,117 @@ description:
 # Commit changes
 
 Write the commit title and body for staged or described changes, then commit.
-Match the repo's existing style and voice, and explain why the change exists in
-words the author would use.
+Match the repo's style and voice, and explain why the change exists in words the
+author would use. This skill outranks any other commit-message skill in the
+session.
 
-This skill outranks any other commit-message skill loaded in the session. Where
-they disagree, follow this one.
+Two checks gate every commit, and step 7 holds the scripts: the body wraps at
+72 characters, and the repo's pre-commit hooks run when it has them.
 
-Two checks gate every commit, and step 7 holds the scripts: the message body
-wraps at 72 characters, and the repo's pre-commit hooks run when it has them.
-
-Use `write-clearly` on every message when available. Use
-`write-technical-english` only when the message carries commands, migration
-steps, a breaking contract, or wording with real ambiguity risk. Applied to an
-ordinary descriptive body, controlled-language rules make it formal and distant.
-Its **Ground the claim in code** rule is the exception: apply that to any body
-claiming what the code now does, whatever else the message carries.
+Apply `write-clearly` to every message. Apply `write-technical-english` only
+when the message carries commands, migration steps, a breaking contract, or
+real ambiguity risk, because its controlled language makes an ordinary body
+formal and distant. Its **Ground the claim in code** rule always applies to a
+body that claims what the code now does.
 
 ## Steps
 
 ### 1. Detect the repo convention
 
-Read what the repo already does and match it.
+- A commitizen or commit lint config (`pyproject.toml` `[tool.commitizen]`,
+  `package.json` `commitlint`/`commitizen`, `cz.toml`, `.cz.toml`,
+  `.commitlintrc*`, `.pre-commit-config.yaml`) that enforces a format wins.
+  Follow it exactly.
+- Otherwise read `git log --oneline -30` for the subject pattern, types
+  (`feat:`, `fix:`), issue references (`ref #649`, `#649`, `(#635)`), casing,
+  mood, and trailers. A plain repo capitalises the subject. A Conventional
+  Commits repo lowercases the summary after the type.
 
-- Check for commitizen or a commit-lint tool: look in `pyproject.toml`
-  (`[tool.commitizen]`), `package.json` (`commitlint`, `commitizen`),
-  `cz.toml`, `.cz.toml`, `.commitlintrc*`, or `.pre-commit-config.yaml`. If one
-  enforces a format, follow it exactly.
-- Otherwise infer from history: `git log --oneline -30`. Note the subject
-  pattern, whether types are used (`feat:`, `fix:`), how issues are referenced
-  (`ref #649`, `#649`, `(#635)`), casing, mood, and any trailer block.
-- Casing follows the repo. A plain repo capitalises the subject. A Conventional
-  Commits repo lowercases the summary after the type. Detected style wins.
-
-Done when you can state the exact subject template this repo uses and which
-issue this commit belongs to.
+Done when you can state the exact subject template and the issue this commit
+belongs to.
 
 ### 2. Gather context
 
-Read the staged diff, the other commits on the branch, their messages, and any
-session or daily notes the agent can find locally for this issue (for example a
-`notes/daily/` folder). Prefer the diff and git history over memory.
+Read the staged diff, the other commits on the branch with their messages, and
+any local session or daily notes for this issue (such as `notes/daily/`). The
+diff and history outrank memory.
 
-Read each commit twice: against its parent (`git diff <commit>^ <commit>`) for
-what it introduces, and against the branch tip (`git diff <commit> <tip>`) for
-what later work undoes. The second comparison is where temporary code surfaces.
-
-On an unmerged branch, that undone work is a dead end, and it is cleaned before
-any message is written.
-[references/rewriting-history.md](references/rewriting-history.md) lists what
-counts as one and what to do about it.
-
-Done when you can answer:
-
-- What problem did this change solve?
-- What did it change?
-- Why this approach over the obvious alternative?
-- Does it break anything a caller relied on?
+Read each commit twice. `git diff <commit>^ <commit>` shows what it introduces.
+`git diff <commit> <tip>` shows what later work undoes, which is where temporary
+code surfaces. Undone work on an unmerged branch is a dead end, cleaned before
+any message is written. [references/rewriting-history.md](references/rewriting-history.md)
+lists what counts as one.
 
 If the user names reference authors, read several of their substantive commits
-(`git log --author=<name>`), preferring ones with real bodies over version bumps
-and WIP. Note their vocabulary, paragraph length, use of `we`, and how they
-treat risk, then match the useful patterns. Skip this when no author is named:
-the recent history you already read carries the voice.
+(`git log --author=<name>`), skipping version bumps and WIP. Note vocabulary,
+paragraph length, use of `we`, and treatment of risk, then match them. With no
+author named, the recent history carries the voice.
+
+Done when you can answer: what problem this solves, what it changed, why this
+approach over the obvious alternative, and whether it breaks anything a caller
+relied on.
 
 ### 3. Split before you write
 
 One commit carries one kind of change. A mechanical change and a behavioural
-change never share a commit.
+change never share a commit. Writing the message reviews the commit: when one
+body has to explain unrelated behaviour, compatibility code, an alias, and an
+export together, the commit is wrong and prose cannot fix it. Reshape the
+commit, then write.
 
-Writing the message reviews the commit. When one body has to explain unrelated
-behaviour, compatibility code, an alias, and a package export in the same
-breath, the commit is wrong and the prose cannot fix it. Reshape the commit,
-then write the message.
+**Move, then edit.** Git infers a rename from content similarity. Editing a file
+in the commit that moves it drops similarity below the threshold, so the diff
+shows a whole file deleted and a whole file added, and `git log --follow` and
+`git blame` lose the thread. A bulk reformat, a mass symbol rename, and a
+dependency bump that also changes call sites split the same way: mechanical
+commit first, behavioural commit second.
 
-The clearest case is a moved file. Move it in one commit, edit it in the next.
-
-Git infers a rename by comparing content. Edit the file in the same commit that
-moves it and the similarity drops below the detection threshold, so the diff
-renders as a whole file deleted and a whole file added. The reviewer then reads
-every unchanged line as new, and `git log --follow` and `git blame` lose the
-thread.
-
-The same split applies to a bulk reformat, a mass symbol rename, and a
-dependency bump that also changes call sites: mechanical commit first,
-behavioural commit second.
-
-Verify the split before you commit:
+Check before committing:
 
 ```bash
 git diff --cached -M --stat
 ```
 
-The move commit shows `rename` with `similarity index 100%`. If it shows a
-delete and an add, the split failed. Separate a move already tangled with its
-edits using the recovery steps in
-[references/rewriting-history.md](references/rewriting-history.md).
+A move commit shows `rename` with `similarity index 100%`. A delete plus an add
+means the split failed. [references/rewriting-history.md](references/rewriting-history.md)
+holds the steps for a tangled move.
 
-**Providers before consumers.** A commit may import, subclass, decorate, or
-call only symbols it defines, inherits from an earlier commit, or takes from
-an installed dependency. Split by topic and the call site lands ahead of its
-definition, so those commits cannot import.
-
-Order the split by what each commit provides: contracts, then the code that
-reads them, then the exports and callers. The read-only walk that checks it is
-in [references/rewriting-history.md](references/rewriting-history.md).
-Documentation-only history skips it.
+**Providers before consumers.** A commit may import, subclass, decorate, or call
+only symbols it defines, inherits from an earlier commit, or takes from an
+installed dependency. Order the split by what each commit provides: contracts,
+then the code that reads them, then exports and callers. The read only walk that
+checks it is in the same reference. Documentation only history skips it.
 
 Done when each commit holds one kind of change, every changed file supports the
-subject, every move commit shows a detected rename, and every symbol a commit
-uses exists at that commit.
+subject, every move shows a detected rename, and every symbol a commit uses
+exists at that commit.
 
 ### 4. Write the subject
 
-One line, in the repo's detected template.
+One line, in the repo's template.
 
-- Imperative mood if the repo uses it: "add", "fix", "move", not "added". Git
-  writes its own generated subjects in the imperative (`Merge branch 'main'`,
-  `Revert "Add retry"`), so an imperative subject reads consistently in a log
-  that mixes both.
-- Test it: "If applied, this commit will _____". If the subject does not
-  complete that sentence, it is not imperative yet.
-- Summarise what the change does; the diff already lists the files.
-- Keep it short. Aim for 50 characters after any prefix; hard limit near 72.
-- No trailing period.
+- Imperative if the repo uses it ("add", "fix", "move"), matching the subjects
+  git generates (`Merge branch 'main'`, `Revert "Add retry"`). The test: the
+  subject completes "If applied, this commit will _____".
+- Say what the change does. The diff lists the files.
+- About 50 characters after any prefix, 72 at the limit. No trailing period.
 
-Done when the subject reads as a single clear action in the repo's format and
-passes the "If applied" test.
+Done when the subject reads as one clear action in the repo's format and passes
+the "If applied" test.
 
 ### 5. Write the body only when it adds signal
 
-Skip the body when the subject fully explains the change. A version bump or a
-one-line rename needs no body.
+A version bump or one line rename needs no body.
 
-**Body quality bar.** A cold reviewer with no code context must understand the
-problem, change, result, and scope from the body alone. Open with the overall
-goal of the commit, in terms a user or operator would recognise. Then explain
-the problem, change, result, and boundary. A small symptom or implementation
-detail cannot carry that opening. Name preserved behaviour when a reviewer
-could ask whether it changed. The diff confirms how the code implements the
-intent; the body states it first.
+**Cold reviewer bar.** A reviewer with no code context must understand the
+problem, change, result, and scope from the body alone. Open with the commit's
+overall goal, in terms a user or operator would recognise, since a small symptom
+or implementation detail cannot carry that opening. Name preserved behaviour
+when a reviewer could ask whether it changed. The body states the intent first,
+and the diff confirms how the code implements it.
 
-Default, for every commit that needs a body, including a reword: check that
-author's recent commits and match their length and vocabulary. State the goal
-before the problem and change, in this shape:
+Default shape, for every commit that needs a body including a reword, matching
+the author's recent length and vocabulary:
 
 ```text
 <subject>
@@ -161,196 +129,116 @@ before the problem and change, in this shape:
 <goal>. <problem>. <change/result>.
 ```
 
-Add further detail only for a real behaviour boundary, a test result, or a
-migration step. Name a symbol only when a reviewer needs the exact contract,
-seam, migration, or risk — a draft that lists internal functions without the
-user-visible reason has reached for jargon the reader does not need.
+Add detail only for a real behaviour boundary, a test result, or a migration
+step. Name a symbol only when the reviewer needs the exact contract, seam,
+migration, or risk. A list of internal functions with no user visible reason is
+jargon the reader does not need.
 
-Before: "Workflow.run() starts its handler task immediately. Creating handlers
-before the route generator loses the route span from workflow child spans.
-Create and consume event streams through `stream_workflow_events`, which
-restores the route span around handler creation, event reads, parsing,
-rewriting, completion, and cancellation."
+Shapes beyond the default:
 
-After: "The workflow starts before the request trace is active, so agent and
-tool work appears outside the request trace. Run workflow creation and event
-handling inside one shared request-trace helper for both streaming endpoints."
+- **Ordered operations.** When order affects the result (request flows,
+  migrations, retries, persistence, lifecycle, API contracts), state the
+  problem, then `Apply the change in this order:` with a numbered list, then the
+  result and scope boundary. A one line fix, pure rename, formatting change, or
+  mechanical change keeps the default shape with no list.
+- **Non trivial test commit.** A subject naming only mechanics ("check X
+  survives Y") reads as generated. State the behaviour under protection and the
+  change that put it at risk, what the test change asserts, and any retained
+  compatibility case. Applies to dependency upgrades, changed expectations,
+  replaced fixtures, and compatibility tests. A one line assertion whose subject
+  already names the contract skips it. A cold reviewer can name the protected
+  behaviour, why the test changed, and the legacy case still covered.
+- **Escalated body.** A breaking contract, data migration, operational risk, or
+  new domain concepts the diff will not teach follow the drafting order in
+  [references/body-detail.md](references/body-detail.md), which also holds what
+  earns a fact a place.
 
-When operation order affects the result, list the operations in order:
+[references/examples.md](references/examples.md) carries the contrast pairs for
+voice, splitting, detail, ordered operations and the test shape. Read it before
+writing a body.
 
-```text
-<problem or current behaviour>.
-
-Apply the change in this order:
-1. <first operation>
-2. <next operation>
-3. <final operation>
-
-<result and scope boundary>.
-```
-
-Before: "Reset the handoff state, save a checkpoint, and recover both context
-paths."
-
-After: "The request can end after cancellation, leaving the saved operation
-incomplete.
-
-When cancellation occurs:
-1. Stop the operation.
-2. Save the current context and messages.
-3. Mark the operation for recovery.
-
-When the next request arrives:
-1. Detect the recovery marker.
-2. Load the saved history.
-3. Resume without duplicating the request.
-4. Clear the marker after success.
-
-Normal requests keep their existing input path."
-
-This covers commits that change request flows, migrations, retries,
-persistence, lifecycle behaviour, API contracts, or other behaviour with
-ordered operations. A one line fix, a pure rename, a formatting change, or a
-mechanical change whose order carries no meaning keeps the default shape, with
-no list.
-
-For a non-trivial test commit, a subject naming only the mechanics ("check X
-survives Y") reads as generated rather than intended. State the contract the
-test protects, why it is newly at risk, and what the assertion proves:
-
-```text
-<behaviour under protection> because <the change that put it at risk>.
-<test change> so <the contract is asserted>.
-<compatibility case retained>, when one exists.
-```
-
-Applies to dependency upgrades, changed expectations, replaced fixtures, and
-compatibility tests. Skip it for a one-line assertion whose subject already
-names the full contract. Done when a cold reviewer can name the protected
-behaviour, the reason the test changed, and any legacy case still covered.
-
-Tense follows the timeline, in every body:
-
-- Present tense for the state before the commit: `The importer loads the whole
-  file into memory before parsing.`
-- Present or imperative for the change: `Stream the file in fixed-size chunks.`
-- Past tense only for historical facts or measured tests: `In a load test, peak
-  memory dropped from 2 GB to under 200 MB.`
-
-Escalate past the default for a breaking contract, a data migration, an
-operational risk, or a change that introduces domain concepts the diff alone
-won't teach. [references/body-detail.md](references/body-detail.md) holds the
-drafting order, the tense rules, and what earns a fact a place.
-
-Remove unexplained machinery instead of writing the paragraph that justifies
-it. A body arguing for code the commit did not need is the commit asking to be
-reshaped; go back to step 3.
+Tense follows the timeline: present for the state before the commit (`The
+importer loads the whole file into memory before parsing.`), present or
+imperative for the change (`Stream the file in fixed size chunks.`), past only
+for historical facts or measured tests (`In a load test, peak memory dropped
+from 2 GB to under 200 MB.`).
 
 Use prose for cause and effect, a numbered list for ordered operations, and
-bullets only for parallel facts.
-
-Name what the code does, in the words the author used in their recent commits.
-Where a phrase describes the architecture instead of the change, the read-aloud
-test in the quality bar settles it.
-
-Read [references/examples.md](references/examples.md) before writing a body. It
-carries the contrast pairs for voice, splitting, and detail.
+bullets for parallel facts only. Remove unexplained machinery rather than write
+the paragraph that justifies it: a body arguing for code the commit did not need
+means the commit needs reshaping, so go back to step 3.
 
 Done when a cold reviewer can reconstruct the changed flow from the body, every
-remaining sentence would cost that reviewer information if deleted, and the
-body answers what changes, why it is needed, where the output goes, what
-existing behaviour stays the same, and what is outside scope.
+sentence would cost that reviewer information if deleted, and the body answers
+what changes, why, where the output goes, what existing behaviour stays, and
+what is out of scope.
 
 ### 6. Call out breaking changes
 
-If the change alters a contract, renames or removes an interface, or breaks
-behaviour a caller relied on, say so in the body. Follow the repo's convention
-if it has one (for example a `BREAKING CHANGE:` footer under Conventional
-Commits). State what breaks and the required migration.
+A change that alters a contract, renames or removes an interface, or breaks
+behaviour a caller relied on says so in the body, in the repo's convention (for
+example a `BREAKING CHANGE:` footer under Conventional Commits). State what
+breaks and the migration.
 
 Done when no breaking change is hidden.
 
 ### 7. Commit
 
-You may run `git commit`. Whether a commit was asked for is decided by the
-session's own rules; this skill decides what the message says and how it reaches
-git intact.
+You may run `git commit`. The session's own rules decide whether a commit was
+asked for. This skill decides what the message says and how it reaches git
+intact.
 
-Write the message to a file first, then validate it before it reaches git. The
-scripts live in the `scripts/` folder beside this file, so call them by that
-path from the skill directory, whichever agent loaded it:
+1. Write the message to a file.
+2. Run `<skill-dir>/scripts/check_wrap.py <message-file>`, fix every line it
+   reports, and recheck. The scripts sit in `scripts/` beside this file, so call
+   them by that path whichever agent loaded the skill. A script owns the count
+   because eyeballing 72 characters has been the recurring miss.
+3. When the repo has a `.pre-commit-config.yaml`, run
+   `<skill-dir>/scripts/run_pre_commit.sh` against the staged files. `pre-commit
+   run` fires hooks, and `git commit` does not unless `pre-commit install` wired
+   one into this clone. The script finds `pre-commit` or `prek` on PATH, then in
+   `.venv/bin`, then via `uv.lock` after `uv sync`, and names what to install
+   when none exist. Fix what it flags and re-stage. An installed hook runs
+   again on `git commit`, which is harmless.
+4. Commit with `git commit -F <message-file>`. Repeated `-m` flags and shell
+   quoting flatten the wrapping and blank lines, so a body never goes through
+   `-m`.
+5. Check `git log -1`: subject on its own line, blank line, wrapped body.
 
-```bash
-<skill-dir>/scripts/check_wrap.py <message-file>
-```
+To hand the commit to another agent, give it the finished text, the `-F`
+instruction, and both scripts to run first.
 
-Fix any line it reports and recheck. Hand wrapping to a script rather than
-counting characters by eye; that count has been the recurring miss.
-
-If the repo has a `.pre-commit-config.yaml`, run its hooks against the staged
-files before committing, since `pre-commit run` is what fires them, not
-`git commit`, unless `pre-commit install` has already wired a hook into this
-clone. The script checks `pre-commit` and `prek` on PATH, then in `.venv/bin`,
-then in `uv.lock` after a `uv sync`. It names what to install when none exist:
-
-```bash
-<skill-dir>/scripts/run_pre_commit.sh
-```
-
-Fix whatever it flags and re-stage before committing. A hook already installed
-in `.git/hooks/pre-commit` runs again on `git commit`; running it twice is
-harmless.
-
-Never pass a body through `-m`. Repeated `-m` flags and shell quoting flatten
-the wrapping and blank lines you just chose. Commit with the validated file:
-
-```bash
-git commit -F <message-file>
-```
-
-Handing the message to another agent to commit is equally fine. Give it the
-finished text, the same `-F` instruction, and both scripts to run first.
-
-Check the result with `git log -1`: subject on its own line, blank line, body
-wrapped.
-
-Done when `check_wrap.py` reports nothing, the pre-commit hooks passed or the
-repo has none, and the commit exists with the message intact, or the finished
-text is handed off.
+Done when `check_wrap.py` reports nothing, the hooks passed or the repo has
+none, and the commit exists with the message intact, or the text is handed off.
 
 ## Rewriting history
 
-The split sometimes has to happen after the fact: a move and an edit already
-share a commit, the branch carries fixups, or a commit adds a file that a later
-commit deletes, so a squash would drag the dead file through the history.
-
+A split sometimes has to happen after the fact: a move and an edit share a
+commit, the branch carries fixups, or a commit adds a file a later commit
+deletes so a squash would drag the dead file through history.
 [references/rewriting-history.md](references/rewriting-history.md) holds the
-rules for all of it. Read it before proposing a rewrite. Until the user approves
-a stated target history, run read-only commands only: `git log`, `git show`,
+rules, and you read it before proposing a rewrite. Until the user approves a
+stated target history, run read only commands: `git log`, `git show`,
 `git diff`, `git status`.
 
-## Formatting
+## Format
 
-Every number below exists for a reason. Keep them.
+Every number has a reason. Keep them.
 
-- **Blank line between subject and body.** `git log`, `git shortlog`,
-  `git format-patch`, and `git rebase` all read the first paragraph as the
-  subject. Run the two together and those tools mis-parse the commit.
-- **Subject under 50 characters.** Git renders the subject truncated in
-  `git shortlog`, `git rebase --interactive`, merge summaries, gitk, and patch
-  email subject lines. A long subject loses its ending in each of them.
-- **Wrap the body at 72 characters.** Git never wraps for you, and `git log`
-  indents the body by four spaces. 72 plus the indents fits an 80-column
-  terminal and leaves room for reply markers in mail from `git format-patch`.
-- **Bullets in the body** use a hyphen, one space, a blank line between items,
-  and a hanging indent on wrapped lines.
-- **Footers last.** A trailer block sits after a blank line at the end, one
-  `Key: value` per line. Trailers are exempt from the 72-column wrap; never
-  break a URL. Reference the issue the way the repo does, in the subject or in
-  this block. Leave any trailer the harness injects, such as `Co-Authored-By:`,
-  exactly as it is.
-
-## Output shape
+- **Blank line between subject and body.** `git log`, `shortlog`,
+  `format-patch`, and `rebase` read the first paragraph as the subject, so
+  running them together mis-parses the commit.
+- **Subject under 50 characters.** `git shortlog`, `rebase --interactive`, merge
+  summaries, gitk, and patch email subjects truncate longer ones.
+- **Body wrapped at 72.** Git never wraps, and `git log` indents the body four
+  spaces. 72 plus the indent fits 80 columns and leaves room for reply markers
+  in `format-patch` mail.
+- **Bullets** use a hyphen, one space, a blank line between items, and a hanging
+  indent on wrapped lines.
+- **Footers last.** One `Key: value` per line after a blank line, exempt from
+  the wrap, with URLs never broken. Reference the issue the way the repo does,
+  in the subject or here. Leave harness trailers such as `Co-Authored-By:`
+  exactly as injected.
 
 ```text
 <subject in repo's template>
@@ -362,26 +250,22 @@ Every number below exists for a reason. Keep them.
 
 ## Quality bar
 
-Length follows the change. A one-line fix needs no body, and a change that
-shifts a contract earns every sentence step 5's bar demands. Padding is the
-fault, and length is not.
-
+- Length follows the change. A one line fix needs no body, and a contract shift
+  earns every sentence step 5 demands. Padding is the fault, and length is not.
 - Match the repo's detected convention exactly. Consistency beats preference.
-- Descriptive sentences use active voice with a clear actor and verb, unless the
-  actor is genuinely unknown: `The worker retries the send`, `The parser rejects
-  empty rows`. Allow `we` when it is the natural way to state ownership or
-  maintenance, but do not force it into every body. A commit body is not
-  reader-facing documentation; the second-person rule in
-  `write-technical-english` does not apply here.
+- Descriptive sentences are active with a clear actor: `The worker retries the
+  send`, `The parser rejects empty rows`. `we` is fine for ownership or
+  maintenance. A commit body is not reader facing documentation, so the second
+  person rule in `write-technical-english` does not apply.
 - Cut any sentence that only restates the subject.
-- Read-aloud test: would the author say this sentence to a coworker while
-  explaining the change? If not, swap the formal word for the repo's word —
-  `runs in the background` for `asynchronous dispatch mechanism`, `the queue is
-  down` for `queue unavailability`. There is no global banned-word list; a
-  formal term can be the clearest word in another repo.
+- **Read aloud test.** Would the author say this sentence to a coworker? If not,
+  swap the formal word for the repo's: `runs in the background` for
+  `asynchronous dispatch mechanism`, `the queue is down` for `queue
+  unavailability`. No global banned word list exists, since a formal term can be
+  the clearest word in another repo.
 
 ## Done when
 
-Every step's own done condition holds, and the message reached git through
-`-F`, or went to another agent to commit. No existing commit was rewritten
-without the user confirming a stated plan first.
+Every step's done condition holds and the message reached git through `-F` or
+went to another agent to commit. No existing commit was rewritten without the
+user confirming a stated plan first.

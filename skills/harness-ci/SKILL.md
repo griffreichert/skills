@@ -55,15 +55,18 @@ moments, and never opens a transcript whole:
 ```
 
 Flags: `--since`, `--agent claude|codex|all`, `--project SLUG`. Output is TSV
-of kind, agent, timestamp, transcript, assistant text, user reaction. A
-`tagged` row is a user message carrying `PAPERCUT` with the assistant
-prose before it, and it outranks every other kind: the user named the papercut
-as it happened. Keep the whole reaction, since the rest of the message says
-what was wrong. A `pushback` row is an assistant message the user answered with a complaint, and
-it is strong evidence. A `pattern` row matches a construct banned in the global
-instructions and has no reaction, so it counts only as a repeat: three hits
-across different sessions make a tic. Discard pushback about the work itself,
-such as a scope correction.
+of kind, agent, timestamp, transcript, assistant text, user reaction. Row kinds:
+
+- **`tagged`**: a user message carrying `PAPERCUT`, with the assistant prose
+  before it. It outranks every other kind, since the user named the papercut as
+  it happened. Keep the whole reaction, because the rest of the message says
+  what was wrong.
+- **`pushback`**: an assistant message the user answered with a complaint.
+  Strong evidence. Discard pushback about the work itself, such as a scope
+  correction.
+- **`pattern`**: a construct banned in the global instructions, with no
+  reaction. It counts only as a repeat, and three hits across different
+  sessions make a tic.
 
 Done when every finding has a quoted moment, and any without one is dropped.
 

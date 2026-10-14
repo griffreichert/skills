@@ -99,3 +99,69 @@ existing artefact.
 The cold reviewer learns no term, no storage location, and no scope boundary.
 Sidecar and physical unit describe an architecture; `transcript` and
 `Document.metadata` describe this change.
+
+## Ordered operations
+
+### Mechanism and symbols — avoid
+
+```text
+Reset the handoff state, save a checkpoint, and recover both context
+paths.
+```
+
+### Problem, then the order, then scope — prefer
+
+```text
+The request can end after cancellation, leaving the saved operation
+incomplete.
+
+When cancellation occurs:
+1. Stop the operation.
+2. Save the current context and messages.
+3. Mark the operation for recovery.
+
+When the next request arrives:
+1. Detect the recovery marker.
+2. Load the saved history.
+3. Resume without duplicating the request.
+4. Clear the marker after success.
+
+Normal requests keep their existing input path.
+```
+
+## Goal first
+
+### Internals first — avoid
+
+```text
+Workflow.run() starts its handler task immediately. Creating handlers
+before the route generator loses the route span from workflow child
+spans. Create and consume event streams through
+`stream_workflow_events`, which restores the route span around handler
+creation, event reads, parsing, rewriting, completion, and cancellation.
+```
+
+### Observable problem, then change — prefer
+
+```text
+The workflow starts before the request trace is active, so agent and
+tool work appears outside the request trace. Run workflow creation and
+event handling inside one shared request-trace helper for both
+streaming endpoints.
+```
+
+## Test commits
+
+### Mechanics only — avoid
+
+```text
+check retry survives the client upgrade
+```
+
+### Contract, risk, assertion — prefer
+
+```text
+<behaviour under protection> because <the change that put it at risk>.
+<test change> so <the contract is asserted>.
+<compatibility case retained>, when one exists.
+```

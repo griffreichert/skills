@@ -7,120 +7,95 @@ description: Shape technical text so it has exactly one reading. One document mo
 
 ONE SENTENCE. ONE READING.
 
-Prose can afford ambiguity because the reader can reread. A reader following
-your steps at 3am cannot. They execute what the sentence appears to say.
+A reader can reread prose. A reader following steps at 3am executes what the
+sentence appears to say. These rules are the useful subset of ASD-STE100
+Simplified Technical English, the controlled language aerospace has used for
+maintenance manuals since 1986. Rule numbers refer to Issue 9. The rules are
+mechanical and countable, so you can check your own output.
 
-These rules are the useful subset of ASD-STE100 Simplified Technical English,
-the controlled-language standard aerospace has used for maintenance manuals
-since 1986. Rule numbers below refer to Issue 9. The rules are mechanical and
-countable, so you can check your own output.
-
-Use `write-clearly` when available. That skill decides how much you say. This
-one decides how you shape it. Run both.
-
-For an MR, a PR, an RFC summary or an architecture note, run
-`draft-mr-description` for the document-level story. This skill governs the
-sentences inside it.
+Run `write-clearly` too: it decides how much you say, and this skill decides
+the shape. For an MR, PR, RFC summary or architecture note, run
+`draft-mr-description` for the document story. This skill governs the sentences
+inside it.
 
 ## Pick the mode
 
 A document has one mode. Two questions pick it: does the reader act or
 understand, and are they learning or working?
 
-- **Tutorial** (act, learning): the reader succeeds by following it. Every step
-  shows the output they should see. Explanation shrinks to a clause and a link.
-- **How-to** (act, working): steps to one goal for a competent reader. Action
-  only. Name it by the task: "How to resume an upload".
-- **Reference** (understand, working): facts for lookup. Describe, never
-  instruct or persuade. Mirror the structure of the thing described.
-- **Explanation** (understand, learning): why it is this way. Context,
-  constraints and alternatives. Opinion belongs here and nowhere else.
+| Mode | Reader | Rule |
+| --- | --- | --- |
+| Tutorial | acts, learning | Every step shows the output to expect. Explanation shrinks to a clause and a link. |
+| How-to | acts, working | Action only, for one goal. Name it by the task: "How to resume an upload". |
+| Reference | understands, working | Describe, never instruct or persuade. Mirror the structure of the thing described. |
+| Explanation | understands, learning | Context, constraints, alternatives. Opinion belongs here only. |
 
-Never mix modes. A reference table inside a tutorial, or an argument inside a
-how-to, becomes its own document and a link.
+A table in a tutorial, or an argument in a how-to, becomes its own document and
+a link.
 
 ## Size the sentence
 
-- **Instructions: 20 words maximum** (5.1). Count them. Over the line, split.
+- **Instructions: 20 words maximum** (5.1). Count. Over the line, split.
 - **Descriptions: 25 words maximum** (6.3).
-- **One instruction per sentence** (5.2). Two actions in one sentence only when
-  they happen at the same time.
+- **One instruction per sentence** (5.2), unless the actions happen together.
 - **Paragraphs: one topic, six sentences maximum** (6.5, 6.6).
-- **Anything with more than two conditions goes in a vertical list** (4.3).
+- **More than two conditions go in a vertical list** (4.3).
 
 ## Shape the verb
 
-- **Imperative for every instruction** (5.3). "Run the migration." Never "the
-  migration should be run" or "you will want to run the migration".
-- **Active voice** (3.6). Passive only in descriptive text, and only when the
-  actor is genuinely unknown.
-- **Simple tenses only** (3.2, 3.4). No "has been", no "will have been", no "is
-  being". Present, past, future, imperative, infinitive.
-- **No `-ing` as a verb** (3.5). "The service starts", never "the service is
-  starting".
+- **Imperative for every instruction** (5.3). "Run the migration", never "the
+  migration should be run".
+- **Active voice** (3.6). Passive only in description, and only when the actor
+  is unknown.
+- **Simple tenses** (3.2, 3.4): present, past, future, imperative, infinitive.
+  No "has been", "will have been", "is being".
+- **No `-ing` as a verb** (3.5). "The service starts", never "is starting".
 - **No phrasal verbs** (9.3). Install over set up, start over kick off, remove
-  over take out, continue over carry on. The single-word form survives
-  translation and saves characters.
+  over take out, continue over carry on. The single word survives translation.
 
 ## Fix the words
 
 - **One term per thing, forever** (1.11). Job, task and run are one concept with
-  three names, or they are three concepts. Pick one word and never vary it,
-  however repetitive it reads.
-- **Name the logical thing and the physical thing separately** (1.11 again).
-  When one domain object produces several stored objects, fix both names before
-  the first paragraph: the logical upload a person starts, the physical part
-  that stores a slice of it. Use those exact words for identity, ordering,
-  ownership, and transformation. A reader working out which "upload" a sentence
-  means has stopped reading the argument.
-- **Noun clusters: three words maximum** (2.1). "Pipeline config validation
-  error handler" is a sentence pretending to be a noun. Unpack it.
-- **Keep the articles** (4.2, 4.5). "Check that the config file exists", never
-  "Check config file exists". Dropped articles read as a different grammar.
-- **Keep the helper words.** `that`, `then` and `of` cost four characters and
-  remove a second reading. "If the row is found, then the loader returns it",
-  never "If found, the loader returns it".
+  three names or three concepts. Pick one word and never vary it. Abbreviations
+  follow the same rule: spell out on first use, then use one short form.
+- **Name the logical and the physical thing separately** (1.11). When one domain
+  object produces several stored objects, fix both names before the first
+  paragraph: the logical upload a person starts, the physical part that stores
+  a slice. Use those exact words for identity, ordering, ownership and
+  transformation, so the reader never works out which "upload" a sentence means.
+- **Noun clusters: three words maximum** (2.1). Unpack "pipeline config
+  validation error handler".
+- **Keep articles and helper words** (4.2, 4.5). "Check that the config file
+  exists", "If the row is found, then the loader returns it". Repeat the article
+  in a pair: "the client and the host".
+- **Keep the verb.** "Step 2 uploads the manifest", never "step 1 uploads the
+  parts and step 2 the manifest".
 - **Put `only` next to what it limits.** "Request only one token" and "Only
-  request one token" are different instructions.
-- **Spell out an abbreviation on first use**, then use it consistently. One
-  term per thing applies to the short form too.
-- **No idiom, slang, humour, metaphor or Latin abbreviation.** "Under the
-  hood", "out of the box", "a breeze", `e.g.` and `i.e.` do not survive a
-  non-native reader or a translator. Say the mechanism.
-- **Use the words a developer says aloud.** "Move", "delete", "a budget that
-  only goes down", never "evacuate" or "ratchet". A named pattern is fine when
-  the text says what it means on first use.
-- **Give every `it`, `they` and `this` one obvious referent.** Repeat the noun
-  when in doubt. Never point `this` or `which` at a whole clause.
-- **Keep the verb.** "Step 1 uploads the parts and step 2 the manifest" leaves
-  step 2 without one. Write "step 2 uploads the manifest".
-- **Repeat the article in a series of two things.** "The client and the host",
-  never "the client and host".
-- **Say what `and` or `or` joins** when a sentence can group two ways. "Both
-  X and Y" and "either X or Y" settle it. Write "a, b, or both", never `a/b` or
-  `and/or`.
+  request one token" differ.
+- **Settle grouping.** "Both X and Y", "either X or Y", "a, b, or both". Never
+  `a/b` or `and/or`.
+- **One referent per `it`, `they`, `this`.** Repeat the noun when in doubt.
+  Never point `this` or `which` at a whole clause.
+- **No idiom, slang, humour, metaphor or Latin abbreviation** (`e.g.`, `i.e.`,
+  "under the hood", "out of the box"). Say the mechanism. Use the words a
+  developer says aloud: "move", "delete", "a budget that only goes down", not
+  "evacuate" or "ratchet". A named pattern is fine when the text says what it
+  means on first use.
 - **Parentheses hold a full sentence or nothing.** No "(s)" plurals.
-- **No semicolons** (8.1). Two sentences. Replace an em dash with a new
+- **No semicolons** (8.1). Write two sentences. An em dash becomes a new
   sentence.
 - **Inclusive language** (GR-7).
 
 ## Ground the claim in code
 
-Applies to any sentence claiming what code does: commit bodies, MR
-descriptions, design notes, code comments. Reader-facing instructions are
-exempt, because the operator does not care which class runs.
+Applies to any sentence claiming what code does: commit bodies, MR descriptions,
+design notes, code comments. Reader facing instructions are exempt, since the
+operator does not care which class runs.
 
-A sentence can pass every rule above and still hide the mechanism.
-
-```text
-The application reads the file during diagnostics and upload.
-```
-
-Grammatical, inside the cap, one reading, and useless to a reviewer. It does
-not say what runs, or that the file gets read twice.
-
-Name four things: the **actor** that performs the behaviour, the **action** it
-takes, the **data** in and out, and the **consequence** for the reader.
+A sentence can pass every rule above and hide the mechanism: "The application
+reads the file during diagnostics and upload." One reading, inside the cap, and
+useless to a reviewer. Name four things: the **actor**, the **action**, the
+**data** in and out, and the **consequence**.
 
 ```text
 `UploadDiagnostics.report()` calls `PartReader.load()` and receives `Part`
@@ -130,82 +105,69 @@ objects. The uploader calls the same reader again through
 
 The shape is `SYMBOL` performs ACTION on DATA. CONSEQUENCE.
 
-**Audit the abstract verbs after the first draft.** Search for `handles`,
-`uses`, `processes`, `supports`, `routes`, `preserves`, `manages`,
-`evaluates`, `transforms`, `integrates`, and `remains separate`. Each one is a
-placeholder where a mechanism should be. Where the mechanism matters, swap the
-abstract subject for the symbol responsible and name what it does. Where it
-does not, leave the verb alone.
-
-**Ground every claim at a seam.** Name the symbol when data changes shape,
-when ownership changes, when an ID is created or replaced, when a
-compatibility fallback picks a path, when a branch bypasses normal processing,
-when an expensive operation happens, when temporary data becomes stored data,
-when one object fans out into several, and when several objects combine into
-one operation.
-
-**Stay selective.** Naming every private helper is a code tour, and a reviewer
-skims a code tour. A symbol earns its place when it lets the reader verify a
-contract, understand a cost, trace ownership, or find the code that enforces
-the claim. Leave the rest out.
+- **Audit abstract verbs after the first draft.** `handles`, `uses`,
+  `processes`, `supports`, `routes`, `preserves`, `manages`, `evaluates`,
+  `transforms`, `integrates`, `remains separate` each stand where a mechanism
+  belongs. Where the mechanism matters, swap the abstract subject for the symbol
+  responsible and name what it does.
+- **Ground a claim at a seam.** Name the symbol when data changes shape,
+  ownership changes, an ID is created or replaced, a compatibility fallback
+  picks a path, a branch bypasses normal processing, an expensive operation
+  runs, temporary data becomes stored data, one object fans out, or several
+  combine into one operation.
+- **Stay selective.** Naming every private helper is a code tour and a reviewer
+  skims it. A symbol earns its place when it lets the reader verify a contract,
+  understand a cost, trace ownership, or find the code that enforces the claim.
 
 ## Order the step
 
 - **Condition first** (5.4). "Before you restart the service, drain the queue."
-  The reader must know the condition before the action, because they act on the
-  first thing they read.
-- **Common case first, exceptions after.** The reader who stops early still has
-  the step that applies to most readers.
-- **Warnings before the step, never after** (7.1 to 7.3). Signal word, then the
-  command, then the risk:
+  The reader acts on the first thing they read.
+- **Common case first, exceptions after.** An early stop still gives the step
+  that applies to most readers.
+- **Warnings before the step** (7.1 to 7.3): signal word, command, risk.
 
   ```text
   WARNING: Stop the writer before you truncate the table.
   Truncation during a write loses the in-flight batch.
   ```
 
-- **Notes inform, they never instruct** (5.5). Anything the reader must do
-  belongs in a numbered step, not in a note they may skip.
+- **Notes inform, never instruct** (5.5). Anything the reader must do goes in a
+  numbered step they cannot skip.
 
 ## Fit out the document
 
-Sentence rules above. Document furniture here.
-
 - **Write timelessly.** Cut `currently`, `now`, `new`, `newer`, `latest`, `old`,
-  `older`, `existing`, `soon`, `eventually`, `at present` and `as of this
-  writing`. They date the document the week it ships and they carry no fact:
-  "The emulator now supports gzip" says what "The emulator supports gzip" says.
-  When a fact belongs to one release, give the version number.
-- **Address the reader as `you`.** "You must drain the queue first", never "we
-  must" or "the user must". `you` names who acts. `we` hides the actor and
+  `older`, `existing`, `soon`, `eventually`, `at present`, `as of this writing`.
+  They date the document the week it ships and carry no fact. Give a version
+  number when a fact belongs to one release.
+- **Address the reader as `you`.** `you` names who acts, and `we` or "the user"
   leaves the reader guessing whether the step is theirs.
 - **Link text names the target.** `See the [retry policy](…)`, never `click
-  here`, `read more`, or a bare URL. The reader scanning only the links must
-  still know where each one goes.
+  here`, `read more` or a bare URL. A reader scanning only links still knows
+  where each goes.
 - **Code font for anything typed or read literally**: commands, flags, paths,
-  filenames, identifiers, and literal values. Prose font for the concept.
+  filenames, identifiers, literal values.
 - **Placeholders in capitals, with the substitution stated.** `gcloud config
   set project PROJECT_ID`, then one line saying what `PROJECT_ID` is.
-- **Sentence case headings that carry the point.** `Configure the worker`,
-  never `Configure The Worker`, and "Pick the mode first" over "Modes". A task
-  heading is a bare verb phrase and a concept heading is a noun phrase. One h1
-  per page, no skipped levels.
-- **Numbered list for a sequence, bullets for everything else.** Introduce a
-  list with a complete sentence. Keep the items parallel.
-- **No `please`, `simply`, `easy` or `quickly` in a procedure.** If it were
-  simple, the reader would not be here.
+- **Sentence case headings that carry the point.** `Configure the worker`, and
+  "Pick the mode first" over "Modes". A task heading is a bare verb phrase, a
+  concept heading a noun phrase. One h1 per page, no skipped levels.
+- **Numbered list for a sequence, bullets for the rest.** Introduce a list with
+  a complete sentence and keep items parallel.
+- **No `please`, `simply`, `easy`, `quickly` in a procedure.**
 - **Make every count or tree claim true at the commit that lands it**, and give
   the command that regenerates it.
 
 ## Vary the rhythm
 
-Text can obey every rule above and still read as machine written: every
-sentence the same clipped length, no view, nothing specific.
+Text can obey every rule and still read machine written: one clipped length, no
+view, nothing specific.
 
-- **Mix lengths on purpose.** A short sentence lands a point. A longer one
-  carries a fact with its condition. The caps bound one thought, and leave the
-  variety of the text alone.
-- **Split a sentence that carries two thoughts. Keep one that carries one.**
+- **Mix lengths on purpose.** A short sentence lands a point, and a longer one
+  carries a fact with its condition. The caps bound one thought and leave the
+  variety alone.
+- **Split a sentence that carries two thoughts, keep one that carries one.**
 - **Take a position in explanation.** Weigh the trade-off and say what you make
   of it. Reference stays dry.
 - **Prefer the specific.** "A column rename fails the build", never "schema
@@ -213,50 +175,44 @@ sentence the same clipped length, no view, nothing specific.
 
 ## Match the author's voice
 
-You are usually not the author. Their commit messages, their previous
-descriptions, and the notes beside the file are a voice corpus. Read it before
-you draft.
+The author's commit messages, earlier descriptions, and nearby notes form a
+voice corpus. Read it before you draft.
 
-- Take vocabulary from the corpus. Where the author writes `retry budget`, do
-  not write `attempt allowance`.
-- Keep their spelling and their register. British spelling stays British. A
-  writer who says `we kept the old path` does not want `it was determined that`.
-- Keep their sentence rhythm. Short declaratives stay short declaratives.
-- Fix the errors and keep the voice. Correcting a run-on is editing. Rewriting
-  the paragraph into corporate prose is a substitution the author did not ask
-  for.
-- When the author supplies a skeleton, draft inside it: their headings, their
-  order, their emphasis. Propose a structural change, never perform one.
+- Take vocabulary from it: `retry budget` stays `retry budget`.
+- Keep their spelling, register and rhythm. British spelling stays British, `we
+  kept the old path` does not become `it was determined that`, and short
+  declaratives stay short.
+- Fix errors and keep the voice. Correcting a run on is editing, and rewriting
+  the paragraph into corporate prose is a substitution nobody asked for.
+- Inside an author's skeleton (headings, order, emphasis), draft inside it.
+  Propose a structural change, never perform one.
 
 ## Where it bends
 
-Deliberate exceptions. Everything else holds.
+Everything else holds.
 
-- **A rule yields to a better sentence.** When following a rule produces text
-  that reads as machine written, rewrite the sentence another way, or leave it.
-  In a review, name the rule you bent.
-- **Commit subjects drop articles.** `fix auth token expiry check` is the git
-  convention and it beats rule 4.5. The commit body keeps its articles.
-- **Narrative sections are descriptive writing.** An MR Overview or a README
-  intro tells a change story. Give it the 25-word cap and the descriptive form.
-  Do not turn a paragraph of reasoning into a list of commands.
+- **A rule yields to a better sentence.** When a rule yields text that reads as
+  machine written, rewrite the sentence another way or leave it. In a review,
+  name the rule you bent.
+- **Commit subjects drop articles.** `fix auth token expiry check` follows git
+  convention over rule 4.5. The body keeps its articles.
+- **Narrative sections are descriptive writing**, such as an MR Overview or
+  README intro. Give them the 25 word cap and the descriptive form, and keep
+  reasoning as a paragraph, never a list of commands.
 - **In narrative, the word count is a diagnostic.** The caps hold absolutely for
-  instructions and safety-critical steps. In an Overview, a long sentence is a
-  prompt to look. Split it when it carries two decisions or two consequences.
-  Leave it when identifiers and one causal clause carry it over, because
-  splitting a single causal claim into fragments drops the link that was the
-  point of the sentence.
-- **Uncertainty that belongs to the design stays in.** "Part matching is
-  heuristic, so an upload retried outside the window stores a duplicate" is a
-  fact the reader needs. Jokes, slogans and punchlines still go.
-- **Code, identifiers, error strings and log lines are quoted, never edited.**
-  Reproduce them exactly. The rules govern the prose around them.
-- **`we` survives where the writer owns the change.** Commit bodies, MR
-  descriptions and session notes state who did the work and who maintains it.
-  Reader-facing documentation still uses `you`.
-- **Dated records keep their time words.** A release note, a changelog and a
-  daily note exist to say what changed and when. Timeless writing governs
-  documentation of how the thing works.
+  instructions and safety critical steps. In an Overview, split a long sentence
+  that carries two decisions or two consequences. Leave one that identifiers
+  and a single causal clause carry, since splitting one causal claim into
+  fragments drops the link.
+- **Design uncertainty stays in.** "Part matching is heuristic, so an upload
+  retried outside the window stores a duplicate" is a fact. Jokes, slogans and
+  punchlines go.
+- **Code, identifiers, error strings and log lines are quoted exactly.** The
+  rules govern the prose around them.
+- **`we` survives where the writer owns the change**: commit bodies, MR
+  descriptions, session notes. Reader facing documentation uses `you`.
+- **Dated records keep their time words**: release notes, changelogs, daily
+  notes. Timeless writing governs documentation of how the thing works.
 
 ## Worked example
 
@@ -277,34 +233,32 @@ After:
 ## Done when
 
 - **Writing:** every instruction is imperative and under 20 words, every concept
-  has exactly one name throughout, and no sentence has a second possible
-  reading.
-- **Claiming what code does:** a reviewer can find the enforcing code from
-  every major claim. Each cost claim names the repeated call or allocation,
-  each compatibility claim names the branch and the fallback field, each
-  identity claim names the function and its inputs, and each data-flow claim
-  names the input and output types. Abstract verbs are gone where the mechanism
-  mattered, and low-value symbols never went in.
+  has one name throughout, and no sentence has a second reading.
+- **Claiming what code does:** a reviewer can find the enforcing code from each
+  major claim. A cost claim names the repeated call or allocation, a
+  compatibility claim the branch and fallback field, an identity claim the
+  function and its inputs, a data flow claim the input and output types.
+  Abstract verbs are gone where the mechanism mattered, and low value symbols
+  never went in.
 - **Reviewing:** name the rule each violation breaks, then give the rewrite.
 
 ## Source
 
 ASD-STE100 Simplified Technical English, Issue 9 (2025-01-15), maintained by the
-ASD Simplified Technical English Maintenance Group. Free from
-[asd-ste100.org](https://www.asd-ste100.org/).
-
-The rules above are paraphrased and cut down to what applies to software
-documentation. The specification is copyright ASD and is not reproduced here.
-Part 2 of the standard, a dictionary of roughly 900 approved words each locked
-to one meaning and one part of speech, is deliberately out of scope. Read the
-specification itself when you need the exact wording of a rule.
+ASD Simplified Technical English Maintenance Group, free from
+[asd-ste100.org](https://www.asd-ste100.org/). The rules above are paraphrased
+and cut down to what applies to software documentation. The specification is
+copyright ASD and is not reproduced here. Part 2, the dictionary of roughly 900
+approved words each locked to one meaning, is out of scope. Read the
+specification for the exact wording of a rule.
 
 `Fit out the document`, and the four ambiguity rules that carry no STE number,
 come from the [Google developer documentation style
-guide](https://developers.google.com/style), mainly its pages on [writing for a
-global audience](https://developers.google.com/style/translation) and [timeless
+guide](https://developers.google.com/style), mainly [writing for a global
+audience](https://developers.google.com/style/translation) and [timeless
 documentation](https://developers.google.com/style/timeless-documentation).
-Google's American-spelling rule is dropped; this corpus writes British English.
+Google's American spelling rule is dropped, since this corpus writes British
+English.
 
 `Pick the mode` follows [Diátaxis](https://diataxis.fr) by Daniele Procida.
 That section, `Vary the rhythm` and the added ambiguity rules are adapted from

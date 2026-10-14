@@ -5,44 +5,34 @@ description: Prove a change works before it is submitted. Run it, test it, watch
 
 # Prove it
 
-Your job is to deliver code you have proven to work. A patch is cheap; anyone
-can generate a thousand lines of it. What carries value is the evidence that the
-lines do what they claim.
+Deliver code you have proven to work. A patch is cheap, and the evidence that
+the lines do what they claim carries the value. Untested code does not work,
+and code that happens to work is luck. A computer cannot be held accountable,
+and the change carries your name, so the proof is yours to produce.
 
-Untested code does not work. Code that happens to work is luck. This skill turns
-"I think it's done" into something a reviewer can check, and it runs **before**
-the commit and the MR description, because both of those consume its output.
-
-A computer cannot be held accountable. The change carries your name, so the
-proof is yours to produce.
-
-Run this once, at completion. Rerunning the suite after every small edit
-proves nothing new until the change is finished, it only burns cycles.
-Automate only the test this change needs to prove itself; skip adding one
-beyond what was asked for.
+Run this once, at completion, before the commit and MR description that consume
+its output. Rerunning the suite after each small edit proves nothing until the
+change is finished. Automate only the test this change needs to prove itself.
 
 ## The four proofs
 
 Answer all four, or name the one you skipped and why.
 
-1. **You ran it.** Not the type checker, not a read-through. The behaviour, in
-   the real path, with real input. Record the command and what you saw.
-2. **You automated what you ran.** The manual check becomes a test, so the next
-   person gets it for free. Defer to the **test-stickler** skill for whether
-   that test is any good.
-3. **You watched it go red.** Revert the change, run the test, see it fail.
-   This is the only step that proves the test is bound to your work.
-4. **You named the edges.** What happens off the happy path: empty, `None`,
-   zero, the limit, the limit plus one, the second call, the timeout, the worst
-   input a caller could hand you. Test them, or state which you left and why.
+1. **You ran it.** The behaviour, in the real path, with real input. A type
+   check or read through does not count. Record the command and what you saw.
+2. **You automated what you ran.** The manual check becomes a test. Whether that
+   test is any good belongs to **test-stickler**.
+3. **You watched it go red.** Revert the change, run the test, see it fail. This
+   is the only step that binds the test to your work.
+4. **You named the edges.** Off the happy path: empty, `None`, zero, the limit,
+   the limit plus one, the second call, the timeout, the worst input a caller
+   could hand you. Test them, or state which you left and why.
 
 ## The revert check
 
-The load-bearing step, and the one that gets skipped. A green suite proves
-nothing on its own, because a test that never went red was never bound to the
-code.
-
-Stash the source and keep the test:
+A green suite proves nothing alone, because a test that never went red was
+never bound to the code. This is the load bearing step and the one that gets
+skipped. Stash the source and keep the test:
 
 ```bash
 git stash push -- path/to/source.py
@@ -50,74 +40,71 @@ pytest tests/path/to/test_source.py::test_the_case   # expect red
 git stash pop
 ```
 
-For a new file, or a change that spans the test and the source together, break
-the behaviour by hand instead: change the return value, delete the branch, and
-put it back after. Record what the failure said. `KeyError: 'checksum'` is
-evidence; "it failed" is not.
+For a new file, or a change spanning test and source together, break the
+behaviour by hand (change the return value, delete the branch) and put it back.
+Record what the failure said: `KeyError: 'checksum'` is evidence, and "it
+failed" is not.
 
-If the test stays green with the change reverted, the test is asserting on its
-own inputs, its mocks, or a literal. Fix the test before you go further.
+A test that stays green with the change reverted asserts on its own inputs, its
+mocks, or a literal. Fix the test before you go further.
 
 ## Explain it cold
 
-Correctness is half of it. The other half is whether the shape holds up, and
-names are the surface where it shows. `VersionedStructuredRequestWithOptions`
-carrying unversioned requests is a name that lies, and a reviewer pays for it
-every time they read it.
-
-Three questions, answered out loud, with no notes:
+Correctness is half of it. The other half is whether the shape holds, and names
+are where it shows: `VersionedStructuredRequestWithOptions` carrying unversioned
+requests is a name that lies, and the reviewer pays each time they read it.
+Answer out loud with no notes:
 
 - Can you explain the flow start to finish, and each part on its own?
-- What are the inputs and the outputs of each part, and what happens when one
-  arrives unexpected?
-- Does every name describe what the thing holds? A name that needs a comment,
-  or reads as "X but really Y", is the wrong name.
+- What are each part's inputs and outputs, and what happens when one arrives
+  unexpected?
+- Does every name describe what the thing holds? A name that needs a comment, or
+  reads "X but really Y", is the wrong name.
 
-Any answer that comes out muddled is a finding about the code. Take it back to
-the **purge-slop** skill, or to **codebase-design** when the seam is wrong.
+A muddled answer is a finding about the code. Take it to **purge-slop**, or to
+**codebase-design** when the seam is wrong.
 
 ## Output
 
-An evidence block, written so it pastes into the MR `## Testing` section
-unedited. Commands carry the directory they ran from.
+An evidence block that pastes into the MR `## Testing` section unedited.
+Commands carry the directory they ran from.
 
 ```markdown
-**Ran** — `uv run pytest tests/upload/test_session.py -q` from the repo root.
+**Ran**: `uv run pytest tests/upload/test_session.py -q` from the repo root.
 14 passed.
 
-**Red on revert** — stashed `upload/session.py`, `test_resumes_from_manifest`
+**Red on revert**: stashed `upload/session.py`, `test_resumes_from_manifest`
 failed with `KeyError: 'checksum'`. Restored, green again.
 
-**By hand** — uploaded a 12 MB file, killed the process after part 2, resumed.
+**By hand**: uploaded a 12 MB file, killed the process after part 2, resumed.
 Parts 1 and 2 skipped, 3 and 4 sent, manifest lists all four in order.
 
-**Edges** — empty file writes one part (tested). A manifest missing `checksum`
+**Edges**: empty file writes one part (tested). A manifest missing `checksum`
 raises at the reader (tested). Concurrent resumes untested, out of scope,
 flagged in the MR.
 ```
 
-When the change is not ready, say so first, then report plainly: what is
-unproven, and what it would take to prove it.
+When the change is not ready, say so first, then report what is unproven and
+what it would take to prove it.
 
 ## Rules
 
-- **Unrun is unproven.** "The code looks right" is not evidence, and neither is
-  a passing type check.
-- **A gap is reported, never assumed.** An edge you did not test is a line in
-  the output. A day of guessing beats one sentence of invention.
-- **Volume is not proof.** Fifty proven lines beat a thousand unproven ones.
-  Never offer the size of a patch as a reason to trust it.
+- **Unrun is unproven.** "The code looks right" and a passing type check are not
+  evidence.
+- **Report a gap, never assume.** An untested edge is a line in the output.
+- **Volume is not proof.** Fifty proven lines beat a thousand unproven ones, and
+  the size of a patch is never a reason to trust it.
 - **One agent pass is a draft.** Read it, run it, improve it, run it again.
-  Agent-written code raises the bar on scrutiny, since neither the reviewer nor
-  the agent is accountable for it.
-- **Record from this tree.** Never quote a passing count you did not just see.
+  Agent written code raises the bar on scrutiny, since neither reviewer nor
+  agent is accountable for it.
+- **Record from this tree.** Quote only a passing count you just saw.
 - **A scripted edit is unproven until you read it back.** `sed -i`, a heredoc
-  calling `str.replace`, a codemod, `jq` writing over its input: each exits 0
-  when it matches nothing, and the build stays green because a no-op leaves
-  valid code. Every check downstream passes and the edit never happened. Assert
-  the match before the write, then confirm the new text in the file or in the
-  built artifact. A formatter run between two edits to the same file
-  invalidates the strings you matched on last time.
+  calling `str.replace`, a codemod, and `jq` writing over its input each exit 0
+  on no match. The build stays green because a no op leaves valid code, every
+  downstream check passes, and the edit never happened. Assert the match before
+  the write, then confirm the new text in the file or built artifact. A
+  formatter run between two edits to one file invalidates the strings you
+  matched earlier.
 
   ```python
   old = "timeout=30"
@@ -125,13 +112,13 @@ unproven, and what it would take to prove it.
   path.write_text(text.replace(old, "timeout=60"))
   ```
 
-  The Edit tool and a patch you read already fail loudly on a missed match.
-  Apply the rule where a failed match and a successful one exit the same way.
+  The Edit tool and a patch you read already fail loudly on a missed match, so
+  apply the rule where a failed match and a successful one exit the same way.
 
 ## Done when
 
 Each of the four proofs is answered or named as a gap. The revert check ran and
-you saw the failure it produced. Every scripted substitution asserted its match
-or had its result read back. Every name in the change survives being explained
-out loud. The evidence block is concrete enough that a reviewer could
-rerun it, and it goes into the MR without editing.
+you saw its failure. Every scripted substitution asserted its match or had its
+result read back. Every name in the change survives being explained out loud.
+The evidence block is concrete enough that a reviewer could rerun it, and it
+goes into the MR unedited.
