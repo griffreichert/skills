@@ -94,20 +94,6 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
   the days from the daily notes and your commits, every claim carrying its
   evidence and every blank day named as a gap.
 
-**Engineering principles** — *adapted from [pstack](NOTICE-pstack.md).*
-
-- [`principles`](skills/principles/SKILL.md) — index of the 24
-  `principle-*` skills with when each applies. Start here.
-- The leaves, read on demand: [`principle-attack-the-premise`](skills/principle-attack-the-premise/SKILL.md), [`principle-boundary-discipline`](skills/principle-boundary-discipline/SKILL.md), [`principle-build-the-lever`](skills/principle-build-the-lever/SKILL.md), [`principle-encode-lessons-in-structure`](skills/principle-encode-lessons-in-structure/SKILL.md), [`principle-exhaust-the-design-space`](skills/principle-exhaust-the-design-space/SKILL.md), [`principle-experience-first`](skills/principle-experience-first/SKILL.md), [`principle-explain-the-number`](skills/principle-explain-the-number/SKILL.md), [`principle-fix-root-causes`](skills/principle-fix-root-causes/SKILL.md), [`principle-foundational-thinking`](skills/principle-foundational-thinking/SKILL.md), [`principle-guard-the-context-window`](skills/principle-guard-the-context-window/SKILL.md), [`principle-laziness-protocol`](skills/principle-laziness-protocol/SKILL.md), [`principle-make-operations-idempotent`](skills/principle-make-operations-idempotent/SKILL.md), [`principle-minimize-reader-load`](skills/principle-minimize-reader-load/SKILL.md), [`principle-model-the-domain`](skills/principle-model-the-domain/SKILL.md), [`principle-never-block-on-the-human`](skills/principle-never-block-on-the-human/SKILL.md), [`principle-outcome-oriented-execution`](skills/principle-outcome-oriented-execution/SKILL.md), [`principle-prove-it-works`](skills/principle-prove-it-works/SKILL.md), [`principle-redesign-from-first-principles`](skills/principle-redesign-from-first-principles/SKILL.md), [`principle-sequence-verifiable-units`](skills/principle-sequence-verifiable-units/SKILL.md), [`principle-subtract-before-you-add`](skills/principle-subtract-before-you-add/SKILL.md), [`principle-test-behavior-not-implementation`](skills/principle-test-behavior-not-implementation/SKILL.md), [`principle-type-system-discipline`](skills/principle-type-system-discipline/SKILL.md).
-- [`how`](skills/how/SKILL.md) — explore a subsystem and explain how it works,
-  with explorer and explainer subagents.
-- [`architect`](skills/architect/SKILL.md) — sketch types and signatures with
-  competing runners before code, then implement against the sketch.
-- [`interrogate`](skills/interrogate/SKILL.md) — adversarial multi-model
-  review that ends in a lead verdict.
-- [`no-comments`](skills/no-comments/SKILL.md) — delete narration and
-  workaround comments, then fix or encode what they were hiding.
-
 **Skill upkeep**
 
 - [`skill-ci`](skills/skill-ci/SKILL.md) — end of session, turn the friction you
@@ -126,12 +112,12 @@ helpful while I have iterated on my own skills, if you do not use these you are 
 out!
 
 [pstack](https://github.com/cursor/plugins/tree/main/pstack) by
-[Lauren Tan (poteto)](https://github.com/poteto) - the engineering principles,
-`how`, `architect`, `interrogate` and `no-comments` are adapted from it, and
+[Lauren Tan (poteto)](https://github.com/poteto) - adapted copies of its
+principles and review skills sit in [`external/pstack`](external/pstack/NOTICE.md)
+on trial, outside the published set.
 [`write-technical-english`](skills/write-technical-english/SKILL.md) took its
 mode picking and rhythm rules. The `poteto-mode` skill in that plugin shows how
-the pieces fit together, and it is worth reading in full. MIT licensed, see
-[NOTICE-pstack.md](NOTICE-pstack.md).
+the pieces fit together, and it is worth reading in full. MIT licensed.
 
 [`prove-it`](skills/prove-it/SKILL.md) started from a gist on
 [meaningful contribution](https://gist.github.com/bdsqqq/1e7e6f454271d5f856a1176d0e800d89)

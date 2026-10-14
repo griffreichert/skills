@@ -309,4 +309,4 @@ Google's American-spelling rule is dropped; this corpus writes British English.
 `Pick the mode` follows [Diátaxis](https://diataxis.fr) by Daniele Procida.
 That section, `Vary the rhythm` and the added ambiguity rules are adapted from
 the `technical-writing` skill in pstack by Lauren Tan (MIT). See
-[NOTICE-pstack.md](../../NOTICE-pstack.md).
+[external/pstack/NOTICE.md](../../external/pstack/NOTICE.md).
