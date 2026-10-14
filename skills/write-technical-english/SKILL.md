@@ -1,6 +1,6 @@
 ---
 name: write-technical-english
-description: Shape technical text so it has exactly one reading. Sized sentences, imperative steps, one term per thing, no phrasal verbs. Use when writing or reviewing a README, runbook, install or migration steps, operator notes, API reference, commit message, or MR text, or when the reader may be a non-native English speaker or a translator.
+description: Shape technical text so it has exactly one reading. One document mode, sized sentences, imperative steps, one term per thing, no phrasal verbs. Use when writing or reviewing a README, runbook, install or migration steps, operator notes, API reference, commit message, or MR text, or when the reader may be a non-native English speaker or a translator.
 ---
 
 # Write technical English
@@ -21,6 +21,23 @@ one decides how you shape it. Run both.
 For an MR, a PR, an RFC summary or an architecture note, run
 `draft-mr-description` for the document-level story. This skill governs the
 sentences inside it.
+
+## Pick the mode
+
+A document has one mode. Two questions pick it: does the reader act or
+understand, and are they learning or working?
+
+- **Tutorial** (act, learning): the reader succeeds by following it. Every step
+  shows the output they should see. Explanation shrinks to a clause and a link.
+- **How-to** (act, working): steps to one goal for a competent reader. Action
+  only. Name it by the task: "How to resume an upload".
+- **Reference** (understand, working): facts for lookup. Describe, never
+  instruct or persuade. Mirror the structure of the thing described.
+- **Explanation** (understand, learning): why it is this way. Context,
+  constraints and alternatives. Opinion belongs here and nowhere else.
+
+Never mix modes. A reference table inside a tutorial, or an argument inside a
+how-to, becomes its own document and a link.
 
 ## Size the sentence
 
@@ -67,9 +84,24 @@ sentences inside it.
   request one token" are different instructions.
 - **Spell out an abbreviation on first use**, then use it consistently. One
   term per thing applies to the short form too.
-- **No idiom, slang, or humour.** "Under the hood", "out of the box" and "a
-  breeze" do not survive a non-native reader or a translator. Say the mechanism.
-- **No semicolons** (8.1). Two sentences.
+- **No idiom, slang, humour, metaphor or Latin abbreviation.** "Under the
+  hood", "out of the box", "a breeze", `e.g.` and `i.e.` do not survive a
+  non-native reader or a translator. Say the mechanism.
+- **Use the words a developer says aloud.** "Move", "delete", "a budget that
+  only goes down", never "evacuate" or "ratchet". A named pattern is fine when
+  the text says what it means on first use.
+- **Give every `it`, `they` and `this` one obvious referent.** Repeat the noun
+  when in doubt. Never point `this` or `which` at a whole clause.
+- **Keep the verb.** "Step 1 uploads the parts and step 2 the manifest" leaves
+  step 2 without one. Write "step 2 uploads the manifest".
+- **Repeat the article in a series of two things.** "The client and the host",
+  never "the client and host".
+- **Say what `and` or `or` joins** when a sentence can group two ways. "Both
+  X and Y" and "either X or Y" settle it. Write "a, b, or both", never `a/b` or
+  `and/or`.
+- **Parentheses hold a full sentence or nothing.** No "(s)" plurals.
+- **No semicolons** (8.1). Two sentences. Replace an em dash with a new
+  sentence.
 - **Inclusive language** (GR-7).
 
 ## Ground the claim in code
@@ -122,6 +154,8 @@ the claim. Leave the rest out.
 - **Condition first** (5.4). "Before you restart the service, drain the queue."
   The reader must know the condition before the action, because they act on the
   first thing they read.
+- **Common case first, exceptions after.** The reader who stops early still has
+  the step that applies to most readers.
 - **Warnings before the step, never after** (7.1 to 7.3). Signal word, then the
   command, then the risk:
 
@@ -152,8 +186,30 @@ Sentence rules above. Document furniture here.
   filenames, identifiers, and literal values. Prose font for the concept.
 - **Placeholders in capitals, with the substitution stated.** `gcloud config
   set project PROJECT_ID`, then one line saying what `PROJECT_ID` is.
-- **Sentence case headings.** `Configure the worker`, not `Configure The
-  Worker`.
+- **Sentence case headings that carry the point.** `Configure the worker`,
+  never `Configure The Worker`, and "Pick the mode first" over "Modes". A task
+  heading is a bare verb phrase and a concept heading is a noun phrase. One h1
+  per page, no skipped levels.
+- **Numbered list for a sequence, bullets for everything else.** Introduce a
+  list with a complete sentence. Keep the items parallel.
+- **No `please`, `simply`, `easy` or `quickly` in a procedure.** If it were
+  simple, the reader would not be here.
+- **Make every count or tree claim true at the commit that lands it**, and give
+  the command that regenerates it.
+
+## Vary the rhythm
+
+Text can obey every rule above and still read as machine written: every
+sentence the same clipped length, no view, nothing specific.
+
+- **Mix lengths on purpose.** A short sentence lands a point. A longer one
+  carries a fact with its condition. The caps bound one thought, and leave the
+  variety of the text alone.
+- **Split a sentence that carries two thoughts. Keep one that carries one.**
+- **Take a position in explanation.** Weigh the trade-off and say what you make
+  of it. Reference stays dry.
+- **Prefer the specific.** "A column rename fails the build", never "schema
+  changes can cause issues".
 
 ## Match the author's voice
 
@@ -176,6 +232,9 @@ you draft.
 
 Deliberate exceptions. Everything else holds.
 
+- **A rule yields to a better sentence.** When following a rule produces text
+  that reads as machine written, rewrite the sentence another way, or leave it.
+  In a review, name the rule you bent.
 - **Commit subjects drop articles.** `fix auth token expiry check` is the git
   convention and it beats rule 4.5. The commit body keeps its articles.
 - **Narrative sections are descriptive writing.** An MR Overview or a README
@@ -198,6 +257,22 @@ Deliberate exceptions. Everything else holds.
 - **Dated records keep their time words.** A release note, a changelog and a
   daily note exist to say what changed and when. Timeless writing governs
   documentation of how the thing works.
+
+## Worked example
+
+Before:
+
+> The resumable upload part checksum retry limit is configured through
+> upload.toml. It should be noted that raising it, which may be needed for
+> flaky links, is not recommended because failures could be hidden. If
+> exceeded, the upload gets failed.
+
+After:
+
+> `upload.toml` sets `max_part_retries`, the number of times the uploader
+> resends a part whose checksum does not match. Raise it only on an unreliable
+> link, because a higher limit hides real corruption. When a part exceeds the
+> limit, the upload fails.
 
 ## Done when
 
@@ -230,3 +305,8 @@ guide](https://developers.google.com/style), mainly its pages on [writing for a
 global audience](https://developers.google.com/style/translation) and [timeless
 documentation](https://developers.google.com/style/timeless-documentation).
 Google's American-spelling rule is dropped; this corpus writes British English.
+
+`Pick the mode` follows [Diátaxis](https://diataxis.fr) by Daniele Procida.
+That section, `Vary the rhythm` and the added ambiguity rules are adapted from
+the `technical-writing` skill in pstack by Lauren Tan (MIT). See
+[NOTICE-pstack.md](../../NOTICE-pstack.md).
