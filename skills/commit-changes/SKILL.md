@@ -290,7 +290,8 @@ counting characters by eye; that count has been the recurring miss.
 If the repo has a `.pre-commit-config.yaml`, run its hooks against the staged
 files before committing, since `pre-commit run` is what fires them, not
 `git commit`, unless `pre-commit install` has already wired a hook into this
-clone:
+clone. The script checks `pre-commit` and `prek` on PATH, then in `.venv/bin`,
+then in `uv.lock` after a `uv sync`. It names what to install when none exist:
 
 ```bash
 <skill-dir>/scripts/run_pre_commit.sh
