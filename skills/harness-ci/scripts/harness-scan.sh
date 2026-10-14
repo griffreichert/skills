@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Harness evidence scanner. Walks Claude Code and Codex transcripts and emits
 # candidates for harness-ci: assistant prose the user pushed back on, and
-# assistant prose matching a construct the global instructions ban.
+# assistant prose matching a construct the global instructions ban, and the
+# assistant prose before a user message tagged PAPERCUT.
 #
 # Usage: harness-scan.sh [--since YYYY-MM-DD] [--agent claude|codex|all] [--project SLUG]
 # Output: TSV — kind, agent, timestamp, transcript, assistant text, user reaction
@@ -37,7 +38,8 @@ extract_claude() {
       select(.type=="user" or .type=="assistant")
       | . as $m
       | ($m.message.content
-         | if type=="string" then . else (map(select(.type=="text").text) | join(" ")) end) as $t
+         | if type=="string" then . else (map(select(.type=="text").text) | join(" ")) end
+         | gsub("<system-reminder>.*?</system-reminder>"; ""; "s")) as $t
       | select($t != null and ($t | length) > 0)
       | [$m.type, "claude", ($m.timestamp // ""), $file,
          ($t | gsub("[\\t\\n\\r]"; " ") | gsub("  +"; " "))]
@@ -84,15 +86,22 @@ tmp=$(mktemp -t harness-scan)
 trap 'rm -f "$tmp"' EXIT
 extract > "$tmp"
 
+# The tag as a standalone token. A quoted mention in a message about the tag
+# does not match, and neither does the rule text.
+tag='(^| )PAPERCUT([ ,.;:!?]|$)'
+
+# Tagged: a user message carrying the tag, with the assistant prose before it.
 # Pushback: an assistant message the next user message complained about.
-awk -F'\t' -v since="$since" -v pushback="$pushback" '
+awk -F'\t' -v since="$since" -v pushback="$pushback" -v tag="$tag" '
   $5 ~ /^(<|Caveat:|# AGENTS.md|\[Request interrupted)/ { next }   # injected context, not prose
   substr($3,1,10) < since { next }
   {
     if ($1 == "assistant") { at=$5; ag=$2; ts=$3; tf=$4; next }
     if ($1 == "user") {
       react = " " tolower($5) " "
-      if (at != "" && length($5) < 400 && react ~ pushback)
+      if ($5 ~ tag)
+        printf "tagged\t%s\t%s\t%s\t%s\t%s\n", $2, $3, $4, substr(at,1,600), substr($5,1,600)
+      else if (at != "" && length($5) < 400 && react ~ pushback)
         printf "pushback\t%s\t%s\t%s\t%s\t%s\n", ag, ts, tf, substr(at,1,600), substr($5,1,300)
       at=""
     }

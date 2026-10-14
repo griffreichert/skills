@@ -44,6 +44,8 @@ Session mode looks for:
 - A skill that misfired, stayed silent, or was missing.
 - A fact the user supplied that the repo could have supplied.
 - A user correction of how the agent wrote or behaved.
+- A user message carrying `PAPERCUT`, which marks the agent behaviour just
+  before it.
 
 Harvest mode lets the scanner in the `scripts/` folder beside this file find the
 moments, and never opens a transcript whole:
@@ -54,7 +56,10 @@ moments, and never opens a transcript whole:
 
 Flags: `--since`, `--agent claude|codex|all`, `--project SLUG`. Output is TSV
 of kind, agent, timestamp, transcript, assistant text, user reaction. A
-`pushback` row is an assistant message the user answered with a complaint, and
+`tagged` row is a user message carrying `PAPERCUT` with the assistant
+prose before it, and it outranks every other kind: the user named the papercut
+as it happened. Keep the whole reaction, since the rest of the message says
+what was wrong. A `pushback` row is an assistant message the user answered with a complaint, and
 it is strong evidence. A `pattern` row matches a construct banned in the global
 instructions and has no reaction, so it counts only as a repeat: three hits
 across different sessions make a tic. Discard pushback about the work itself,
