@@ -145,7 +145,7 @@ Done when a reader can accept any proposal without asking what it says.
 Session mode only. Ask which proposals to apply here, then which of the rest to
 hand off. The remainder is dropped.
 
-- **Apply now.** Edit the file, show the diff, stop. Commit on request.
+- **Apply now.** Edit the file. Commit when the owning repo's instructions allow commits without asking, otherwise show the diff and stop.
 - **Hand off.** A skill proposal becomes a `skill-ci` step 5 blurb for the
   skills repo. Any other proposal takes the same shape addressed to the repo
   that owns the file: provenance line, the ask, the moment, the exact text, the

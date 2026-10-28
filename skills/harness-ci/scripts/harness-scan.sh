@@ -60,6 +60,9 @@ extract_codex() {
       | . as $m
       | ([$m.payload.content[]? | (.text // "")] | join(" ")) as $t
       | select($t != null and ($t | length) > 0)
+      # The approval reviewer logs its prompt as a user message that quotes
+      # the instructions, PAPERCUT tag included.
+      | select($t | startswith("The following is the Codex agent history") | not)
       | [$m.payload.role, "codex", ($m.timestamp // ""), $file,
          ($t | gsub("[\\t\\n\\r]"; " ") | gsub("  +"; " "))]
       | @tsv' "$f" 2>/dev/null
