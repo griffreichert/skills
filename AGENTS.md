@@ -56,3 +56,6 @@ so the next session cannot reintroduce them.
   `review-slop` restates its summary and `test-stickler` owns anything
   test-shaped, so one rule change usually means three files.
 - `notes/` is gitignored. Decisions go there and never reach a commit.
+- Griffin is the only author. Commit each finished change on `main` without
+  asking, applied `harness-ci` and `skill-ci` proposals included. Push still
+  waits for him.
