@@ -75,8 +75,7 @@ X, not Y      /      X rather than Y
 ```
 
 The X half is usually a straw man nobody raised. Delete X and the sentence
-loses nothing. The form is fine once in a piece, spent only where the reader
-holds the belief you are correcting. Everywhere else: cut X, state Y.
+loses nothing. Cut X, state Y, every time.
 
 ### Aphoristic register
 
@@ -163,8 +162,8 @@ in a different size or weight from its body.
   field on the parent".
 - **Hyphenated words built for the occasion**: "well-suited", "context-aware",
   "purpose-built", "reviewer-ready". Use plain words: "fits the case", "reads the
-  context", "built for this", "ready for review". Leave established technical
-  compounds ("read-only", "no-op", "type-checking", "in-memory") and hyphens in
+  context", "built for this", "ready for review". The same goes for established
+  compounds: "reads only", "does nothing", "held in memory". Hyphens stay in
   code, paths, flags, dates and names.
 
 ### Shape
