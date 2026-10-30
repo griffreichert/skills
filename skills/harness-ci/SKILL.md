@@ -89,7 +89,7 @@ Pick the narrowest home that catches the next occurrence. Project first.
 | Finding                                       | Home                                   |
 | --------------------------------------------- | -------------------------------------- |
 | Setup, env vars, test command of one repo     | Project `AGENTS.md` or `CLAUDE.md`     |
-| Would hit a second repo you can name          | Global instructions, a named section   |
+| Would hit a second repo you can name          | Global instructions, or their source   |
 | Permission, env, or hook wiring               | Settings or hooks                      |
 | A command sequence the agent should run       | A script                               |
 | Mechanically checkable in the final message   | A hook                                 |
@@ -97,6 +97,10 @@ Pick the narrowest home that catches the next occurrence. Project first.
 | A skill's body, or a skill that never fired   | The skills repo, as a `skill-ci` blurb |
 | A prose tic with no rule yet                  | A harvest note, never the papercuts file |
 | A variable or tool truly absent               | The user's machine, no file            |
+
+When the global instructions are generated, as a header comment in the file
+says, the fix goes in the source the file names. An edit to the output is
+lost on the next build.
 
 A script or hook beats a written rule, since a rule depends on the agent
 remembering it. Take the lowest structural rung that holds the fix: a clause,
