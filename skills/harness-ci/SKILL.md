@@ -134,7 +134,7 @@ Session mode reports in chat. Harvest mode writes one note to
 `~/Library/Mobile Documents/iCloud~md~obsidian/Documents/G/g/projects/dot-g/harness-ci-YYYY-MM-DD.md`
 with frontmatter `author`, `date`, and a `description` marking it unmerged, and
 links it from the nearest `_index.md`. Prose tics go to
-`g/projects/skills/papercuts-harvest-YYYY-MM-DD.md`, each as the fenced prose,
+`g/projects/dot-g/skills/papercuts-harvest-YYYY-MM-DD.md`, each as the fenced prose,
 one or two lines on what is wrong, and the provenance. `papercuts.md` is append
 only, and the user merges it.
 

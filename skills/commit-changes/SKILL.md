@@ -111,7 +111,9 @@ the "If applied" test.
 
 ### 5. Write the body only when it adds signal
 
-A version bump or one line rename needs no body.
+A version bump or one line rename needs no body. A body describes the code at
+this commit only: no deferred work, no session talk, no later commits, and no
+rule the code does not enforce.
 
 **Cold reviewer bar.** A reviewer with no code context must understand the
 problem, change, result, and scope from the body alone. Open with the commit's
