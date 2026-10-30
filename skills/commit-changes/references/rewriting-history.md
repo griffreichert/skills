@@ -3,7 +3,13 @@
 History work: cleaning an unmerged branch, splitting a commit that already
 exists, and recovering a move tangled with its edits.
 
-The user approves the target history before any rewrite runs. Until they
+A fix for our own commit on this branch folds in without asking: run
+`git commit --fixup=<sha>`, then
+`GIT_SEQUENCE_EDITOR=true git rebase -i --autosquash <base>`, and report the
+new log. Never force push; tell the user the branch needs one.
+
+Every other rewrite waits for the user to approve the target history: a split,
+a reorder, a drop, or any change to another author's commit. Until they
 confirm, run read-only commands only: `git log`, `git show`, `git diff`,
 `git status`. Confirmation for one rewrite covers that rewrite alone.
 

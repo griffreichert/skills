@@ -217,9 +217,10 @@ A split sometimes has to happen after the fact: a move and an edit share a
 commit, the branch carries fixups, or a commit adds a file a later commit
 deletes so a squash would drag the dead file through history.
 [references/rewriting-history.md](references/rewriting-history.md) holds the
-rules, and you read it before proposing a rewrite. Until the user approves a
-stated target history, run read only commands: `git log`, `git show`,
-`git diff`, `git status`.
+rules, and you read it before proposing a rewrite. A fixup of our own commit
+on this branch autosquashes without asking. Any other rewrite waits until the
+user approves a stated target history, and until then you run read only
+commands: `git log`, `git show`, `git diff`, `git status`.
 
 ## Format
 
