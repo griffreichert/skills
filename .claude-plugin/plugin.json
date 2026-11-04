@@ -13,6 +13,7 @@
     "./skills/log-decisions",
     "./skills/orient",
     "./skills/timesheet",
+    "./skills/vault-graph",
     "./skills/draft-mr-description",
     "./skills/commit-changes",
     "./skills/explain-visually",

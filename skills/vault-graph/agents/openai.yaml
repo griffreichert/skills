@@ -1,0 +1,3 @@
+interface:
+  display_name: "Vault Graph"
+  short_description: "Link related notes in an existing vault folder"

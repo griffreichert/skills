@@ -93,6 +93,9 @@ No `npx`? `git clone` it and run `./skills/install.sh`.
 - [`timesheet`](skills/timesheet/SKILL.md) — what did I do last week? Rebuild
   the days from the daily notes and your commits, every claim carrying its
   evidence and every blank day named as a gap.
+- [`vault-graph`](skills/vault-graph/SKILL.md) — connect the notes you already
+  have. Adds wikilinks where a passage names a topic another note covers, and
+  leaves the wording, folders, and indexes alone.
 
 **Skill upkeep**
 
